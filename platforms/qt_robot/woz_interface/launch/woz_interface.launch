@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="woz_interface_path" default="$(find woz_interface)/scripts/Version4.0/"/>
+    	
+	<node name="qt_flask_interface" pkg="woz_interface" type="qt_flask_interface.py" output="screen"/>
+	<node name="qt_states_behavior" pkg="woz_interface" type="qt_states_behavior.py" output="screen"/>
+	<node name="qt_action_behavior" pkg="woz_interface" type="qt_action_behavior.py" output="screen"/>
+
+</launch>
+
