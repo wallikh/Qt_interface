@@ -28,11 +28,7 @@ child_name = ""
 adult_name = ""
 my_button = ""
 is_clicked = False
-# global child_name, adult_name
 
-
-# c, a = name_callback("")
-# print("ici name_callback    :  : :",name_callback)
 
 class Qt_Behavior:
 
@@ -47,7 +43,17 @@ class Qt_Behavior:
         print("adult_name :::::: ",adult_name)
     rospy.Subscriber('woz/nameinfo', NameInfo, name_callback)  
     
-    
+    def nuitrack_callback(data):
+        global my_button
+        my_button = data.data
+        # time.sleep(1)
+        print("***********************************========================= :",my_button)
+        global is_clicked
+        variable_mise_a_jour = mon_objet.ma_variable = my_button
+        if variable_mise_a_jour:
+            is_clicked =  True
+   
+    rospy.Subscriber('human_presence', String, nuitrack_callback)
 
     def callback(data):
         global my_button
@@ -61,27 +67,15 @@ class Qt_Behavior:
        
     def __init__(self):
 
-        # global child_name1
-        # self.child_name1 = child_name
-        # print("************************************************************",self.child_name1)
         while child_name == "" or adult_name == "":
             time.sleep(0.1)
             pass          
-        # print("child_name  __init__ : child_name :  ", child_name)
-        # print("adult_name   __init__: adult_name :  ", adult_name)
-        # print("child_name   __init__: 1  ", child_name)
-        # print("adult_name   __init__:  2 ", adult_name)
         self.rate = rospy.Rate(10) # 10hz
         self.state_pub = rospy.Publisher('/robot_state', String, queue_size=10)
         self.speechSay_pub = rospy.Publisher("qt_robot/speech/say", String,queue_size=1)
         self.emotionShow_pub = rospy.Publisher("/qt_robot/emotion/show",String,queue_size=1)
         self.talker_pub = rospy.Publisher('/qt_robot/behavior/talkText', String, queue_size=1)
-        # child_name =child_name1 if child_name1 != "" else "achaiir"
-        # adult_name =adult_name1 if adult_name1 != "" else "elbachir" 
 
-        
-        # print("child_name    : 0  ",child_name)
-        # print("adult_name   :   0",adult_name)
         # state: ( {g: gesture, s: say, h: [head], la: [left_arm], ra: [right_arm], w: [x, y, z, ex, ey, ez]}, [(trigger, param, next_state)])
         self.states = { 'begin': ( {}, [('time', 1, 'choice')]),
 
@@ -127,10 +121,21 @@ class Qt_Behavior:
                                             ('key', my_button, 'really'),('key', my_button, 'comment'),('key', my_button, 'jaime'),('key', my_button, 'happy'),
                                             ('key', my_button, 'kisses'),('key', my_button, 'excited'),('key', my_button, 'thinking'),('key', my_button, 'curious'),
                                             ('key', my_button, 'fear'),('key', my_button, 'confused'),('key', my_button, 'bored'),
+                                            # nuitrack
+                                            # ('key', my_button, 'human_0_appeared'),('key', my_button, 'human_0_disappeared'),
+                                            # ('key', my_button, 'human_0_center'),('key', my_button, 'human_0_left'),('key', my_button, 'human_0_right'),
+                                            ('key', my_button, 'human_0_center_1meter'),('key', my_button, 'human_0_left_1meter'),('key', my_button, 'human_0_right_1meter'),
+                                            ('key', my_button, 'human_0_center_2meters'),('key', my_button, 'human_0_left_2meters'),('key', my_button, 'human_0_right_2meters'),
+                                            # ('key', my_button, 'human_1_appeared'),('key', my_button, 'human_1_disappeared'),
+                                            # ('key', my_button, 'human_1_center'),('key', my_button, 'human_1_left'),('key', my_button, 'human_1_right'),('key', my_button, 'human_1_1meter'),('key', my_button, 'human_1_2meter'),
+                                            # ('key',my_button,'test1'),
+
+
                                             ('key', my_button, 'end')]),
                                             
-                
-                     
+                        # 'test1':({},[('key',my_button,'human_0_1meter'),('key',my_button,'human_0_2meter'),('time', 0.5, 'test1')]),
+                        
+
                         # à implementer le joystique plutard debut
                         'up': ( {'h': [0.0,-20.0]}, [('time', 0.1, 'choice')]),
                         'center': ( {'h': [0.0,0.0]}, [('time', 0.1, 'choice')]),
@@ -142,6 +147,31 @@ class Qt_Behavior:
                         'downright': ( {'h': [-10.0,+10.0]}, [('time', 0.1, 'choice')]),
                         'downleft': ( { 'h': [+10.0,+10.0]}, [('time', 0.1, 'choice')]),
                          #   # à implementer le joystique plutard fin 
+                        #nuitrack trigger
+                        # 'human_0_appeared':( {'e': 'QT/happy', 'g': '', 's': 'hello'}, [('time', 5, 'choice')]),
+                        # 'human_0_disappeared':( {'e': 'QT/happy', 'g': '', 's': 'au revoir'}, [('time', 5, 'choice')]),
+                        # 'human_0_center':( {'e': 'QT/happy', 'g': '', 's': 'tu es au centre'}, [('time', 3, 'choice')]),
+                        # 'human_0_left':( {'e': 'QT/happy', 'g': '', 's': 'tu es a gauche'}, [('time', 3, 'choice')]),
+                        # 'human_0_right':( {'e': 'QT/happy', 'g': '', 's': 'tu es a droite'}, [('time', 3, 'choice')]),
+
+
+                        'human_0_center_1meter':( {'e': 'QT/angry', 'g': 'QT/angry', 's': random.choice(['recule, je ne peux pas respirer','pas si prés, je ne peux pas respirer', "Recule, tu pues! Ouf", "On dirait que vous les humains n'avez jamais entendu parler d'intimité !"])}, [('time', 5, 'choice')]),
+                        'human_0_left_1meter':( {'e': 'QT/kiss', 'g': 'QT/kiss', 's': random.choice(["\\pau=300\\ J'ai envie de te contempler. D'ailleurs tu me fais rougir !","Vas gauchement à droite ou droit à gauche!","\\vct=50\\ T'as jamais entendu parler de l'espace personnel ?"])}, [('time', 5, 'choice')]),
+                        'human_0_right_1meter':( {'e': 'QT/angry', 'g': 'QT/angry', 's': random.choice(["\\vct=60\\ Ouste!\\sel=alt\\","\\vct=120\\ Tu es super \\sel=alt\\ collant!","\\vct=90\\ Pas si près, je suis claustrophobe!"])}, [('time', 5, 'choice')]),
+                        
+                        'human_0_center_2meters':( {'e': '', 'g': '', 's': random.choice(["Avance un peu, je ne te vois pas.","\\rspd=80\\ Je ne t'entends pas très bien.","Avance que je te vois.","\\vce=speaker=Lily\\ Un peu plus !","#SNEEZE01#Viens ! Tu me manques ! "])}, [('time', 5, 'choice')]),
+                        'human_0_left_2meters':( {'e': '', 'g': '', 's': random.choice(["Là tu es hors du champ ma belle!","Comment tu t’appelles ? ","\\rmw=0\\ Qui es tu ?","Mais que fais-tu aussi loin ?\\pau=300\\ Tu sais que je te vois!","\\vce=speaker=Will\\Coucou ! "])}, [('time', 5, 'choice')]),
+                        'human_0_right_2meters':( {'e': 'QT/happy', 'g': 'QT/happy', 's': random.choice(["Je t’aime mais je dois te quitter, adieu !","Tu  \\pau=300\\ me \\pau=300\\ manques. ","Sans toi ça sera mieux! "," Youuuhouuu ! Enfin tranquille !!"])}, [('time', 5, 'choice')]),
+
+                        # 'human_0_2meters':( {'e': 'QT/happy', 'g': '', 's': random.choice(['avance un peu , je ne te voix pas',"je ne t'entend pas trés bien"])}, [('time', 5, 'choice')]),
+                        
+                        # 'human_1_appeared':( {'e': 'QT/happy', 'g': '', 's': 'hello un'}, [('time', 3, 'choice')]),
+                        # 'human_1_disappeared':( {'e': 'QT/happy', 'g': '', 's': 'au revoir un'}, [('time', 3, 'choice')]),
+                        # 'human_1_center':( {'e': 'QT/happy', 'g': '', 's': 'tu es au centre'}, [('time', 3, 'choice')]),
+                        # 'human_1_left':( {'e': 'QT/happy', 'g': '', 's': 'tu es a gauche'}, [('time', 3, 'choice')]),
+                        # 'human_1_right':( {'e': 'QT/happy', 'g': '', 's': 'tu es a droite'}, [('time', 3, 'choice')]),
+                        # 'human_1_1meter':( {'e': 'QT/happy', 'g': '', 's': 'tu es a un mtre'}, [('time', 3, 'choice')]),
+                        # 'human_1_2meter':( {'e': 'QT/happy', 'g': '', 's': 'tu es a deux mettres'}, [('time', 3, 'choice')]),
                         #  Theatre
                         'hello': ( {'e': 'QT/happy', 'g': 'QT/hi', 's': '\\pau=2000\\Salut!', 'h': [0,0]}, [('time', 1, 'choice')]),
                         'dontknow': ( {'e': '', 'g': 'QT/touch-head', 's': '~\\pau=500\\Je ne sais pas'}, [('time', 1, 'choice')]),
@@ -327,17 +357,9 @@ class Qt_Behavior:
                         'arrete': ( {'e':'', 'g':'QT/bored', 's':random.choice(["{} , On s'arrête pour aujourd'hui".format( child_name), "On arrête là cette séance"])}, [('time', 1, 'choice')]),
                         'au_revoir': ( {'e':'QT/showing_smile', 'g':'QT/hi', 's': random.choice(["À bientôt!", "À la prochaine!", "Au revoir,{} !".format( child_name)])}, [('time', 1, 'choice')]),  
 
-                        'test_1': ( {'e':'QT/showing_smile', 'g':'QT/hi', 's': "un"}, [('time', 3, 'test_2')]),  
-                        'test_2': ( {'e':'QT/showing_smile', 'g':'QT/hi', 's': "deux"}, [('time', 3, 'test_3')]),  
-                        'test_3': ( {'e':'QT/showing_smile', 'g':'QT/hi', 's': "trois"}, [('time', 1, 'choice')]),  
-
-
-
 
                         'end': ((), [('time', 0.1, 'end')]) }
         self.state = 'begin'
-        # print("child_name   loop: 3  ", child_name)
-        # print("adult_name   loop:  4 ", adult_name)
         rospy.Timer(rospy.Duration( self.states[self.state][1][0][1]), self.time_callback, oneshot=True)
         self.head_pub = rospy.Publisher('/qt_robot/head_position/command', Float64MultiArray, queue_size=1)
         self.left_arm_pub = rospy.Publisher('/qt_robot/left_arm_position/command', Float64MultiArray, queue_size=1)
@@ -345,10 +367,6 @@ class Qt_Behavior:
         print("ici begin dans state : ",self.state)
 
     def time_callback(self, event):
-        # print("child_name   loop:  5 ", child_name)
-        # print("adult_name   loop:  6 ", adult_name)
-        # print("************************************************************",self.child_name1)
-
     # go to next state
         print('time callback')
         triggers = self.states[self.state][1]
@@ -362,18 +380,10 @@ class Qt_Behavior:
                 print("srtie de time_callback")
 
     def button_callback(self, my_button):
-        # print("child_name   loop:   ", child_name)
-        # print("adult_name   loop:   ", adult_name)
-        # print("child_name   loop: 7  ", child_name)
-        # print("adult_name   loop:  8 ", adult_name)
         print('bouton            : ', my_button)
         triggers = self.states[self.state][1]
-        # print('keyboard_callback triggers :',triggers)
         for trigger in triggers:
-            # print('trigger :::',trigger)
             if trigger[0] == 'key':
-                # print("ici == key en str")
-                # print(" trigger[1] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", trigger[1])
                 if trigger[2] == my_button:
                     print("ici == key en vrai bouton")
                     self.state = trigger[2]
@@ -393,11 +403,11 @@ class Qt_Behavior:
                 # AL machine => pass to smach
                 print(self.state + ' =behavior=> ' + str(behavior))
                 
-                if 'la' in behavior:
+                if 'la' in behavior and ('g' not in behavior):
                     self.left_arm_pub.publish(Float64MultiArray(data=behavior['la']))
-                if 'ra' in behavior:
+                if 'ra' in behavior and ('g' not in behavior):
                     self.right_arm_pub.publish(Float64MultiArray(data=behavior['ra']))
-                if ('h' in behavior) and ('g' not in behavior) :
+                if ('h' in behavior) and ('g' not in behavior):
                     self.head_pub.publish(Float64MultiArray(data=behavior['h']))    
                 if ('e' in behavior) or ('g' in behavior) or ('s' in behavior):
                     # --------------------- voir actionLib plutard ----------------------
@@ -441,9 +451,6 @@ class Qt_Behavior:
                     print("Temps écoulé :::::::::::::::::::::::::::::::::::", elapsed_time, "secondes")
             # prepare jump for next state
             triggers = self.states[self.state][1]
-            
-            # print("child_name   loop:  9 ", child_name)
-            # print("adult_name   loop:  10 ", adult_name)
             # print(self.state + ' =trig=> ' + str(triggers))
             for trigger in triggers:
                 if trigger[0] == 'time':
@@ -457,9 +464,6 @@ class Qt_Behavior:
 
             if (is_clicked):
                 self.button_callback(my_button)
-
-                # print("child_name   loop:  13 ", child_name)
-                # print("adult_name   loop:   14", adult_name)
             is_clicked = False
             time.sleep(0.5)
             if self.state == 'end': break

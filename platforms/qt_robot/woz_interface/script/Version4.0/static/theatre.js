@@ -8,16 +8,16 @@ var groupsList = [
 	// ["static/images/face/reacjeux2.png", "QT commente les jeux"],
 	// ["static/images/face/ouch.png", "QT bugue et est malade"],
 	// ["static/images/face/ghghgh.png", "QT encourage et réagit à un échec"],
-	["static/images/face/defend2.png", "Humour"],
+	// ["static/images/face/defend2.png", "Humour"],
 	["static/images/face/ecrit.png", "QT dans son environnement"],
 	["static/images/face/stars.png", "QT félicite et applaudit"],	
 	["static/images/face/wink.png", "QT taquine et plaisante"],	
-	["static/images/face/happy.png", "QT papote"],
+	["static/images/face/happy.png", "Humour et autonomie"],
 ]
 
 var infoList = [
 	["static/images/arrow/bleu1.png", ""],
-	
+
 	["static/images/arrow/bleu2.png", ""],
 	["static/images/arrow/orange.png", ""],
 	
@@ -25,7 +25,7 @@ var infoList = [
 	["static/images/arrow/basgauche.png", ""],
 	["static/images/arrow/jaune.png", ""],
 	["static/images/arrow/gaucheplume.png", ""],  
-	["static/images/arrow/vert2.png", ""],
+	// ["static/images/arrow/vert2.png", ""],
 	["", ""],
 	// ["static/images/arrow/ah.png", ""],
 	["", ""],
@@ -34,7 +34,7 @@ var infoList = [
 	// ["static/images/arrow/rouge.png", ""],
 	["", ""],
 	
-	// ["", ""],
+	["", ""],
 	
 ]
 
@@ -53,10 +53,10 @@ var textList = [
 	// ["", "QT encourage et réagit à un échec"],
 	["", "QT dans son environnement"],
 	["", "QT félicite et applaudit"],
-	["", "QT taquine et plaisante"],
+	["", "Humour et autonomie"],
 	["", "QT papote"],
-	["", "Humour"],
-	// ["", ""],
+	// ["", "Humour"],
+	["", ""],
 	["", ""],
 	["", ""],
 	["", ""],
@@ -93,14 +93,13 @@ var commandsList = [
 				["J'aime","jaime",0],
 				["Bisous","kisses",0],]	],	
 
-["black",	[	["se defend","se_defend",0] ]		],
-	
+				
 ["#C4BAD2",	[	["L'objet est à droite", "objetDroite",0],
 				["L'objet est à gauche", "objetGauche",0],
 				["Suivre des yeux", "suivi",0],
 				["Penser", "pense",0],
 				["Réflichir", "pense2",0], ]	],
-
+				
 					
 ["#FFEE11", [	["Bravo", "bravo",0],
 				["Je suis fort", "je_suis_fort",0],
@@ -111,9 +110,9 @@ var commandsList = [
 				["Tu t'appliques","applique",0],
 				["Tu persévères","tu_perseveres",0]	]	],					
 	
-["#F98443", [	["Aie", "aie",0],
-				["Ahahah", "ahahah",0],
-				["J'ai des muscles en plastique", "muscle",0]	]	],
+["#F98443", [	["test1", "test1",0],
+				["A remplir", "ahahah",0],
+				["A remplir", "muscle",0]	]	],
 				
 ["#F5D39B", [	["Merci", "merci",0],
 				["Comment ?", "repete",0],
@@ -121,14 +120,15 @@ var commandsList = [
 				["Non", "non",0],
 				["Je sais pas, et toi?","sais_pas_toi",0],
 				["Et toi?","et_toi",0]	]	]	,				
-										
-
-["red",			[	["","",0] ]		],
-["white",		[	["","",0] ]		],
-["gray",		[	["","",0] ]		],
-["black",		[	["","",0] ]		],
-]
-
+				
+				
+				["white",	[	["Humour","humour",0] ]		],
+				["red",			[	["","",0] ]		],
+				["white",		[	["","",0] ]		],
+				["gray",		[	["","",0] ]		],
+				["black",		[	["","",0] ]		],
+			]
+			
 // icon position
 var ellipseGroupList = [
 	[14.9, 3.7],
@@ -138,7 +138,7 @@ var ellipseGroupList = [
 	// [-10.2, 6],
 	// [-14.9, 3.7],
 	// [-14.9,	-4.2],
-	[-10.2,	-6.5],
+	// [-10.2,	-6.5],
 	[-5.2, -7.6],
 	[5.2, -7.6],
 	[10.2, -6.5],
@@ -160,9 +160,9 @@ var ellipseInfoList = [
 	[7.2, -11.8],
 	[13.3, -10.5],
 	[19.8, -6],
-	[-14.8, -9.5],
+	// [-14.8, -9.5],
 	["", ""],
-	// ["", ""],
+	["", ""],
 	["", ""],
 	["", ""],
 	["", ""],
@@ -182,9 +182,9 @@ var ellipseTextList = [
 	[10.5, -12.3],
 	[20.6, -9.7],
 	[22.3, -6.8],
-	[-14, -11.7],
+	// [-14, -11.7],
 	["", ""],
-	// ["", ""],
+	["", ""],
 	["", ""],
 	["", ""],
 	["", ""],

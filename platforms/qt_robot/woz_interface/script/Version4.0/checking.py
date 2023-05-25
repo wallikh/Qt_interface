@@ -17,4 +17,4 @@ class check:
         self._callbacks.append(callback)
 
 def my_callback():
-    print("Bouton cliqué !")
+    print("!")
