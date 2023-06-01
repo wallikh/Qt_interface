@@ -9,12 +9,7 @@ sys.setdefaultencoding('utf-8')
 import copy
 import rospy
 from std_msgs.msg import String
-# from std_msgs.msg import Float64MultiArray
-# from std_msgs.msg import Float64
-# from std_msgs.msg import Int32
 from woz_interface.msg import NameInfo
-# sys.path.append(r'/home/walid/catkin_ws/src/platforms/qt_robot/woz_interface/script/Version4.0')  
-
 from threading import Thread
 
 
@@ -77,6 +72,8 @@ def ros_ini():
 
 
 def woz_command(button,prenom,nom,prenom2):
+    name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=1)
+    name_info.publish(str(session.get('user_name')),str(session.get('user_surname')),str(session.get('teacher_name')))
     payload = request.get_json() 
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~",payload)
     my_button = None  # Initialisation de la valeur de my_button
@@ -86,9 +83,6 @@ def woz_command(button,prenom,nom,prenom2):
         my_button = payload['direction']
     if my_button is not None:
         button.publish(my_button)
-    name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=1)
-    name_info.publish(str(session.get('user_name')),str(session.get('user_surname')),str(session.get('teacher_name')))
-
     return ("")
 
 
