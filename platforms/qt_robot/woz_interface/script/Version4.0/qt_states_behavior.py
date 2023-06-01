@@ -27,9 +27,9 @@ st = Qt_States()
 # mon_objet.register_callback(my_callback)
 
 class Qt_Behavior:
-    while s.child_name == "" or s.adult_name == "":
-            time.sleep(0.1)
-            pass    
+    # while s.child_name == "" or s.adult_name == "":
+    #         time.sleep(0.1)
+    #         pass    
     def __init__(self):
 
               
