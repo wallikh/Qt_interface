@@ -12,7 +12,7 @@ var groupsList = [
 	["static/images/face/ecrit.png", "QT dans son environnement"],
 	["static/images/face/stars.png", "QT félicite et applaudit"],	
 	["static/images/face/wink.png", "QT taquine et plaisante"],	
-	["static/images/face/happy.png", "Humour et autonomie"],
+	["static/images/face/happy.png", "QT et l'aveugle"],
 ]
 
 var infoList = [
@@ -53,7 +53,7 @@ var textList = [
 	// ["", "QT encourage et réagit à un échec"],
 	["", "QT dans son environnement"],
 	["", "QT félicite et applaudit"],
-	["", "Humour et autonomie"],
+	["", "QT et l'aveugle"],
 	["", "QT papote"],
 	// ["", "Humour"],
 	["", ""],
@@ -110,9 +110,18 @@ var commandsList = [
 				["Tu t'appliques","applique",0],
 				["Tu persévères","tu_perseveres",0]	]	],					
 	
-["#F98443", [	["test1", "test1",0],
-				["A remplir", "ahahah",0],
-				["A remplir", "muscle",0]	]	],
+["#F98443", [	["replique_1_1", "replique_1_1",0],
+				["replique_2_1", "replique_2_1",0],
+				// ["replique_2_2", "replique_2_2",0],
+				// ["replique_2_3", "replique_2_3",0],
+				["replique_3_1", "replique_3_1",0],
+
+				// ["replique_5_2", "replique_5_2",0],
+				["replique_4_1", "replique_4_1",0],
+				["replique_5_1", "replique_5_1",0],
+				["replique_6_1", "replique_6_1",0],
+				["reset_posture", "reset_posture",0]
+					]	],
 				
 ["#F5D39B", [	["Merci", "merci",0],
 				["Comment ?", "repete",0],

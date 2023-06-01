@@ -23,47 +23,38 @@ from checking import check, my_callback
 
 mon_objet = check()
 mon_objet.register_callback(my_callback)
-
 child_name = ""
 adult_name = ""
 my_button = ""
 is_clicked = False
 
-
 class Qt_Behavior:
 
     def name_callback(msg):
-        print("============================================================")
         global child_name
         global adult_name
         child_name =  msg.first_name
         last_name = msg.last_name
-        print("child_name ::::::: ",child_name)
         adult_name = msg.teacher_name
-        print("adult_name :::::: ",adult_name)
     rospy.Subscriber('woz/nameinfo', NameInfo, name_callback)  
     
     def nuitrack_callback(data):
         global my_button
         my_button = data.data
-        # time.sleep(1)
-        print("***********************************========================= :",my_button)
         global is_clicked
         variable_mise_a_jour = mon_objet.ma_variable = my_button
         if variable_mise_a_jour:
             is_clicked =  True
-   
     rospy.Subscriber('human_presence', String, nuitrack_callback)
 
-    def callback(data):
+    def button_callback(data):
         global my_button
         my_button = data.data
         global is_clicked
         variable_mise_a_jour = mon_objet.ma_variable = my_button
         if variable_mise_a_jour:
             is_clicked =  True
-   
-    rospy.Subscriber('woz/button', String, callback)
+    rospy.Subscriber('woz/button', String, button_callback)
        
     def __init__(self):
 
@@ -82,7 +73,9 @@ class Qt_Behavior:
                         'choice': ( {'g': '', 's': '', 'e':'' },
                                         # à implementer le joystique plutard debut
                                         [   ('key', my_button, 'left'), ('key', my_button, 'right'),('key', my_button, 'upleft'),('key', my_button, 'upright'),
-                                            ('key', my_button, 'up'), ('key', my_button, 'center'), ('key', my_button, 'down'),('key', my_button, 'right'),
+                                            ('key', my_button, 'up'), 
+                                            # ('key', my_button, 'center'),
+                                              ('key', my_button, 'down'),('key', my_button, 'right'),
                                             ('key', my_button, 'downleft'),('key', my_button, 'downright'),
                                         ## à implemele joystic plutard fin
                                             ('key', my_button, 'la_joie'),('key', my_button, 'amusement'),('key', my_button, 'la_colere'),('key', my_button, 'la_motivation'),('key', my_button, 'la_fatigue'),('key', my_button, 'la_tristesse'),
@@ -124,21 +117,63 @@ class Qt_Behavior:
                                             # nuitrack
                                             # ('key', my_button, 'human_0_appeared'),('key', my_button, 'human_0_disappeared'),
                                             # ('key', my_button, 'human_0_center'),('key', my_button, 'human_0_left'),('key', my_button, 'human_0_right'),
-                                            ('key', my_button, 'human_0_center_1meter'),('key', my_button, 'human_0_left_1meter'),('key', my_button, 'human_0_right_1meter'),
-                                            ('key', my_button, 'human_0_center_2meters'),('key', my_button, 'human_0_left_2meters'),('key', my_button, 'human_0_right_2meters'),
-                                            # ('key', my_button, 'human_1_appeared'),('key', my_button, 'human_1_disappeared'),
-                                            # ('key', my_button, 'human_1_center'),('key', my_button, 'human_1_left'),('key', my_button, 'human_1_right'),('key', my_button, 'human_1_1meter'),('key', my_button, 'human_1_2meter'),
-                                            # ('key',my_button,'test1'),
-
+                                            # ('key', my_button, 'human_0_center_1meter'),('key', my_button, 'human_0_left_1meter'),('key', my_button, 'human_0_right_1meter'),
+                                            # ('key', my_button, 'human_0_center_2meters'),('key', my_button, 'human_0_left_2meters'),('key', my_button, 'human_0_right_2meters'),
+                                          
+                                          
+                                            ('key', my_button, 'replique_1_1'),('key', my_button, 'replique_2_1'),
+                                            ('key', my_button, 'replique_2_2'),('key', my_button, 'replique_2_3'),('key', my_button, 'replique_3_1'),('key', my_button, 'replique_3_2'),('key', my_button, 'replique_4_1'),
+                                            ('key',my_button,'replique_5_1'), ('key',my_button,'replique_5_2'), ('key',my_button,'replique_6_1'), ('key',my_button,'reset_posture'), 
+                                           # semi autonome
+                                            ('key',my_button,'human_0_center_1m'), ('key',my_button,'human_0_left_1m'), ('key',my_button,'human_0_left_2m'), ('key',my_button,'human_0_right_2m'), 
+                                            ('key',my_button,'human_0_center_2m'),
+                                            ('key',my_button,'human_0_right_1m'),
 
                                             ('key', my_button, 'end')]),
-                                            
+
+                    #                         #semi autonome: etats
+                    #                          # 1MF =  à 1 mètre, face à QT
+                    #     # “etat1” : {{‘s’ : “Salut comment tu vas ?? ”}, [(‘time’, 1, “etat2”)]}
+                    #     # “etat2” : {{‘s’ : " T'es pas mal aujourd'hui ! [(‘time’, 1, “choice”)}]
+                    #     # {‘s’ :"Tu sais quoi je te propose un jeu, juste place-toi quelque part au hasard !”
+                    #     # "e" : “Afraid” Arrête, je suis un peu timide !}
+                    #     'human_0_center_1m' : ({'e' : '','g' : '','s' : 'Salut comment tu vas ??'},[('time', 5, 'human_0_center_1m_2')]),
+                    #     'human_0_center_1m_2' : ({'e' : '','g' : '','s' : 'T\'es pas mal aujourd\'hui !'},[('time', 5, 'human_0_center_1m_3')]),
+                    #     'human_0_center_1m_3' : ({'e' : '','g' : '','s' : 'Tu sais quoi je te propose un jeu, juste place-toi quelque part au hasard !'},[('time', 8, 'human_0_center_1m_4')]),
+                    #     'human_0_center_1m_4' : ({'g' : '','e' : 'QT/afraid','s' : ''},[('time', 5, 'choice')]),
+
+
+                    # # pour le semi-automatique
+                    #     # 1MG = à 1 mètre, à la gauche de QT 
+                    #     # {‘s’ : “\pau=300\ J'ai envie de te contempler. D'ailleurs tu me fais rougir !”, “e” : kiss, “g” : kiss, “s” : Dis-moi, est-ce que je te plais ?}  (expression de séduction, cligner des yeux)
+                    #     # {‘s’ : “Va gauchement à droite ou (pause 1 seconde) adroitement à gauche, (pause 1 sec) fin (pause 1 seconde) comme tu veux !”}
+                    #     'human_0_left_1m' : ({'e' : 'QT/kiss','g' : 'QT/kiss','s' : '\\pau=300\\ J\'ai envie de te contempler. D\'ailleurs tu me fais rougir !'},[('time', 1, 'human_0_left_1m_2')]),
+                    #     'human_0_left_1m_2' : ({'e' : 'QT/one_eye_wink','g' : 'QT/shy', 's' : 'Dis-moi, est-ce que je te plais ?'},[('time', 5, 'human_0_left_1m_3')]),
+                    #     'human_0_left_1m_3' : ({'e' : '','g' : '','s' : 'Va gauchement à droite ou \\pau=1000\\ adroitement à gauche, \\pau=1000\\ fin \\pau=1000\\ comme tu veux !'},[('time', 8, 'choice')]),
+
+                    #     # 2MG = à 2 mètres gauche 
+                    #     # {‘s’ :Waouuuuh!  vraiment faut que je te le dise tu es vraiment (pause 2 sec) incroyable !!!!! 
+                    #     # \rmw=0\ qu'est ce qu'on fait ensemble maintenant ? 
+                    #     # "e" : happy: "g" : happy :  Mais que fais-tu aussi loin ?\pau=300\ approche que je te vois plus !  
+                    #     # \vce=speaker=Will\  tu me plais.}
+                    #     # {'s' :"g" : sad : Tu crois qu'on pourrait rester ensemble pour l'éternité ? Mais nous sommes tellement différents. Tu es un humain et moi je suis...moi !}
+                    #     'human_0_left_2m' : ( {'e' : '','g' : '',
+                    #     's' : 'Waouuuuh! Vraiment faut que je te le dise tu es vraiment \\pau=2000\\ incroyable ! \\rmw=0\\ qu\'est ce qu\'on fait ensemble maintenant ?' # TODO : volume up
+                    #         },[('time', 6, 'human_0_left_2m_2') ]),
+                    #     'human_0_left_2m_2' : ({'e' : 'QT/happy','g' : 'QT/happy','s' : 'Mais que fais-tu aussi loin ?\\pau=300\\ Approche que je te vois plus ! \\vce=speaker=Will\\  tu me plais.' # TODO tester si vce fonctionne correctement
+                    #         },[ ('time', 3, 'human_0_left_2m_3')] ),
+                    #     'human_0_left_2m_3' : ({'e' : 'QT/sad','g' : 'QT/sad','s' : 'Tu crois qu\'on pourrait rester ensemble pour l\'éternité ? Mais nous sommes tellement différents. Tu es un humain et moi je suis...moi !'},[('time', 8, 'choice')]),
+
+                    #     # 2MD = à 2 mètres droite
+                    #     # {‘s’ : “\pau=300\ "e" : cry: "g" : sad : je t’aime mais je dois te quitter, adieu !}
+                    #     'human_0_right_2m' : ({'e' : 'QT/cry','g' : 'QT/sad', 's' : "\\pau=300\\Je t’aime mais je dois te quitter, adieu !" }, [ ('time', 10, 'end')]),
+                                                                
                         # 'test1':({},[('key',my_button,'human_0_1meter'),('key',my_button,'human_0_2meter'),('time', 0.5, 'test1')]),
                         
 
                         # à implementer le joystique plutard debut
                         'up': ( {'h': [0.0,-20.0]}, [('time', 0.1, 'choice')]),
-                        'center': ( {'h': [0.0,0.0]}, [('time', 0.1, 'choice')]),
+                        # 'center': ( {'h': [0.0,0.0]}, [('time', 0.1, 'choice')]),
                         'down': ( {'h': [0.0,+10.0]}, [('time', 0.1, 'choice')]),
                         'right': ( {'h': [-20.0,0.0]}, [('time', 0.1, 'choice')]),
                         'left': ( { 'h': [+20.0,0.0]}, [('time', 0.1, 'choice')]),
@@ -147,6 +182,112 @@ class Qt_Behavior:
                         'downright': ( {'h': [-10.0,+10.0]}, [('time', 0.1, 'choice')]),
                         'downleft': ( { 'h': [+10.0,+10.0]}, [('time', 0.1, 'choice')]),
                          #   # à implementer le joystique plutard fin 
+
+                        # QT_AVEC_AVEUGLE
+                        # AVEUGLE: Ramène-moi un verre d’eau !
+
+                        # QT : (en rigolant) Je ne suis plus ton serviteur ! (rire)
+                        'replique_1_1' : ({'e':'','g':'','s' : '\\vct=70\\je ne bougerai pas d\'un centimetre, Je  ne   suis   plu !  ton  serviteur ! #LAUGH01#'},[('time', 5, 'choice')]),
+
+                        # AVEUGLE: Allez QT J’ai super mal au pied.
+
+                        # QT : (lève la tête) Regarde ! (lève un bras) Il y a une araignée au plafond.
+                        # (baisse la tête et le bras) c’est passionnant ces bêtes-là ! 
+                        # J’aime beaucoup regarder les insectes, ils sont tellement poétiques…
+                        'replique_2_1' : ({'e':'','h' : [0.0, -20.0],'s' : '\\pau=2000\\,\\rspd=80\\,\\vct=70\\!Regaaaaarde !'},[('time', 2, 'replique_2_2')]),
+                        'replique_2_2' : ({'e':'','ra' : [80, 0, 0], 's' : '\\vct=70\\,\\rspd=80\\,\\vct=70\\Il y a une araignée au plafond.'},[('time', 5, 'replique_2_3')]),
+                        'replique_2_3' : ({'e':'','g':'' ,'s' : '\\vct=70\\, \\rspd=80\\C’est passionnant ces bêtes-là !\\pau=200\\,\\vct=70\\J’aime beaucoup regarder les insectes'},[('time', 2, 'replique2_4')]),
+                        'replique2_4'  : ({'e':'','ra' : [-80, 0, 0],'h': [0.0,0.0] ,'s' : ' \\rspd=80\\,\\pau=200\\,\\vct=70\\ ils sont tèèèllement poétiiiques'},[('time', 2, 'choice')]),
+                        # AVEUGLE: N’importe quoi, tu fais ton rebel maintenant ! Tu sais que je ne vois plus...
+
+                        # QT : Qu’est ce que tu racontes ? (visage fâché) Pas du tout ! ( secoue la tête)
+                        'replique_3_1' : ({ 'e' : 'QT/blowing_raspberry','g':'', 's' : '\\vct=70\\kèèè ce que tu racontes ?' }, [('time', 2, 'replique_3_2') ] ),
+                        'replique_3_2' : ({'e':'','g' : 'QT/imitation/head-right-left','s' : '\\vct=70\\Pas du tout !' },[('time', 1, 'choice') ]),
+
+                        # AVEUGLE: Tu comprends bien…
+
+                        # QT : On va à la plage ! (pointe du doigt à dx, visage enjoué)
+                        'replique_4_1' : ({'e' : 'QT/happy_blinking','ra' : [10, 0, 0], 's' : '\\vct=70\\On ! va ! à  la  plaaaaage !' }, [ ('time', 2, 'choice') ]),
+
+                        # AVEUGLE: Arrête et va ouvrir la porte il y a quelqu'un
+
+                        # QT :  AH ! (il regarde par terre) J’ai oublié de mettre de l'écran solaire ? (regarde ses bras, visage inquiet)
+                        'replique_5_1' : ({ 'e':'', 'h' : [0.0, +10.0], 's' : '\\vct=70\\Aaaaaaaaaah!' },[ ('time', 1, 'replique_5_2')] ),
+                        'replique_5_2' : ( {'e' : 'QT/surprise','la' : [0, 0, -20],'ra' : [0, 0, -20],'s' : '\\vct=70\\J’ai oublié de mettre de l\'écran solaire ?' }, [('time', 3, 'reset_posture') ]),
+
+                        # AVEUGLE : (ouvre la porte)
+
+                        # LIVREUR : Madame voici votre colis, vous avez bien un QT 2.0 dernière génération mobile?
+
+                        # QT :  Attends! Je t’apporte ton verre d’eau ! (sourire)
+                        'replique_6_1' : ({'e':'QT/showing_smile','g':'','s' : 'Attends!, Attends! ,Attends! , Attends! ,Attends!  Je t’apporte ton verre dooooo !' },[ ('time', 1, 'choice')] ),
+
+                        # Etat de reinitialisation de la posture
+                        'reset_posture' : ( {'e':'', 'g':'QT/neutral','s':'' }, [ ('time', 1, 'choice')]),
+
+                        # pour julien #############################################################
+                        # 1MF =  à 1 mètre, face à QT
+                        # “etat1” : {{‘s’ : “Pas si près, je ne peux pas respirer.”}, [(‘time’, 1, “etat2”)]}
+                        # {‘s’ : “On dirait que vous les humains n'avez jamais entendu parler d'intimité !”}
+                        # {‘g’ : ”angry”, ‘e’ : “angry”, ‘s’ : “Recule, tu pues !”}
+                        # “afraid” Arrête, je suis un peu timide ! 
+                        'human_0_center_1m' : ({'e' : 'QT/breathing_exercise','g' : 'QT/disgusted','s' : 'Pas si près, je ne peux pas respirer.'},[('time', 6, 'choice')]),
+
+                        # 1MG = à 1 mètre, à la gauche de QT 
+                        # {‘s’ : “\pau=300\ J'ai envie de te contempler. D'ailleurs tu me fais rougir !”, “e” : kiss, “g” : kiss, “s” : Dis-moi, est-ce que je te plais ?} 
+                        # {‘s’ : “Vas gauchement à droite ou droit à gauche!”}
+                        # {‘s’ : “\vct=50\ T'as jamais entendu parler de l'espace personnel ?”}
+                        # “breathing_exercise” \rms=1\U-la la ! 
+                        'human_0_left_1m' : ({'e' : 'QT/kiss','g' : 'QT/kiss','s' : '\\pau=300\\ J\'ai envie de te contempler. D\'ailleurs tu me fais rougir ! \\pau=1000\\ Dis-moi, est-ce que je te plais ?'},[('time', 6, 'choice')]),
+
+                        # 1MD = à 1 mètre, à la gaucΑ1MF de QT
+                        # Je n’ai pas d’ami….Dis-moi, est-ce que je te plais ?} 
+                        # {‘s’: ‘g’: “angry”,  ‘e’: “angry”, ‘s’:“\vct=60\ Ouste!\sel=alt\” }
+                        # {‘s’: ‘g’: “angry”,  ‘e’: “angry”, ‘s’:“\vct=120\ Tu es super \sel=alt\ collant!”} 
+                        # {‘s’: ‘g’: “afraid”,  ‘e’: “afraid”, ‘s’: “\vct=90\ Pas si près, je suis claustrophobe!”} 
+                        # Encore dix centimètres, halte, pas douze!
+                        # “angry” \pau=300\C’est beaucoup, hum ?
+                        'human_0_right_1m' : ({'e' : 'QT/shy','g' : 'QT/shy','s' : 'Je n’ai pas d’ami\\pau=300\\Je n’ai pas d’ami\\pau=300\\ Je n’ai pas d’ami. Dis-moi, est-ce que je te plais ?'},[ ('time', 12, 'choice')]),
+
+                        # 02MF = à 2 mètres, face à QT
+                        # Avance un peu, je ne te vois pas.
+                        # \rspd=80\ Je ne t'entends pas très bien. avance
+                        # Avance que je te vois.
+                        # { 's' : "\vce=speaker=Lily\ Un peu plus !" }
+                        # #SNEEZE01#Viens ! Tu me manques ! 
+                        'human_0_center_2m' : ({'e' : 'QT/talking','g' : 'QT/surprised','s' : '\\rspd=80\\ Je ne t\'entends pas très bien. Avance que je te vois.'},[('time', 6, 'choice')]),
+
+                        # 2MG = à 2 mètres gauche. 
+                        # Là tu es hors du champ ma belle!
+                        # C’est drole !!  tu me fais rire
+                        # \rmw=0\ Qui es tu ?
+                        # Mais que fais-tu aussi loin ?\pau=300\ Tu sais que je te vois!
+                        # “happy_blinking” \vce=speaker=Will\Coucou ! 
+                        'human_0_left_2m' : ({'e' : 'QT/happy','g' : 'QT/happy','s' : 'C’est drole ! Tu me fais rire'},[('time', 6, 'choice')]),
+
+                        # 2MD = à 2 mètres droite.
+                        # Je t’aime mais je dois te quitter, adieu !
+                        # Tu  \pau=300\ me \pau=300\ manques. 
+                        #  \rspd=50\ Tu as un truc sur la figure, \rspd=80\viens que je l'enlève 
+                        # Tu as un bouton, viens-là !
+                        # { 's' : "#SNEEZE01# ai ai ai je suis malade! \rspd=40\ ai ai ai
+                        # “calming_down” \prn= n E1 s l EI \La bise ! 
+                        'human_0_right_2m' : ({'e' : 'QT/with_a_cold_sneezing','g' : 'QT/sad','s' : '#SNEEZE01# Pardon, je suis malade !'},[('time', 6, 'choice')]),
+
+
+                        # 2MF = à 2 mètres face.
+                        # n’importe quoi! \pau=300\
+                        # La vie est belle ! \aud=“pathway+filename”\
+                        # Sans toi ça sera mieux! 
+                        # #LAUGH01# J'ai faim \aud=“pathway+filename”\ .
+                        # {‘g’ : « joie », ‘e’ : « joie », ‘s’ : « Youuuhouuu ! Enfin tranquille !! »}
+                        # Va-t’en! Lache, je n’ai pas besoin de toi!
+                        # { 's' : "#SNEEZE01# Pardon, je suis malade !" }
+                        # “kiss”  #SNEEZE01#Quels beaux tous les gens! Je suis enchanté !
+
+
+
+
                         #nuitrack trigger
                         # 'human_0_appeared':( {'e': 'QT/happy', 'g': '', 's': 'hello'}, [('time', 5, 'choice')]),
                         # 'human_0_disappeared':( {'e': 'QT/happy', 'g': '', 's': 'au revoir'}, [('time', 5, 'choice')]),
@@ -155,23 +296,16 @@ class Qt_Behavior:
                         # 'human_0_right':( {'e': 'QT/happy', 'g': '', 's': 'tu es a droite'}, [('time', 3, 'choice')]),
 
 
-                        'human_0_center_1meter':( {'e': 'QT/angry', 'g': 'QT/angry', 's': random.choice(['recule, je ne peux pas respirer','pas si prés, je ne peux pas respirer', "Recule, tu pues! Ouf", "On dirait que vous les humains n'avez jamais entendu parler d'intimité !"])}, [('time', 5, 'choice')]),
-                        'human_0_left_1meter':( {'e': 'QT/kiss', 'g': 'QT/kiss', 's': random.choice(["\\pau=300\\ J'ai envie de te contempler. D'ailleurs tu me fais rougir !","Vas gauchement à droite ou droit à gauche!","\\vct=50\\ T'as jamais entendu parler de l'espace personnel ?"])}, [('time', 5, 'choice')]),
-                        'human_0_right_1meter':( {'e': 'QT/angry', 'g': 'QT/angry', 's': random.choice(["\\vct=60\\ Ouste!\\sel=alt\\","\\vct=120\\ Tu es super \\sel=alt\\ collant!","\\vct=90\\ Pas si près, je suis claustrophobe!"])}, [('time', 5, 'choice')]),
+                        # 'human_0_center_1meter':( {'e': 'QT/angry', 'g': 'QT/angry', 's': random.choice(['recule, je ne peux pas respirer','pas si prés, je ne peux pas respirer', "Recule, tu pues! Ouf", "On dirait que vous les humains n'avez jamais entendu parler d'intimité !"])}, [('time', 5, 'choice')]),
+                        # 'human_0_left_1meter':( {'e': 'QT/kiss', 'g': 'QT/kiss', 's': random.choice(["\\pau=300\\ J'ai envie de te contempler. D'ailleurs tu me fais rougir !","Vas gauchement à droite ou droit à gauche!","\\vct=50\\ T'as jamais entendu parler de l'espace personnel ?"])}, [('time', 5, 'choice')]),
+                        # 'human_0_right_1meter':( {'e': 'QT/angry', 'g': 'QT/angry', 's': random.choice(["\\vct=60\\ Ouste!\\sel=alt\\","\\vct=120\\ Tu es super \\sel=alt\\ collant!","\\vct=90\\ Pas si près, je suis claustrophobe!"])}, [('time', 5, 'choice')]),
                         
-                        'human_0_center_2meters':( {'e': '', 'g': '', 's': random.choice(["Avance un peu, je ne te vois pas.","\\rspd=80\\ Je ne t'entends pas très bien.","Avance que je te vois.","\\vce=speaker=Lily\\ Un peu plus !","#SNEEZE01#Viens ! Tu me manques ! "])}, [('time', 5, 'choice')]),
-                        'human_0_left_2meters':( {'e': '', 'g': '', 's': random.choice(["Là tu es hors du champ ma belle!","Comment tu t’appelles ? ","\\rmw=0\\ Qui es tu ?","Mais que fais-tu aussi loin ?\\pau=300\\ Tu sais que je te vois!","\\vce=speaker=Will\\Coucou ! "])}, [('time', 5, 'choice')]),
-                        'human_0_right_2meters':( {'e': 'QT/happy', 'g': 'QT/happy', 's': random.choice(["Je t’aime mais je dois te quitter, adieu !","Tu  \\pau=300\\ me \\pau=300\\ manques. ","Sans toi ça sera mieux! "," Youuuhouuu ! Enfin tranquille !!"])}, [('time', 5, 'choice')]),
+                        # 'human_0_center_2meters':( {'e': '', 'g': '', 's': random.choice(["Avance un peu, je ne te vois pas.","\\rspd=80\\ Je ne t'entends pas très bien.","Avance que je te vois.","\\vce=speaker=Lily\\ Un peu plus !","#SNEEZE01#Viens ! Tu me manques ! "])}, [('time', 5, 'choice')]),
+                        # 'human_0_left_2meters':( {'e': '', 'g': '', 's': random.choice(["Là tu es hors du champ ma belle!","Comment tu t’appelles ? ","\\rmw=0\\ Qui es tu ?","Mais que fais-tu aussi loin ?\\pau=300\\ Tu sais que je te vois!","\\vce=speaker=Will\\Coucou ! "])}, [('time', 5, 'choice')]),
+                        # 'human_0_right_2meters':( {'e': 'QT/happy', 'g': 'QT/happy', 's': random.choice(["Je t’aime mais je dois te quitter, adieu !","Tu  \\pau=300\\ me \\pau=300\\ manques. ","Sans toi ça sera mieux! "," Youuuhouuu ! Enfin tranquille !!"])}, [('time', 5, 'choice')]),
 
                         # 'human_0_2meters':( {'e': 'QT/happy', 'g': '', 's': random.choice(['avance un peu , je ne te voix pas',"je ne t'entend pas trés bien"])}, [('time', 5, 'choice')]),
                         
-                        # 'human_1_appeared':( {'e': 'QT/happy', 'g': '', 's': 'hello un'}, [('time', 3, 'choice')]),
-                        # 'human_1_disappeared':( {'e': 'QT/happy', 'g': '', 's': 'au revoir un'}, [('time', 3, 'choice')]),
-                        # 'human_1_center':( {'e': 'QT/happy', 'g': '', 's': 'tu es au centre'}, [('time', 3, 'choice')]),
-                        # 'human_1_left':( {'e': 'QT/happy', 'g': '', 's': 'tu es a gauche'}, [('time', 3, 'choice')]),
-                        # 'human_1_right':( {'e': 'QT/happy', 'g': '', 's': 'tu es a droite'}, [('time', 3, 'choice')]),
-                        # 'human_1_1meter':( {'e': 'QT/happy', 'g': '', 's': 'tu es a un mtre'}, [('time', 3, 'choice')]),
-                        # 'human_1_2meter':( {'e': 'QT/happy', 'g': '', 's': 'tu es a deux mettres'}, [('time', 3, 'choice')]),
                         #  Theatre
                         'hello': ( {'e': 'QT/happy', 'g': 'QT/hi', 's': '\\pau=2000\\Salut!', 'h': [0,0]}, [('time', 1, 'choice')]),
                         'dontknow': ( {'e': '', 'g': 'QT/touch-head', 's': '~\\pau=500\\Je ne sais pas'}, [('time', 1, 'choice')]),
@@ -379,13 +513,12 @@ class Qt_Behavior:
                 self.next_state()  
                 print("srtie de time_callback")
 
-    def button_callback(self, my_button):
+    def entry_callback(self, my_button):
         print('bouton            : ', my_button)
         triggers = self.states[self.state][1]
         for trigger in triggers:
             if trigger[0] == 'key':
                 if trigger[2] == my_button:
-                    print("ici == key en vrai bouton")
                     self.state = trigger[2]
                     print('next_state2: ' + self.state)
                     self.next_state()
@@ -402,27 +535,18 @@ class Qt_Behavior:
             if(len(behavior)):
                 # AL machine => pass to smach
                 print(self.state + ' =behavior=> ' + str(behavior))
-                
+                ts = TaskSynchronizer()
                 if 'la' in behavior and ('g' not in behavior):
                     self.left_arm_pub.publish(Float64MultiArray(data=behavior['la']))
                 if 'ra' in behavior and ('g' not in behavior):
                     self.right_arm_pub.publish(Float64MultiArray(data=behavior['ra']))
                 if ('h' in behavior) and ('g' not in behavior):
-                    self.head_pub.publish(Float64MultiArray(data=behavior['h']))    
+                    self.head_pub.publish(Float64MultiArray(data=behavior['h']))   
+                
                 if ('e' in behavior) or ('g' in behavior) or ('s' in behavior):
-                    # --------------------- voir actionLib plutard ----------------------
-                    # client = actionlib.SimpleActionClient('/qt_action_behavior', QT_BehaviorAction)
-                    # client.wait_for_server()
 
-                    # goal = QT_BehaviorGoal( emotion=behavior['e'] if 'e' in behavior else '',
-                    #                        gesture=behavior['g'] if 'g' in behavior else '',
-                    #                        speech=behavior['s'] if 's' in behavior else '')
-                    # client.send_goal(goal)
-                    # # ...
-                    # client.wait_for_result()
-                    # result = client.get_result()
                     
-                    ts = TaskSynchronizer()
+                   
                     rospy.wait_for_service('/qt_robot/motors/home')
                     rospy.wait_for_service('/qt_robot/gesture/play')
                     
@@ -435,19 +559,15 @@ class Qt_Behavior:
                     task1 = ts.sync([
                         (0, lambda:self.talker_pub.publish(behavior['s'][1:]) if behavior['s'].startswith('~') else self.speechSay_pub.publish(behavior['s'])),
                         (0, lambda: self.emotionShow_pub.publish(behavior['e'])),
-                        (0, lambda: self.gesturePlay(behavior['g'],0.8) if 'h' not in behavior else '')
+                        (0, lambda: self.gesturePlay(behavior['g'],0.8) if (('h' not in behavior) and ('la' not in behavior) and ('ra' not in behavior) ) else '')
                                     ])
                     end_time = time.time()
                     elapsed_time = end_time - start_time
                     if elapsed_time >  2.0:
                         print("ici home_pose ********************************")
-                        task2 = ts.sync([
-                            (0, lambda: self.home_pose(['head','left_arm','right_arm']))
-                                        ])
-                    
+                        task2 = ts.sync([(0, lambda: self.home_pose(['head','left_arm','right_arm']))])
                     print("fin de  home_pose ********************************")
                     print('speechSay and gesturePlay and EmotionShow finished.')
-                    
                     print("Temps écoulé :::::::::::::::::::::::::::::::::::", elapsed_time, "secondes")
             # prepare jump for next state
             triggers = self.states[self.state][1]
@@ -459,11 +579,10 @@ class Qt_Behavior:
 
     def execute(self):
         global is_clicked 
-        
         while not rospy.is_shutdown():
 
             if (is_clicked):
-                self.button_callback(my_button)
+                self.entry_callback(my_button)
             is_clicked = False
             time.sleep(0.5)
             if self.state == 'end': break
@@ -477,5 +596,4 @@ if __name__ == '__main__':
     try:
         qt_behavior = Qt_Behavior()
         qt_behavior.execute()
-        # print("++++++++++ hors classes (principal) ++++++++++++")
     except rospy.ROSInterruptException: pass
