@@ -4,7 +4,7 @@
     	
 	<node name="qt_flask_interface" pkg="woz_interface" type="qt_flask_interface.py" output="screen"/>
 	<node name="qt_states_behavior" pkg="woz_interface" type="qt_states_behavior.py" output="screen"/>
-	<node name="qt_action_behavior" pkg="woz_interface" type="qt_action_behavior.py" output="screen"/>
+	<node name="qt_action_behavior" pkg="woz_interface" type="qt_action_behavior.py" output="screen"/> 
 
 	<node name="nao_states_behavior" pkg="woz_interface" type="nao_states_behavior.py" output="screen"/>
 	<node name="nao_action_behavior" pkg="woz_interface" type="nao_action_behavior.py" output="screen"/>

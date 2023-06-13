@@ -56,24 +56,30 @@ def theatre(name=None):
         return redirect('/')
     return render_template('theatre.html', name=name)
 
+@app.route('/maison')
+def maison(name=None):
+    if not session.get('user_name') or not len(session.get('user_name')) or not len( session.get('user_surname') ) :
+        return redirect('/')
+    return render_template('maison.html', name=name)
+
 	
 # woz_command can send ros messages and call ros services
 @app.route("/woz",methods=['POST'])
 def ros_ini():
 
     button = rospy.Publisher('/woz/button',String,queue_size=10)
-    prenom = str(session.get('user_name'))
-    nom = str(session.get('user_surname'))
-    prenom2 = str(session.get('teacher_name'))
-    woz_command(button,prenom,nom,prenom2)
+    child_name = str(session.get('user_name'))
+    last_name = str(session.get('user_surname'))
+    adult_name = str(session.get('teacher_name'))
+    woz_command(button,child_name,last_name,adult_name)
    
     return("")
 
 
 
-def woz_command(button,prenom,nom,prenom2):
-    name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=1)
-    name_info.publish(str(session.get('user_name')),str(session.get('user_surname')),str(session.get('teacher_name')))
+def woz_command(button,child_name,last_name,adult_name):
+    name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=10)
+    name_info.publish(child_name, last_name, adult_name)
     payload = request.get_json() 
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~",payload)
     my_button = None  # Initialisation de la valeur de my_button

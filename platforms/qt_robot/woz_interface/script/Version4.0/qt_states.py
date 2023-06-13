@@ -1,9 +1,7 @@
 #! /usr/bin/env python
 # coding: utf-8
 
-
 import roslib
-
 import rospy
 roslib.load_manifest('woz_interface')
 from woz_interface.msg import NameInfo
@@ -18,103 +16,109 @@ mon_objet = check()
 mon_objet.register_callback(my_callback)
 child_name = ""
 adult_name = ""
-my_button = ""
+last_button = ""
 is_clicked = False
 class Qt_States:
+   
+    def nuitrack_callback(data):
+        global last_button
+        last_button = data.data
+        global is_clicked
+        variable_mise_a_jour = mon_objet.ma_variable = last_button
+        if variable_mise_a_jour:
+            is_clicked =  True
+    rospy.Subscriber('human_presence', String, nuitrack_callback)
+
+    def button_callback(data):
+        global last_button
+        last_button = data.data
+        global is_clicked
+        variable_mise_a_jour = mon_objet.ma_variable = last_button
+        if variable_mise_a_jour:
+            is_clicked =  True
+    rospy.Subscriber('woz/button', String, button_callback)
+
     def name_callback(msg):
         global child_name
         global adult_name
         child_name =  msg.first_name
         last_name = msg.last_name
         adult_name = msg.teacher_name
-    rospy.Subscriber('woz/nameinfo', NameInfo, name_callback)  
+        print("==============================================",adult_name)
+    rospy.Subscriber('woz/nameinfo', NameInfo, name_callback) 
     
-    def nuitrack_callback(data):
-        global my_button
-        my_button = data.data
-        global is_clicked
-        variable_mise_a_jour = mon_objet.ma_variable = my_button
-        if variable_mise_a_jour:
-            is_clicked =  True
-    rospy.Subscriber('human_presence', String, nuitrack_callback)
-
-    def button_callback(data):
-        global my_button
-        my_button = data.data
-        global is_clicked
-        variable_mise_a_jour = mon_objet.ma_variable = my_button
-        if variable_mise_a_jour:
-            is_clicked =  True
-    rospy.Subscriber('woz/button', String, button_callback)
+        
     def __init__(self):
         print("chil_name =====================++ :",child_name)
-        # while child_name == "" or adult_name == "":
-        #     time.sleep(0.1)
-        #     pass          
-
+        # while True:
+        #     time.sleep(2)
+        #     print("child ____________________", child_name)
+        #     print("last_button ____________________", last_button) 
+            
+        
         # state: ( {g: gesture, s: say, h: [head], la: [left_arm], ra: [right_arm], w: [x, y, z, ex, ey, ez]}, [(trigger, param, next_state)])
         self.states = { 'begin': ( {}, [('time', 1, 'choice')]),
 
                         'choice': ( {'g': '', 's': '', 'e':'' },
                                         # à implementer le joystique plutard debut
-                                        [   ('key', my_button, 'left'), ('key', my_button, 'right'),('key', my_button, 'upleft'),('key', my_button, 'upright'),
-                                            ('key', my_button, 'up'), 
-                                            # ('key', my_button, 'center'),
-                                              ('key', my_button, 'down'),('key', my_button, 'right'),
-                                            ('key', my_button, 'downleft'),('key', my_button, 'downright'),
+                                        [   ('entry', last_button, 'left'), ('entry', last_button, 'right'),('entry', last_button, 'upleft'),('entry', last_button, 'upright'),
+                                            ('entry', last_button, 'up'), 
+                                            ('entry', last_button, 'center'),
+                                            ('entry', last_button, 'down'),('entry', last_button, 'right'),
+                                            ('entry', last_button, 'downleft'),('entry', last_button, 'downright'),
                                         ## à implemele joystic plutard fin
-                                            ('key', my_button, 'la_joie'),('key', my_button, 'amusement'),('key', my_button, 'la_colere'),('key', my_button, 'la_motivation'),('key', my_button, 'la_fatigue'),('key', my_button, 'la_tristesse'),
-                                            ('key', my_button, 'la_fierte'),('key', my_button, 'etonnement'),('key', my_button, 'adulte_accord'),('key', my_button, 'demande_adulte'),('key', my_button, 'que_pense'),
-                                            ('key', my_button, 'monsieur'),('key', my_button, 'madame'),('key', my_button, 'bien'),('key', my_button, 'cest_mieux'),
-                                            ('key', my_button, 'tu_mexplique'),('key',my_button, 'important'),('key', my_button, 'ensuite'),('key', my_button, 'pk_pas_bien'),
-                                            ('key', my_button, 'tu_es_sur'),('key', my_button, 'plus_simple'),('key', my_button, 'plus_difficile'),
-                                            ('key', my_button, 'bien_mal'),('key', my_button, 'pas_marche'),('key', my_button, 'pourquoi'),('key', my_button, 'ecrit'),('key', my_button, 'senslettre'),('key', my_button, 'fermelettre'),
-                                            ('key', my_button, 'endroitlettre'),('key', my_button, 'bien_comme_toi'),('key', my_button, 'triche'),('key', my_button, 'facile'),('key', my_button, 'pas_trop_vite'),
-                                            ('key', my_button, 'boum'),('key', my_button, 'tu_relances'),('key', my_button, 'je_bugue'),('key', my_button, 'je_rouille'),
-                                            ('key', my_button, 'attends'),('key', my_button, 'malade'),('key', my_button, 'et_alors'),('key', my_button, 'jai_progresse'),
-                                            ('key', my_button, 'cest_difficile'),('key', my_button, 'fais_mon_mieux'),('key', my_button, 'tas_gagne'),
-                                                                                    ('key', my_button, 'ma_tablette'),('key', my_button, 'pas_mal'),('key', my_button, 'je_trouve_pas'),('key', my_button, 'respire'),('key', my_button, 'ecris_mal'),('key', my_button, 'cest_pas_grave'),
-                                            ('key', my_button, 'reessayons'),('key', my_button, 'fera_mieux'),('key', my_button, 'courage'),('key', my_button, 'rate'),('key', my_button, 'difficile'),
-                                            ('key', my_button, 'pas_content_moi'),('key', my_button, 'tu_mecoute'),('key', my_button, 'on_essaye'),('key', my_button, 'bravo'),
-                                            ('key', my_button, 'je_suis_fort'),('key', my_button, 'cest_bien'),('key', my_button, 'tu_es_fort'),('key', my_button, 'nous_sommes_fort'),
-                                            ('key', my_button, 'fier_de_toi'),('key', my_button, 'applique'),('key', my_button, 'tu_perseveres'),
-                                            ('key', my_button, 'aie'),('key', my_button, 'ahahah'),('key', my_button, 'muscle'),('key', my_button, 'merci'),('key', my_button, 'repete'),('key', my_button, 'oui'),
-                                            ('key', my_button, 'non'),('key', my_button, 'sais_pas_toi'),('key', my_button, 'et_toi'),
+                                            ('entry', last_button, 'la_joie'),('entry', last_button, 'amusement'),('entry', last_button, 'la_colere'),('entry', last_button, 'la_motivation'),('entry', last_button, 'la_fatigue'),('entry', last_button, 'la_tristesse'),
+                                            ('entry', last_button, 'la_fierte'),('entry', last_button, 'etonnement'),('entry', last_button, 'adulte_accord'),('entry', last_button, 'demande_adulte'),('entry', last_button, 'que_pense'),
+                                            ('entry', last_button, 'monsieur'),('entry', last_button, 'madame'),('entry', last_button, 'bien'),('entry', last_button, 'cest_mieux'),
+                                            ('entry', last_button, 'tu_mexplique'),('entry',last_button, 'important'),('entry', last_button, 'ensuite'),('entry', last_button, 'pk_pas_bien'),
+                                            ('entry', last_button, 'tu_es_sur'),('entry', last_button, 'plus_simple'),('entry', last_button, 'plus_difficile'),
+                                            ('entry', last_button, 'bien_mal'),('entry', last_button, 'pas_marche'),('entry', last_button, 'pourquoi'),('entry', last_button, 'ecrit'),('entry', last_button, 'senslettre'),('entry', last_button, 'fermelettre'),
+                                            ('entry', last_button, 'endroitlettre'),('entry', last_button, 'bien_comme_toi'),('entry', last_button, 'triche'),('entry', last_button, 'facile'),('entry', last_button, 'pas_trop_vite'),
+                                            ('entry', last_button, 'boum'),('entry', last_button, 'tu_relances'),('entry', last_button, 'je_bugue'),('entry', last_button, 'je_rouille'),
+                                            ('entry', last_button, 'attends'),('entry', last_button, 'malade'),('entry', last_button, 'et_alors'),('entry', last_button, 'jai_progresse'),
+                                            ('entry', last_button, 'cest_difficile'),('entry', last_button, 'fais_mon_mieux'),('entry', last_button, 'tas_gagne'),
+                                                                                    ('entry', last_button, 'ma_tablette'),('entry', last_button, 'pas_mal'),('entry', last_button, 'je_trouve_pas'),('entry', last_button, 'respire'),('entry', last_button, 'ecris_mal'),('entry', last_button, 'cest_pas_grave'),
+                                            ('entry', last_button, 'reessayons'),('entry', last_button, 'fera_mieux'),('entry', last_button, 'courage'),('entry', last_button, 'rate'),('entry', last_button, 'difficile'),
+                                            ('entry', last_button, 'pas_content_moi'),('entry', last_button, 'tu_mecoute'),('entry', last_button, 'on_essaye'),('entry', last_button, 'bravo'),
+                                            ('entry', last_button, 'je_suis_fort'),('entry', last_button, 'cest_bien'),('entry', last_button, 'tu_es_fort'),('entry', last_button, 'nous_sommes_fort'),
+                                            ('entry', last_button, 'fier_de_toi'),('entry', last_button, 'applique'),('entry', last_button, 'tu_perseveres'),
+                                            ('entry', last_button, 'aie'),('entry', last_button, 'ahahah'),('entry', last_button, 'muscle'),('entry', last_button, 'merci'),('entry', last_button, 'repete'),('entry', last_button, 'oui'),
+                                            ('entry', last_button, 'non'),('entry', last_button, 'sais_pas_toi'),('entry', last_button, 'et_toi'),
                                              
                                              # comportement de scenario
-                                            ('key', my_button, 'pression_lance'),('key', my_button, 'pression_expli'),('key', my_button, 'pression_complet'),('key', my_button, 'archeo_lance'),('key', my_button, 'archeo_expli'),('key', my_button, 'archeo_complet'),
-                                            ('key', my_button, 'drapeau_lance'),('key', my_button, 'drapeau_expli'),('key', my_button, 'drapeau_complet'),('key', my_button, 'alpha_lance'),('key', my_button, 'alpha_expli'),
-                                            ('key', my_button, 'alpha_complet'),('key', my_button, 'zoo_lance'),('key', my_button, 'zoo_expli'),('key', my_button, 'zoo_complet'),
-                                            ('key', my_button, 'chimi_lance'),('key',my_button, 'chimi_expli'),('key', my_button, 'tilt_lance'),('key', my_button, 'tilt_expli'),
-                                            ('key', my_button, 'tilt_complet'),('key', my_button, 'cowritter_lance'),('key', my_button, 'cowritter_expli_class'),
-                                            ('key', my_button, 'cowritter_complet'),('key', my_button, 'jus_lance'),('key', my_button, 'jus_expli'),('key', my_button, 'jus_complet'),('key', my_button, 'poursuite_lance'),('key', my_button, 'poursuite_expli'),
-                                            ('key', my_button, 'poursuite_complet'),('key', my_button, 'tu_viens'),('key', my_button, 'ton_nom'),('key', my_button, 'ca_va'),('key', my_button, 'bonjour'),
-                                            ('key', my_button, 'je_mappelle_qt'),('key', my_button, 'tu_veux_maider'),('key', my_button, 'tu_maides_encore'),('key', my_button, 'adieu'),
-                                            ('key', my_button, 'adieu2'),('key', my_button, 'pause'),('key', my_button, 'change_jeu'),('key', my_button, 'choisis_jeu'),
-                                            ('key', my_button, 'dernier_jeu'),('key', my_button, 'cetait_bien'),('key', my_button, 'tu_maide'),('key', my_button, 'mes_progres'),('key', my_button, 'bisou'),('key', my_button, 'bcp_travaille'),('key', my_button, 'il_est_lheure'),
-                                            ('key', my_button, 'arrete'),('key', my_button, 'au_revoir'),
+                                            ('entry', last_button, 'pression_lance'),('entry', last_button, 'pression_expli'),('entry', last_button, 'pression_complet'),('entry', last_button, 'archeo_lance'),('entry', last_button, 'archeo_expli'),('entry', last_button, 'archeo_complet'),
+                                            ('entry', last_button, 'drapeau_lance'),('entry', last_button, 'drapeau_expli'),('entry', last_button, 'drapeau_complet'),('entry', last_button, 'alpha_lance'),('entry', last_button, 'alpha_expli'),
+                                            ('entry', last_button, 'alpha_complet'),('entry', last_button, 'zoo_lance'),('entry', last_button, 'zoo_expli'),('entry', last_button, 'zoo_complet'),
+                                            ('entry', last_button, 'chimi_lance'),('entry',last_button, 'chimi_expli'),('entry', last_button, 'tilt_lance'),('entry', last_button, 'tilt_expli'),
+                                            ('entry', last_button, 'tilt_complet'),('entry', last_button, 'cowritter_lance'),('entry', last_button, 'cowritter_expli_class'),
+                                            ('entry', last_button, 'cowritter_complet'),('entry', last_button, 'jus_lance'),('entry', last_button, 'jus_expli'),('entry', last_button, 'jus_complet'),('entry', last_button, 'poursuite_lance'),('entry', last_button, 'poursuite_expli'),
+                                            ('entry', last_button, 'poursuite_complet'),('entry', last_button, 'tu_viens'),('entry', last_button, 'ton_nom'),('entry', last_button, 'ca_va'),('entry', last_button, 'bonjour'),
+                                            ('entry', last_button, 'je_mappelle_qt'),('entry', last_button, 'tu_veux_maider'),('entry', last_button, 'tu_maides_encore'),('entry', last_button, 'adieu'),
+                                            ('entry', last_button, 'adieu2'),('entry', last_button, 'pause'),('entry', last_button, 'change_jeu'),('entry', last_button, 'choisis_jeu'),
+                                            ('entry', last_button, 'dernier_jeu'),('entry', last_button, 'cetait_bien'),('entry', last_button, 'tu_maide'),('entry', last_button, 'mes_progres'),('entry', last_button, 'bisou'),('entry', last_button, 'bcp_travaille'),('entry', last_button, 'il_est_lheure'),
+                                            ('entry', last_button, 'arrete'),('entry', last_button, 'au_revoir'),
                                             # comportement theatre 
-                                            ('key', my_button, 'hello'),('key', my_button, 'dontknow'),('key', my_button, '_oui'),('key', my_button, '_non'),('key', my_button, 'suivi'),('key', my_button, 'public'),
-                                            ('key', my_button, 'objetDroite'),('key', my_button, 'objetGauche'),('key', my_button, 'pense'),('key', my_button, 'pense2'),('key', my_button, 'neutral'),
-                                            ('key', my_button, 'really'),('key', my_button, 'comment'),('key', my_button, 'jaime'),('key', my_button, 'happy'),
-                                            ('key', my_button, 'kisses'),('key', my_button, 'excited'),('key', my_button, 'thinking'),('key', my_button, 'curious'),
-                                            ('key', my_button, 'fear'),('key', my_button, 'confused'),('key', my_button, 'bored'),
+                                            ('entry', last_button, 'hello'),('entry', last_button, 'dontknow'),('entry', last_button, '_oui'),('entry', last_button, '_non'),('entry', last_button, 'suivi'),('entry', last_button, 'public'),
+                                            ('entry', last_button, 'objetDroite'),('entry', last_button, 'objetGauche'),('entry', last_button, 'pense'),('entry', last_button, 'pense2'),('entry', last_button, 'neutral'),
+                                            ('entry', last_button, 'really'),('entry', last_button, 'comment'),('entry', last_button, 'jaime'),('entry', last_button, 'happy'),
+                                            ('entry', last_button, 'kisses'),('entry', last_button, 'excited'),('entry', last_button, 'thinking'),('entry', last_button, 'curious'),
+                                            ('entry', last_button, 'fear'),('entry', last_button, 'confused'),('entry', last_button, 'bored'),
                                             # nuitrack
-                                            # ('key', my_button, 'human_0_appeared'),('key', my_button, 'human_0_disappeared'),
-                                            # ('key', my_button, 'human_0_center'),('key', my_button, 'human_0_left'),('key', my_button, 'human_0_right'),
-                                            # ('key', my_button, 'human_0_center_1meter'),('key', my_button, 'human_0_left_1meter'),('key', my_button, 'human_0_right_1meter'),
-                                            # ('key', my_button, 'human_0_center_2meters'),('key', my_button, 'human_0_left_2meters'),('key', my_button, 'human_0_right_2meters'),
+                                            # ('entry', last_button, 'human_0_appeared'),('entry', last_button, 'human_0_disappeared'),
+                                            # ('entry', last_button, 'human_0_center'),('entry', last_button, 'human_0_left'),('entry', last_button, 'human_0_right'),
+                                            # ('entry', last_button, 'human_0_center_1meter'),('entry', last_button, 'human_0_left_1meter'),('entry', last_button, 'human_0_right_1meter'),
+                                            # ('entry', last_button, 'human_0_center_2meters'),('entry', last_button, 'human_0_left_2meters'),('entry', last_button, 'human_0_right_2meters'),
                                           
                                           
-                                            ('key', my_button, 'replique_1_1'),('key', my_button, 'replique_2_1'),
-                                            ('key', my_button, 'replique_2_2'),('key', my_button, 'replique_2_3'),('key', my_button, 'replique_3_1'),('key', my_button, 'replique_3_2'),('key', my_button, 'replique_4_1'),
-                                            ('key',my_button,'replique_5_1'), ('key',my_button,'replique_5_2'), ('key',my_button,'replique_6_1'), ('key',my_button,'reset_posture'), 
+                                            ('entry', last_button, 'replique_1_1'),('entry', last_button, 'replique_2_1'),
+                                            ('entry', last_button, 'replique_2_2'),('entry', last_button, 'replique_2_3'),('entry', last_button, 'replique_3_1'),('entry', last_button, 'replique_3_2'),('entry', last_button, 'replique_4_1'),
+                                            ('entry',last_button,'replique_5_1'), ('entry',last_button,'replique_5_2'), ('entry',last_button,'replique_6_1'), ('entry',last_button,'reset_posture'), 
                                            # semi autonome
-                                            ('key',my_button,'human_0_center_1m'), ('key',my_button,'human_0_left_1m'), ('key',my_button,'human_0_left_2m'), ('key',my_button,'human_0_right_2m'), 
-                                            ('key',my_button,'human_0_center_2m'),
-                                            ('key',my_button,'human_0_right_1m'),
+                                            ('entry',last_button,'human_0_center_1m'), ('entry',last_button,'human_0_left_1m'), ('entry',last_button,'human_0_left_2m'), ('entry',last_button,'human_0_right_2m'), 
+                                            ('entry',last_button,'human_0_center_2m'),
+                                            ('entry',last_button,'human_0_right_1m'),
 
-                                            ('key', my_button, 'end')]),
+                                            ('entry', last_button, 'end')]),
 
                     #                         #semi autonome: etats
                     #                          # 1MF =  à 1 mètre, face à QT
@@ -153,12 +157,13 @@ class Qt_States:
                     #     # {‘s’ : “\pau=300\ "e" : cry: "g" : sad : je t’aime mais je dois te quitter, adieu !}
                     #     'human_0_right_2m' : ({'e' : 'QT/cry','g' : 'QT/sad', 's' : "\\pau=300\\Je t’aime mais je dois te quitter, adieu !" }, [ ('time', 10, 'end')]),
                                                                 
-                        # 'test1':({},[('key',my_button,'human_0_1meter'),('key',my_button,'human_0_2meter'),('time', 0.5, 'test1')]),
+                        # 'test1':({},[('entry',last_button,'human_0_1meter'),('entry',last_button,'human_0_2meter'),('time', 0.5, 'test1')]),
                         
 
                         # à implementer le joystique plutard debut
                         'up': ( {'h': [0.0,-20.0]}, [('time', 0.1, 'choice')]),
-                        # 'center': ( {'h': [0.0,0.0]}, [('time', 0.1, 'choice')]),
+                        'center': ( {'h': [0.0,0.0]}, [('time', 0.1, 'choice')]),
+                        # 'center': ( {'e':'', 'g':'QT/neutral','s':''}, [('time', 0.1, 'choice')]),
                         'down': ( {'h': [0.0,+10.0]}, [('time', 0.1, 'choice')]),
                         'right': ( {'h': [-20.0,0.0]}, [('time', 0.1, 'choice')]),
                         'left': ( { 'h': [+20.0,0.0]}, [('time', 0.1, 'choice')]),
@@ -478,5 +483,6 @@ class Qt_States:
 
 
                         'end': ((), [('time', 0.1, 'end')]) }
-        self.state = 'begin'
+
+
 

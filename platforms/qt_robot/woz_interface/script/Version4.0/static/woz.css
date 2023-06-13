@@ -143,7 +143,15 @@ img.bottom_right {
 
 .ellipse-container div {
 }
-
+.ellipse-container-test1{
+	position: relative;
+	width: 35em;
+    height: 16em;
+	margin: auto;
+	background-image: url(elipse4.png);
+	background-size: 35em;
+	background-repeat: no-repeat;
+}
 .ellipse-container-test{
 	position: relative;
 	width: 35em;

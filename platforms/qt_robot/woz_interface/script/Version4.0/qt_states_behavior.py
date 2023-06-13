@@ -1,9 +1,7 @@
 #! /usr/bin/env python
 # coding: utf-8
 
-
 import roslib
-
 import rospy
 roslib.load_manifest('woz_interface')
 import actionlib
@@ -26,13 +24,11 @@ st = Qt_States()
 # mon_objet = check()
 # mon_objet.register_callback(my_callback)
 
-class Qt_Behavior:
-    # while s.child_name == "" or s.adult_name == "":
-    #         time.sleep(0.1)
-    #         pass    
-    def __init__(self):
-
-              
+class Qt_Behavior:  
+    def __init__(self):     
+        while s.child_name == "" or s.adult_name == "":
+            time.sleep(0.2)
+            pass       
         self.rate = rospy.Rate(10) # 10hz
         self.state_pub = rospy.Publisher('/robot_state', String, queue_size=10)
         self.speechSay_pub = rospy.Publisher("qt_robot/speech/say", String,queue_size=1)
@@ -59,13 +55,14 @@ class Qt_Behavior:
                 self.next_state()  
                 print("srtie de time_callback")
 
-    def entry_callback(self, my_button):
-        print("button module qt_states **********:", s.my_button)
+    def entry_callback(self, last_button):
+        print("button module qt_states **********:", s.last_button)
         print("s.child_name  +-------------- :",s.adult_name )
+
         triggers = st.states[self.state][1]
         for trigger in triggers:
-            if trigger[0] == 'key':
-                if trigger[2] == my_button:
+            if trigger[0] == 'entry':
+                if trigger[2] == last_button:
                     self.state = trigger[2]
                     print('next_state2: ' + self.state)
                     self.next_state()
@@ -118,11 +115,10 @@ class Qt_Behavior:
               
 
     def execute(self):
-        # global is_clicked 
         while not rospy.is_shutdown():
 
             if (s.is_clicked):
-                self.entry_callback(s.my_button)
+                self.entry_callback(s.last_button)
             s.is_clicked = False
             time.sleep(0.5)
             if self.state == 'end': break
