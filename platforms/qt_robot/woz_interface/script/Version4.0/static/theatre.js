@@ -1,18 +1,18 @@
 
 var groupsList = [
-	["static/images/face/identemotion2.png", "QT identifie les sentiments"],
-	["static/images/face/parleadulte.png", "QT exprime des émotions"],
-	["static/images/face/questionne.png", "QT parle et réagit"],
+	["static/images/face/theatre_identifie_sentiments.png", "QT identifie les sentiments"],
+	["static/images/face/theatre_emotions.png", "QT exprime des émotions"],
+	["static/images/face/theatre_parle_et_reagit.png", "QT parle et réagit"],
 	
 	// ["",""],
 	// ["static/images/face/reacjeux2.png", "QT commente les jeux"],
 	// ["static/images/face/ouch.png", "QT bugue et est malade"],
 	// ["static/images/face/ghghgh.png", "QT encourage et réagit à un échec"],
 	// ["static/images/face/defend2.png", "Humour"],
-	["static/images/face/ecrit.png", "QT dans son environnement"],
+	["static/images/face/ah.png", "QT dans son environnement"],
 	["static/images/face/stars.png", "QT félicite et applaudit"],	
-	["static/images/face/wink.png", "QT taquine et plaisante"],	
-	["static/images/face/happy.png", "QT et l'aveugle"],
+	["static/images/face/theatre_qt_et_aveugle.png", "QT et l'aveugle"],
+	["static/images/face/happy.png", "QT taquine et plaisante"],	
 ]
 
 var infoList = [
@@ -54,7 +54,7 @@ var textList = [
 	["", "QT dans son environnement"],
 	["", "QT félicite et applaudit"],
 	["", "QT et l'aveugle"],
-	["", "QT papote"],
+	["", "QT taquine et plaisante"],
 	// ["", "Humour"],
 	["", ""],
 	["", ""],
@@ -94,11 +94,15 @@ var commandsList = [
 				["Bisous","kisses",0],]	],	
 
 				
-["#C4BAD2",	[	["L'objet est à droite", "objetDroite",0],
-				["L'objet est à gauche", "objetGauche",0],
+["#C4BAD2",	[	["L'objet est à gauche", "objetDroite",0],
+				["L'objet est à droite", "objetGauche",0],
 				["Suivre des yeux", "suivi",0],
 				["Penser", "pense",0],
-				["Réflichir", "pense2",0], ]	],
+				["Réflichir", "pense2",0],
+				["Debout","standup",0],
+				["LSD", "LSD",0],
+				["LSU", "LSU",0],
+				["END", "end",0], ]	],
 				
 					
 ["#FFEE11", [	["Bravo", "bravo",0],
@@ -110,17 +114,17 @@ var commandsList = [
 				["Tu t'appliques","applique",0],
 				["Tu persévères","tu_perseveres",0]	]	],					
 	
-["#F98443", [	["replique_1_1", "replique_1_1",0],
-				["replique_2_1", "replique_2_1",0],
+["#F98443", [	["replique 1", "replique_1_1",0],
+				["replique 2", "replique_2_1",0],
 				// ["replique_2_2", "replique_2_2",0],
 				// ["replique_2_3", "replique_2_3",0],
-				["replique_3_1", "replique_3_1",0],
+				["replique 3", "replique_3_1",0],
 
 				// ["replique_5_2", "replique_5_2",0],
-				["replique_4_1", "replique_4_1",0],
-				["replique_5_1", "replique_5_1",0],
-				["replique_6_1", "replique_6_1",0],
-				["reset_posture", "reset_posture",0]
+				["replique 4", "replique_4_1",0],
+				["replique 5", "replique_5_1",0],
+				["replique 6", "replique_6_1",0],
+				["posture initiale", "reset_posture",0]
 					]	],
 				
 ["#F5D39B", [	["Merci", "merci",0],

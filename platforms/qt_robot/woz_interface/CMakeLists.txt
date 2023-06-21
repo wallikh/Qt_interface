@@ -67,6 +67,8 @@ add_message_files(
 add_action_files(
   FILES
   QT_Behavior.action
+  NaoBehavior.action
+  
 #   Action2.action
 )
 

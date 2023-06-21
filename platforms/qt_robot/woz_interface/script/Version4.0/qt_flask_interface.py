@@ -18,8 +18,8 @@ from threading import Thread
 rospy.init_node("qt_flask_interface", anonymous=True, disable_signals=True)
 app = Flask(__name__)
 app.secret_key = "woz" 
-
-
+previous_button = ""
+previous_button2 = ""
 
 @app.route('/')
 def index(name=None):
@@ -81,13 +81,27 @@ def woz_command(button,child_name,last_name,adult_name):
     name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=10)
     name_info.publish(child_name, last_name, adult_name)
     payload = request.get_json() 
+    global previous_button
+    global previous_button2
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~",payload)
     my_button = None  # Initialisation de la valeur de my_button
     if 'command' in payload and payload['command'] != "":
         my_button = payload['command']
+        print("+++++++++++++++++++++++++++++++++++++++++++",my_button)
     if 'direction' in payload and payload['direction'] != "":
         my_button = payload['direction']
+        print("+++++++++++++++++++++++++++++++++++++++++++",my_button)
+    if 'walk' in payload and payload['walk'] != "":
+        my_button = payload['walk']    
+        print("+++++++++++++++++++++++++++++++++++++++++++",my_button)
     if my_button is not None:
+        if (my_button == "center" and previous_button != "center") :
+            button.publish(my_button)
+        previous_button = my_button
+        button.publish(my_button)
+        if (my_button == "stop" and previous_button2 != "stop") :
+            button.publish(my_button)
+        previous_button2 = my_button
         button.publish(my_button)
     return ("")
 

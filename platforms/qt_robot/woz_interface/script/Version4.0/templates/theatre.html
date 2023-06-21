@@ -79,6 +79,30 @@
     setInterval(function(){ joy3Y.value=Joy3.GetY(); }, 50);
     </script>
 
+     <div class="joy3Div2" id="joy3Div2" ></div>
+
+
+     <script type="text/javascript">
+  
+ 
+ 
+ 
+     var joy2Param = { "title": "joystick2" };
+     var Joy2 = new JoyStick2('joy3Div2', joy2Param);
+ 
+     var joy2IinputPosX = document.getElementById("joy3PosizioneX");
+     var joy2InputPosY = document.getElementById("joy3PosizioneY");
+     var joy2Direzione = document.getElementById("joy3Direzione");
+     var joy2X = document.getElementById("joy3X");
+     var joy2Y = document.getElementById("joy3Y");
+ 
+     setInterval(function(){ joy2IinputPosX.value=Joy2.GetPosX(); }, 50);
+     setInterval(function(){ joy2InputPosY.value=Joy2.GetPosY(); }, 50);
+     setInterval(function(){ joy2Direzione.value=Joy2.GetDir(); }, 50);
+     setInterval(function(){ joy2X.value=Joy3.GetX(); }, 50);
+     setInterval(function(){ joy2Y.value=Joy3.GetY(); }, 50);
+     </script>
+
 <script><!--
 function onLoad() {
 	makeEllipseExact("group-button", groupsList, ellipseGroupList);

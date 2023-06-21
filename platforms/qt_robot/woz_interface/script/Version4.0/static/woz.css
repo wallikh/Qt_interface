@@ -148,7 +148,7 @@ img.bottom_right {
 	width: 35em;
     height: 16em;
 	margin: auto;
-	background-image: url(elipse4.png);
+	background-image: url(elipse3.png);
 	background-size: 35em;
 	background-repeat: no-repeat;
 }
@@ -374,6 +374,14 @@ img.bottom_right {
 	position:fixed;
 	bottom:0px;
 	left:0px;
+}
+.joy3Div2{
+	width:200px;
+	height:200px;
+	margin:50px;
+	position:fixed;
+	bottom:0px;
+	left:900px;
 }
 
 

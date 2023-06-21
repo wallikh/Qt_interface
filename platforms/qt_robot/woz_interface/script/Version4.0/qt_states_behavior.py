@@ -15,20 +15,50 @@ from qt_motors_controller.srv import *
 from geometry_msgs.msg import Twist
 import time
 from synchroniser import TaskSynchronizer
-
-# from checking import check, my_callback
+from checking import check, my_callback
 import qt_states as s 
-from qt_states import Qt_States 
 
-st = Qt_States()
-# mon_objet = check()
-# mon_objet.register_callback(my_callback)
+
+mon_objet = check()
+mon_objet.register_callback(my_callback)
+child_name = ""
+adult_name = ""
+last_button = ""
+is_clicked = False
 
 class Qt_Behavior:  
+    def human_callback(data):
+        global last_button
+        last_button = data.data
+        global is_clicked
+        variable_mise_a_jour = mon_objet.ma_variable = last_button
+        if variable_mise_a_jour:
+            is_clicked =  True
+    rospy.Subscriber('human_presence', String, human_callback)
+
+    def button_callback(data):
+        global last_button
+        last_button = data.data
+        global is_clicked
+        variable_mise_a_jour = mon_objet.ma_variable = last_button
+        if variable_mise_a_jour:
+            is_clicked =  True
+    rospy.Subscriber('woz/button', String, button_callback)
+  
+    def name_callback(msg):
+        global child_name
+        global adult_name
+        child_name =  msg.first_name
+        last_name = msg.last_name
+        adult_name = msg.teacher_name
+        print("==============================================",adult_name)
+        
+    rospy.Subscriber('woz/nameinfo', NameInfo, name_callback) 
+
     def __init__(self):     
-        while s.child_name == "" or s.adult_name == "":
-            time.sleep(0.2)
-            pass       
+        # while s.child_name == "" or s.adult_name == "":
+        #     time.sleep(0.2)
+        #     pass       
         self.rate = rospy.Rate(10) # 10hz
         self.state_pub = rospy.Publisher('/robot_state', String, queue_size=10)
         self.speechSay_pub = rospy.Publisher("qt_robot/speech/say", String,queue_size=1)
@@ -36,7 +66,7 @@ class Qt_Behavior:
         self.talker_pub = rospy.Publisher('/qt_robot/behavior/talkText', String, queue_size=1)
 
         self.state = 'begin'
-        rospy.Timer(rospy.Duration( st.states[self.state][1][0][1]), self.time_callback, oneshot=True)
+        rospy.Timer(rospy.Duration( s.states[self.state][1][0][1]), self.time_callback, oneshot=True)
         self.head_pub = rospy.Publisher('/qt_robot/head_position/command', Float64MultiArray, queue_size=1)
         self.left_arm_pub = rospy.Publisher('/qt_robot/left_arm_position/command', Float64MultiArray, queue_size=1)
         self.right_arm_pub = rospy.Publisher('/qt_robot/right_arm_position/command', Float64MultiArray, queue_size=1)
@@ -45,7 +75,7 @@ class Qt_Behavior:
     def time_callback(self, event):
     # go to next state
         print('time callback')
-        triggers = st.states[self.state][1]
+        triggers = s.states[self.state][1]
         # print('time_callback triggers :',triggers)
         for trigger in triggers:
             print('trigger :::',trigger)
@@ -56,10 +86,10 @@ class Qt_Behavior:
                 print("srtie de time_callback")
 
     def entry_callback(self, last_button):
-        print("button module qt_states **********:", s.last_button)
-        print("s.child_name  +-------------- :",s.adult_name )
+        print("button module qt_states **********:", last_button)
+        print("s.child_name  +-------------- :",adult_name )
 
-        triggers = st.states[self.state][1]
+        triggers = s.states[self.state][1]
         for trigger in triggers:
             if trigger[0] == 'entry':
                 if trigger[2] == last_button:
@@ -73,7 +103,8 @@ class Qt_Behavior:
         if(self.state != 'end'):
             self.state_pub.publish(self.state)
             # send behavior
-            behavior = st.states[self.state][0]
+            behavior = s.states[self.state][0]
+
             if(len(behavior)):
                 # AL machine => pass to smach
                 print(self.state + ' =behavior=> ' + str(behavior))
@@ -107,7 +138,7 @@ class Qt_Behavior:
                     print('speechSay and gesturePlay and EmotionShow finished.')
                     print("Temps écoulé :::::::::::::::::::::::::::::::::::", elapsed_time, "secondes")
             # prepare jump for next state
-            triggers = st.states[self.state][1]
+            triggers = s.states[self.state][1]
             # print(self.state + ' =trig=> ' + str(triggers))
             for trigger in triggers:
                 if trigger[0] == 'time':
@@ -116,10 +147,10 @@ class Qt_Behavior:
 
     def execute(self):
         while not rospy.is_shutdown():
-
-            if (s.is_clicked):
-                self.entry_callback(s.last_button)
-            s.is_clicked = False
+            global is_clicked
+            if (is_clicked):
+                self.entry_callback(last_button)
+            is_clicked = False
             time.sleep(0.5)
             if self.state == 'end': break
             self.rate.sleep()

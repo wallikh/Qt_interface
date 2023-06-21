@@ -8,7 +8,7 @@ var groupsList = [
 	["static/images/face/ouch.png", "QT bugue et est malade"],
 	["static/images/face/defend2.png", "QT se défend"],
 	["static/images/face/ghghgh.png", "QT encourage et réagit à un échec"],
-	["static/images/face/stars.png", "QT félicite et applaudit"],	
+	["static/images/face/stars.png", "Qt salue et se présente"],	
 	["static/images/face/wink.png", "QT taquine et plaisante"],	
 	["static/images/face/happy.png", "QT papote"],
 ]
@@ -38,7 +38,7 @@ var textList = [
 	["", "QT bugue et est malade"],
 	["", "QT se défend"],
 	["", "QT encourage et réagit à un échec"],
-	["", "QT félicite et applaudit"],
+	["", "Qt salue et se présente"],
 	["", "QT taquine et plaisante"],
 	["", "QT papote"]
 ]
@@ -104,9 +104,9 @@ var commandsList = [
 					["Je ne suis pas content de moi","pas_content_moi",0],
 					["Tu m'écoutes?","tu_mecoute",0],
 					["On essaye après", "on_essaye",0]	]	],
-	["#FFEE11", [	["Bravo", "bravo",0],
-					["Je suis fort", "je_suis_fort",0],
-					["C'est bien", "cest_bien",0],
+	["#FFEE11", [	["_salut", "_salut",0],
+					["_aujourdhui", "_aujourdhui",0],
+					["_comment_t_appeles_tu", "_comment_t_appeles_tu",0],
 					["Tu as bien fait", "tu_es_fort",0],
 					["On est fort", "nous_sommes_fort",0],
 					["Je suis fier de toi","fier_de_toi",0],

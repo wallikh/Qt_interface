@@ -6,8 +6,17 @@
 	<node name="qt_states_behavior" pkg="woz_interface" type="qt_states_behavior.py" output="screen"/>
 	<node name="qt_action_behavior" pkg="woz_interface" type="qt_action_behavior.py" output="screen"/> 
 
-	<node name="nao_states_behavior" pkg="woz_interface" type="nao_states_behavior.py" output="screen"/>
-	<node name="nao_action_behavior" pkg="woz_interface" type="nao_action_behavior.py" output="screen"/>
+	<!-- <node name="nao_states_behavior" pkg="woz_interface" type="nao_states_behavior.py" output="screen"/>
+	<node name="nao_action_behavior" pkg="woz_interface" type="nao_action_behavior.py" output="screen"/> -->
+	<node name="nao_behave" pkg="woz_interface" type="nao_behave.py" output="screen"/>
+	<node name="nao_play" pkg="woz_interface" type="nao_play.py" output="screen"/>
+
+	<!-- Ajout du nœud naoqi_driver -->
+    <!-- <node name="naoqi_driver_node" pkg="naoqi_driver" type="naoqi_driver_node" output="screen">
+        <param name="qi-url" value="tcp://192.168.1.102:9559"/>
+        <param name="roscore_ip" value="192.168.1.100"/>
+        <param name="network_interface" value="enp0s3"/>
+    </node> -->
 
 </launch>
 
