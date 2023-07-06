@@ -1,75 +1,121 @@
 #! /usr/bin/env python
 # coding: utf-8
+from woz_interface.msg import NameInfo
 import random
+import names as n
+import rospy
+import time
+from checking import check, my_callback
 child_name = ""
 adult_name = ""
+child_name1 = ""
+adult_name1 = ""
+is_clicked =  False
+table = []
+mon_objet = check()
+mon_objet.register_callback(my_callback)
+
+def name_callback(msg):
+        global child_name1
+        global adult_name1
+        global table
+        child_name1 =  msg.first_name
+        last_name = msg.last_name
+        adult_name1 = msg.teacher_name
+        table = [child_name,adult_name]
+        print("===========================================++++",adult_name1)
+        global is_clicked
+        variable_mise_a_jour = mon_objet.ma_variable = child_name1
+        if variable_mise_a_jour:
+            is_clicked =  True
+rospy.Subscriber('woz/nameinfo', NameInfo, name_callback)
+
+# child_name = n.child_name
+# adult_name = n.adult_name
+# print("typeooooooooooooooooooooo",type(child_name))
+# print("Table dans qt_states",n.table)
+# while child_name1 == "" :
+    
+#     time.sleep(1.5)
+#     if is_clicked == True:
+#         child_name = child_name1
+#         adult_name = adult_name1
+
+child_name = child_name1
+adult_name = adult_name1
+          
                  
 # state: ( {g: gesture, s: say, h: [head], la: [left_arm], ra: [right_arm], w: [x, y, z, ex, ey, ez]}, [(trigger, param, next_state)])
 states = { 'begin': ( {}, [('time', 1, 'choice')]),
 
                 'choice': ( {'g': '', 's': '', 'e':'' },
                                 # à implementer le joystique plutard debut
-                                [   ('entry', None, 'left'), ('entry', None, 'right'),('entry', None, 'upleft'),('entry', None, 'upright'),
-                                    ('entry', None, 'up'), 
-                                    ('entry', None, 'center'),
-                                    ('entry', None, 'down'),('entry', None, 'right'),
-                                    ('entry', None, 'downleft'),('entry', None, 'downright'),
+                                [   ('woz', None, 'left'), ('woz', None, 'right'),('woz', None, 'upleft'),('woz', None, 'upright'),
+                                    ('woz', None, 'up'), 
+                                    ('woz', None, 'center'),
+                                    ('woz', None, 'down'),('woz', None, 'right'),
+                                    ('woz', None, 'downleft'),('woz', None, 'downright'),
                                     
                                     # comportement reactions
-                                    ('entry', None, 'la_joie'),('entry', None, 'amusement'),('entry', None, 'la_colere'),('entry', None, 'la_motivation'),('entry', None, 'la_fatigue'),('entry', None, 'la_tristesse'),
-                                    ('entry', None, 'la_fierte'),('entry', None, 'etonnement'),('entry', None, 'adulte_accord'),('entry', None, 'demande_adulte'),('entry', None, 'que_pense'),
-                                    ('entry', None, 'monsieur'),('entry', None, 'madame'),('entry', None, 'bien'),('entry', None, 'cest_mieux'),
-                                    ('entry', None, 'tu_mexplique'),('entry',None, 'important'),('entry', None, 'ensuite'),('entry', None, 'pk_pas_bien'),
-                                    ('entry', None, 'tu_es_sur'),('entry', None, 'plus_simple'),('entry', None, 'plus_difficile'),
-                                    ('entry', None, 'bien_mal'),('entry', None, 'pas_marche'),('entry', None, 'pourquoi'),('entry', None, 'ecrit'),('entry', None, 'senslettre'),('entry', None, 'fermelettre'),
-                                    ('entry', None, 'endroitlettre'),('entry', None, 'bien_comme_toi'),('entry', None, 'triche'),('entry', None, 'facile'),('entry', None, 'pas_trop_vite'),
-                                    ('entry', None, 'boum'),('entry', None, 'tu_relances'),('entry', None, 'je_bugue'),('entry', None, 'je_rouille'),
-                                    ('entry', None, 'attends'),('entry', None, 'malade'),('entry', None, 'et_alors'),('entry', None, 'jai_progresse'),
-                                    ('entry', None, 'cest_difficile'),('entry', None, 'fais_mon_mieux'),('entry', None, 'tas_gagne'),
-                                                                            ('entry', None, 'ma_tablette'),('entry', None, 'pas_mal'),('entry', None, 'je_trouve_pas'),('entry', None, 'respire'),('entry', None, 'ecris_mal'),('entry', None, 'cest_pas_grave'),
-                                    ('entry', None, 'reessayons'),('entry', None, 'fera_mieux'),('entry', None, 'courage'),('entry', None, 'rate'),('entry', None, 'difficile'),
-                                    ('entry', None, 'pas_content_moi'),('entry', None, 'tu_mecoute'),('entry', None, 'on_essaye'),('entry', None, 'bravo'),
-                                    ('entry', None, 'je_suis_fort'),('entry', None, 'cest_bien'),('entry', None, 'tu_es_fort'),('entry', None, 'nous_sommes_fort'),
-                                    ('entry', None, 'fier_de_toi'),('entry', None, 'applique'),('entry', None, 'tu_perseveres'),
-                                    ('entry', None, 'aie'),('entry', None, 'ahahah'),('entry', None, 'muscle'),('entry', None, 'merci'),('entry', None, 'repete'),('entry', None, 'oui'),
-                                    ('entry', None, 'non'),('entry', None, 'sais_pas_toi'),('entry', None, 'et_toi'),
+                                    ('woz', None, 'la_joie'),('woz', None, 'amusement'),('woz', None, 'la_colere'),('woz', None, 'la_motivation'),('woz', None, 'la_fatigue'),('woz', None, 'la_tristesse'),
+                                    ('woz', None, 'la_fierte'),('woz', None, 'etonnement'),('woz', None, 'adulte_accord'),('woz', None, 'demande_adulte'),('woz', None, 'que_pense'),
+                                    ('woz', None, 'monsieur'),('woz', None, 'madame'),('woz', None, 'bien'),('woz', None, 'cest_mieux'),
+                                    ('woz', None, 'tu_mexplique'),('woz',None, 'important'),('woz', None, 'ensuite'),('woz', None, 'pk_pas_bien'),
+                                    ('woz', None, 'tu_es_sur'),('woz', None, 'plus_simple'),('woz', None, 'plus_difficile'),
+                                    ('woz', None, 'bien_mal'),('woz', None, 'pas_marche'),('woz', None, 'pourquoi'),('woz', None, 'ecrit'),('woz', None, 'senslettre'),('woz', None, 'fermelettre'),
+                                    ('woz', None, 'endroitlettre'),('woz', None, 'bien_comme_toi'),('woz', None, 'triche'),('woz', None, 'facile'),('woz', None, 'pas_trop_vite'),
+                                    ('woz', None, 'boum'),('woz', None, 'tu_relances'),('woz', None, 'je_bugue'),('woz', None, 'je_rouille'),
+                                    ('woz', None, 'attends'),('woz', None, 'malade'),('woz', None, 'et_alors'),('woz', None, 'jai_progresse'),
+                                    ('woz', None, 'cest_difficile'),('woz', None, 'fais_mon_mieux'),('woz', None, 'tas_gagne'),
+                                                                            ('woz', None, 'ma_tablette'),('woz', None, 'pas_mal'),('woz', None, 'je_trouve_pas'),('woz', None, 'respire'),('woz', None, 'ecris_mal'),('woz', None, 'cest_pas_grave'),
+                                    ('woz', None, 'reessayons'),('woz', None, 'fera_mieux'),('woz', None, 'courage'),('woz', None, 'rate'),('woz', None, 'difficile'),
+                                    ('woz', None, 'pas_content_moi'),('woz', None, 'tu_mecoute'),('woz', None, 'on_essaye'),('woz', None, 'bravo'),
+                                    ('woz', None, 'je_suis_fort'),('woz', None, 'cest_bien'),('woz', None, 'tu_es_fort'),('woz', None, 'nous_sommes_fort'),
+                                    ('woz', None, 'fier_de_toi'),('woz', None, 'applique'),('woz', None, 'tu_perseveres'),
+                                    ('woz', None, 'aie'),('woz', None, 'ahahah'),('woz', None, 'muscle'),('woz', None, 'merci'),('woz', None, 'repete'),('woz', None, 'oui'),
+                                    ('woz', None, 'non'),('woz', None, 'sais_pas_toi'),('woz', None, 'et_toi'),
                                         
                                     # comportement de scenario
-                                    ('entry', None, 'pression_lance'),('entry', None, 'pression_expli'),('entry', None, 'pression_complet'),('entry', None, 'archeo_lance'),('entry', None, 'archeo_expli'),('entry', None, 'archeo_complet'),
-                                    ('entry', None, 'drapeau_lance'),('entry', None, 'drapeau_expli'),('entry', None, 'drapeau_complet'),('entry', None, 'alpha_lance'),('entry', None, 'alpha_expli'),
-                                    ('entry', None, 'alpha_complet'),('entry', None, 'zoo_lance'),('entry', None, 'zoo_expli'),('entry', None, 'zoo_complet'),
-                                    ('entry', None, 'chimi_lance'),('entry',None, 'chimi_expli'),('entry', None, 'tilt_lance'),('entry', None, 'tilt_expli'),
-                                    ('entry', None, 'tilt_complet'),('entry', None, 'cowritter_lance'),('entry', None, 'cowritter_expli_class'),
-                                    ('entry', None, 'cowritter_complet'),('entry', None, 'jus_lance'),('entry', None, 'jus_expli'),('entry', None, 'jus_complet'),('entry', None, 'poursuite_lance'),('entry', None, 'poursuite_expli'),
-                                    ('entry', None, 'poursuite_complet'),('entry', None, 'tu_viens'),('entry', None, 'ton_nom'),('entry', None, 'ca_va'),('entry', None, 'bonjour'),
-                                    ('entry', None, 'je_mappelle_qt'),('entry', None, 'tu_veux_maider'),('entry', None, 'tu_maides_encore'),('entry', None, 'adieu'),
-                                    ('entry', None, 'adieu2'),('entry', None, 'pause'),('entry', None, 'change_jeu'),('entry', None, 'choisis_jeu'),
-                                    ('entry', None, 'dernier_jeu'),('entry', None, 'cetait_bien'),('entry', None, 'tu_maide'),('entry', None, 'mes_progres'),('entry', None, 'bisou'),('entry', None, 'bcp_travaille'),('entry', None, 'il_est_lheure'),
-                                    ('entry', None, 'arrete'),('entry', None, 'au_revoir'),
+                                    ('woz', None, 'pression_lance'),('woz', None, 'pression_expli'),('woz', None, 'pression_complet'),('woz', None, 'archeo_lance'),('woz', None, 'archeo_expli'),('woz', None, 'archeo_complet'),
+                                    ('woz', None, 'drapeau_lance'),('woz', None, 'drapeau_expli'),('woz', None, 'drapeau_complet'),('woz', None, 'alpha_lance'),('woz', None, 'alpha_expli'),
+                                    ('woz', None, 'alpha_complet'),('woz', None, 'zoo_lance'),('woz', None, 'zoo_expli'),('woz', None, 'zoo_complet'),
+                                    ('woz', None, 'chimi_lance'),('woz',None, 'chimi_expli'),('woz', None, 'tilt_lance'),('woz', None, 'tilt_expli'),
+                                    ('woz', None, 'tilt_complet'),('woz', None, 'cowritter_lance'),('woz', None, 'cowritter_expli_class'),
+                                    ('woz', None, 'cowritter_complet'),('woz', None, 'jus_lance'),('woz', None, 'jus_expli'),('woz', None, 'jus_complet'),('woz', None, 'poursuite_lance'),('woz', None, 'poursuite_expli'),
+                                    ('woz', None, 'poursuite_complet'),('woz', None, 'tu_viens'),('woz', None, 'ton_nom'),('woz', None, 'ca_va'),('woz', None, 'bonjour'),
+                                    ('woz', None, 'je_mappelle_qt'),('woz', None, 'tu_veux_maider'),('woz', None, 'tu_maides_encore'),('woz', None, 'adieu'),
+                                    ('woz', None, 'adieu2'),('woz', None, 'pause'),('woz', None, 'change_jeu'),('woz', None, 'choisis_jeu'),
+                                    ('woz', None, 'dernier_jeu'),('woz', None, 'cetait_bien'),('woz', None, 'tu_maide'),('woz', None, 'mes_progres'),('woz', None, 'bisou'),('woz', None, 'bcp_travaille'),('woz', None, 'il_est_lheure'),
+                                    ('woz', None, 'arrete'),('woz', None, 'au_revoir'),
                                     # comportement theatre 
-                                    ('entry', None, 'hello'),('entry', None, 'dontknow'),('entry', None, '_oui'),('entry', None, '_non'),('entry', None, 'suivi'),('entry', None, 'public'),
-                                    ('entry', None, 'objetDroite'),('entry', None, 'objetGauche'),('entry', None, 'pense'),('entry', None, 'pense2'),('entry', None, 'neutral'),
-                                    ('entry', None, 'really'),('entry', None, 'comment'),('entry', None, 'jaime'),('entry', None, 'happy'),
-                                    ('entry', None, 'kisses'),('entry', None, 'excited'),('entry', None, 'thinking'),('entry', None, 'curious'),
-                                    ('entry', None, 'fear'),('entry', None, 'confused'),('entry', None, 'bored'),
+                                    ('woz', None, 'hello'),('woz', None, 'dontknow'),('woz', None, '_oui'),('woz', None, '_non'),('woz', None, 'suivi'),('woz', None, 'public'),
+                                    ('woz', None, 'objetDroite'),('woz', None, 'objetGauche'),('woz', None, 'pense'),('woz', None, 'pense2'),('woz', None, 'neutral'),
+                                    ('woz', None, 'really'),('woz', None, '_comment'),('woz', None, 'jaime'),('woz', None, 'happy'),
+                                    ('woz', None, 'kisses'),('woz', None, 'excited'),('woz', None, 'thinking'),('woz', None, 'curious'),
+                                    ('woz', None, 'fear'),('woz', None, 'confused'),('woz', None, 'bored'),
                                     # nuitrack
-                                    # ('entry', None, 'human_0_appeared'),('entry', None, 'human_0_disappeared'),
-                                    # ('entry', None, 'human_0_center'),('entry', None, 'human_0_left'),('entry', None, 'human_0_right'),
-                                    # ('entry', None, 'human_0_center_1meter'),('entry', None, 'human_0_left_1meter'),('entry', None, 'human_0_right_1meter'),
-                                    # ('entry', None, 'human_0_center_2meters'),('entry', None, 'human_0_left_2meters'),('entry', None, 'human_0_right_2meters'),
+                                    # ('woz', None, 'human_0_appeared'),('woz', None, 'human_0_disappeared'),
+                                    # ('woz', None, 'human_0_center'),('woz', None, 'human_0_left'),('woz', None, 'human_0_right'),
+                                    # ('woz', None, 'human_0_center_1meter'),('woz', None, 'human_0_left_1meter'),('woz', None, 'human_0_right_1meter'),
+                                    # ('woz', None, 'human_0_center_2meters'),('woz', None, 'human_0_left_2meters'),('woz', None, 'human_0_right_2meters'),
                                     
                                     
-                                    ('entry', None, 'replique_1_1'),('entry', None, 'replique_2_1'),
-                                    ('entry', None, 'replique_2_2'),('entry', None, 'replique_2_3'),('entry', None, 'replique_3_1'),('entry', None, 'replique_3_2'),('entry', None, 'replique_4_1'),
-                                    ('entry',None,'replique_5_1'), ('entry',None,'replique_5_2'), ('entry',None,'replique_6_1'), ('entry',None,'reset_posture'), 
+                                    ('woz', None, 'replique_1_1'),('woz', None, 'replique_2_1'),
+                                    ('woz', None, 'replique_2_2'),('woz', None, 'replique_2_3'),('woz', None, 'replique_3_1'),('woz', None, 'replique_3_2'),('woz', None, 'replique_4_1'),
+                                    ('woz',None,'replique_5_1'), ('woz',None,'replique_5_2'), ('woz',None,'replique_6_1'), ('woz',None,'reset_posture'), 
                                     # semi autonome
-                                    ('entry',None,'human_0_center_1m'), ('entry',None,'human_0_left_1m'), ('entry',None,'human_0_left_2m'), ('entry',None,'human_0_right_2m'), 
-                                    ('entry',None,'human_0_center_2m'),
-                                    ('entry',None,'human_0_right_1m'),
+                                    ('woz',None,'human_0_center_1m'), ('woz',None,'human_0_left_1m'), ('woz',None,'human_0_left_2m'), ('woz',None,'human_0_right_2m'), 
+                                    ('woz',None,'human_0_center_2m'),
+                                    ('woz',None,'human_0_right_1m'),
                                     # maison
-                                    ('entry', None, '_salut'),('entry', None, '_comment_t_appeles_tu'),('entry', None, '_aujourdhui'),
+                                    ('woz', None, '_salut'),('woz', None, '_comment_t_appeler'),('woz', None, '_aujourdhui'),('woz', None, 'journee'),('woz', None, 'on_commence'),('woz', None, 'choix_activite'),('woz',None, 'c_est_parti'),
+                                    ('woz', None, 'terminee'),('woz', None, 'regles_mime'),('woz', None, 'cirque'),('woz', None, 'lion'),('woz', None, 'girafe'),
+                                    ('woz', None, 'gazelle'),('woz', None, 'zebre'),('woz', None, 'singe'),('woz', None, 'elephon'),('woz', None, 'guepard'),
+                                    ('woz',None, 'tigre'),('woz', None, 'tortue'),('woz', None, 'panthere'), ('woz', None, 'serpent'),('woz', None, 'chat'),                                     
+                                    ('woz', None, 'manuel_regles'),('woz', None, '_ciel'),('woz', None, 'table'),('woz', None, 'salon'),('woz', None, 'les_animaux'),('woz', None, 'la_mer'), 
+                                    ('woz', None, 'cabane_regles'),('woz', None, 'soleil_regles'),('woz', None, 'lancer_soleil'),
 
-                                    ('entry', None, 'end')]),
+                                    ('woz', None, 'end')]),
 
             #                         #semi autonome: etats
             #                          # 1MF =  à 1 mètre, face à QT
@@ -108,7 +154,7 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
             #     # {‘s’ : “\pau=300\ "e" : cry: "g" : sad : je t’aime mais je dois te quitter, adieu !}
             #     'human_0_right_2m' : ({'e' : 'QT/cry','g' : 'QT/sad', 's' : "\\pau=300\\Je t’aime mais je dois te quitter, adieu !" }, [ ('time', 10, 'end')]),
                                                         
-                # 'test1':({},[('entry',None,'human_0_1meter'),('entry',None,'human_0_2meter'),('time', 0.5, 'test1')]),
+                # 'test1':({},[('woz',None,'human_0_1meter'),('woz',None,'human_0_2meter'),('time', 0.5, 'test1')]),
                 
 
                 # à implementer le joystique plutard debut
@@ -291,9 +337,9 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 'la_fierte': ( {'e':'QT/showing_smile', 'g':'QT/yes', 's': random.choice(["Tu es fier de ton travail ?	", "Tu as l'air fier de ton travail"]) }, [('time', 1, 'choice')]),
                 'etonnement': ( {'e':'', 'g':'QT/curious', 's': random.choice(["Tu as l'air étonné", "Tu es étonné,"]) }, [('time', 1, 'choice')]),
                 
-                'adulte_accord': ( {'e':'QT/talking', 'g':'QT/show_tablet', 's': "%s ,tu es d'accord?" %adult_name }, [('time', 1, 'choice')]),
-                'demande_adulte': ( {'e':'QT/talking', 'g':'QT/angry', 's':"Demandons à %s" %adult_name }, [('time', 1, 'choice')]),
-                'que_pense': ( {'e':'QT/talking', 'g':'QT/challenge', 's':random.choice(["%s" % adult_name, "%s " % adult_name]) }, [('time', 1, 'choice')]),
+                'adulte_accord': ( {'e':'QT/talking', 'g':'QT/show_tablet', 's': "adult_name ,tu es d'accord?" }, [('time', 1, 'choice')]),
+                'demande_adulte': ( {'e':'QT/talking', 'g':'QT/angry', 's':"Demandons à {}".format( adult_name) }, [('time', 1, 'choice')]),
+                'que_pense': ( {'e':'QT/talking', 'g':'QT/challenge', 's':" adult_name".format( adult_name) }, [('time', 1, 'choice')]),
                 'monsieur': ( {'e':'', 'g':'', 's': "Monsieur!" }, [('time', 1, 'choice')]),
                 'madame': ( {'e':'', 'g':'', 's': "Madame!" }, [('time', 1, 'choice')]),
 
@@ -344,7 +390,7 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 'fera_mieux': ( {'e':'QT/showing_smile', 'g':'QT/fera_mieux', 's': random.choice(["Nous n'avons pas réussi, mais nous ferons mieux la prochaine fois!", "On va faire mieux quand on reéessayera!"]) }, [('time', 1, 'choice')]),
                 'courage': ( {'e':'QT/showing_smile', 'g':'QT/strong', 's': random.choice(["Courage, {} , nous allons y arriver".format( child_name), "Allez, nous allons faire mieux", "Ne nous décourageons pas"]) }, [('time', 1, 'choice')]),
                 'rate': ( {'e':'QT/confused', 'g':'QT/sad', 's': random.choice(["Mince, nous avons raté", "Oh non, nous n'avons pas été très fort", "Nous n'avons pas très bien réussi"]) }, [('time', 1, 'choice')]),
-                'difficile': ( {'e':'QT/confused', 'g':'QT/challenge', 's': random.choice(["Mince, nous avons raté", "Oh non, nous n'avons pas été très fort", "Nous n'avons pas très bien réussi"]) }, [('time', 1, 'choice')]),
+                'difficile': ( {'e':'QT/confused', 'g':'QT/challenge', 's': "Est-ce que c'est trop difficile?" }, [('time', 1, 'choice')]),
                 'pas_content_moi': ( {'e':'QT/sad', 'g':'', 's':  random.choice(["Je ne suis pas content de moi", "Ce n'est pas beau ce que j'ai fait", "ça ne me plait pas ce que j'ai fait"])}, [('time', 1, 'choice')]),
                 'tu_mecoute': ( {'e':'', 'g':'', 's': random.choice(["Tu ne m'écoutes \\sel=alt=p+100\\ \\Rspd=130\\ plus \\pau=120\\ \\sel=alt=p-50\\  \\Rspd=70\\ {} ?".format( child_name), "Hey! {} ?".format( child_name), "{} ?".format( child_name), "{}, tu m'écoutes?".format( child_name)]) }, [('time', 1, 'choice')]),
                 'on_essaye': ( {'e':'', 'g':'QT/yes', 's': "Ok, alors on essaye plus tard" }, [('time', 1, 'choice')]),
@@ -431,31 +477,79 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 'il_est_lheure': ( {'e':'', 'g':'QT/bored',  's': random.choice([ "Il est l'heure, on doit s'arrêter", "C'est l'heure à laquelle on doit finir"]) }, [('time', 1, 'choice')]),
                 'arrete': ( {'e':'', 'g':'QT/bored', 's':random.choice(["{} , On s'arrête pour aujourd'hui".format( child_name), "On arrête là cette séance"])}, [('time', 1, 'choice')]),
                 'au_revoir': ( {'e':'QT/showing_smile', 'g':'QT/hi', 's': random.choice(["À bientôt!", "À la prochaine!", "Au revoir,{} !".format( child_name)])}, [('time', 1, 'choice')]),  
-                    # maison 
-                '_salut': ( {'e':'QT/showing_smile', 'g':'QT/hi', 's': "Salut! Je m’appelle Cam, on passera un peu de temps ensemble"}, [('time', 1, 'choice')]),  
-                '_comment_t_appeles_tu': ( {'e':'', 'g':'', 's': "Comment vous vous appelez ?"}, [('time', 1, 'choice')]),  
-                '_aujourdhui': ( {'e':'', 'g':'', 's': "à partir d'aujourd'hui on va se rencontrer régulièrement; quand on sera ensemble tu peux dire tout ce que tu penses. Tu peux le dire aussi en dessinant ou en jouant. Ensemble, on va essayer de comprendre ce qui se passe en toi"}, [('time', 1, 'choice')]),  
+                # maison 
+                       # premiere utimisation 
+                '_salut': ( {'e':'QT/zebra', 'g':'QT/hi', 's': "Salut!"}, [('time', 1, 'choice')]),  
+                '_comment_t_appeler': ( {'e':'', 'g':'', 's': "~Comment vous vous appelez ?"}, [('time', 1, 'choice')]),  
+                '_aujourdhui': ( {'e':'QT/showing_smile', 'g':'QT/show_tablet', 's': "~ À partir d’aujourd'hui on va jouer ensemble régulièrement ! Quand on sera ensemble tu seras libre de dire tout ce que tu penses. Tu peux le dire aussi en dessinant ou en jouant, d’accord ? Ensemble, on va essayer de comprendre ce qui se passe en toi. C’est parti ! "}, [('time', 15, 'choice')]),  
+                    # debut chaque utilisation 
+                'journee': ( {'e':'', 'g':'', 's': "Salut {}, je suis Cami ! \\pau=300\\Tu es prêt ?".format( child_name)}, [('time', 1, 'choice')]),
+                'on_commence': ( {'e':'', 'g':'', 's': " Très bien, on commence !"}, [('time', 1, 'choice')]),
+                'choix_activite': ( {'e':'', 'g':'', 's': random.choice([" À quoi tu as envie qu'on joue ensemble aujourd’hui? \\pau=500\\Tu peux choisir un jeux","À quoi on va jouer ?"])}, [('time', 1, 'choix_jeu')]),
+                'choix_jeu': ( {'e':'QT/talking', 'g':'QT/strong', 's': "Jeu de mimes ?, construire une cabane ? ou fabriquer des choses avec nos mains "}, [('time', 1, 'choice')]),    
+                'c_est_parti': ( {'e':'QT/talking', 'g':'', 's': "OK, c'est parti "}, [('time', 1, 'choice')]),    
+                    # fin des activités
+                'terminee': ( {'e':'', 'g':'', 's': "On a terminé aujourd’hui. J’espère que vous vous êtes bien amusez. Je vous attends pour d’autres jeux ! À la prochaine !  "}, [('time', 1, 'choice')]),    
+                # Activités cognitives 
+                    # 1-Jeu des mimes ==>> à completer 
+                'regles_mime': ( {'e':'', 'g':'', 's': "Amusons-nous avec le jeu de mime! Je vais te montrer un animal et je voudrais que tu le mimes, tu peux nous montrer comment il se comporte, comment il bouge, nous faire sentir ses cris. Nous serons tes spectateurs ! "}, [('time', 1, 'choice')]),    
+                'cirque': ( {'e':'', 'g':'', 's': "  Mesdames et messieurs, bienvenue au cirque ! Vous êtes prêt à deviner les animaux du cirque ? "}, [('time', 1, 'choice')]),    
+                    # liste des animaux à mimer ==> à completer et à revoir  
+                'lion': ( {'e':'', 'g':'', 's': "il a quatre pattes,\\pau=300\\  il a une crinière,\\pau=300\\il est féroce, il est fort\\pau=300\\   il est le roi de la savane,\\pau=600\\Entre en piste le Lion !   "}, [('time', 1, 'choice')]),   
+                'girafe': ( {'e':'', 'g':'', 's': "elle a quatre pattes,\\pau=300\\ elle vit dans la savane\\pau=300\\, elle a un cou trés long\\pau=300\\   elle peut atteindre les feuilles les plus lointaines et délicieuses\\pau=600\\et voicii, mes dames et messieurs, la girafe  !   "}, [('time', 1, 'choice')]), 
+                'gazelle': ( {'e':'', 'g':'', 's': "elle a quatre pattes,\\pau=300\\ elle cours tres vite\\pau=300\\, personne ne peut la ratrapper\\pau=300\\  \\pau=600\\et voicii en piste , la gazelle  !   "}, [('time', 1, 'choice')]),   
+                'zebre': ( {'e':'', 'g':'', 's': " Il vit dans la savane \\pau=300\\ Il a quatre pattes \\pau=300\\ Il a des rayures noires et blanches \\pau=300\\ Quelle robe élégante !\\pau=600\\ Entre en piste le zèbre !"}, [('time', 1, 'choice')]),  
+                'singe': ( {'e':'', 'g':'', 's': "Il peut grimper dans les plus hauts arbres \\pau=300\\ Il peut aussi sauter d’une branche à l’autre \\pau=300\\il est drôle, mais il peut être espiègle, attention !\\pau=300\\ Parmi les animaux, c'est lui qui nous ressemble le plus \\pau=600\\ Entre en piste le singe !"}, [('time', 1, 'choice')]),  
+                'elephon': ( {'e':'', 'g':'', 's': " Il a quatre pattes,\\pau=300\\ il est grand et puissant!\\pau=300\\Il a une trompe,\\pau=300\\ il est le plus sage de tous!\\pau=600\\ Entre en piste l’éléphant!"}, [('time', 1, 'choice')]),
+                'guepard': ( {'e':'', 'g':'', 's': "Il vit dans la savane,\\pau=300\\Il a quatre pattes,\\pau=300\\ il a une cape tachetée\\pau=300\\ Il court si vite que personne ne peut le battre!\\pau=600\\Entre en piste le guépard!"}, [('time', 1, 'choice')]),
+                'tigre': ( {'e':'', 'g':'', 's': "Il vit dans la savane,\\pau=300\\ il a quatre pattes\\pau=300\\, il est féroce!\\pau=300\\il a une cape rayée,\\pau=600\\ Entre en piste la tigre! "}, [('time', 1, 'choice')]),
+                'tortue': ( {'e':'', 'g':'', 's': "Elle aime se baigner dans l’eau\\pau=300\\ Elle prend toujours son temps, elle est très lente!\\pau=300\\ Elle porte sa maison sur son dos \\pau=600\\Entre en piste la tortue ! "}, [('time', 1, 'choice')]),
+                'panthere': ( {'e':'', 'g':'', 's': "Elle ressemble à un gros chat\\pau=300\\Quel beau manteau noir \\pau=600\\ Entre en piste la panthère !"}, [('time', 1, 'choice')]),
+                'serpent': ( {'e':'', 'g':'', 's': " Il se deplace en rampant,\\pau=300\\ Il ne se fait pas sentir,\\pau=300\\ attention! il peut se tordre\\pau=600\\ Entre en piste le serpent ! "}, [('time', 1, 'choice')]),
+                'chat': ( {'e':'', 'g':'', 's': " Il aime rester à la maison mais aussi sortir et explorer,\\pau=300\\Il a des moustache\\pau=300\\ Il n’aime pas se mouiller avec de l’eau,\\pau=300\\ Il aime la compagnie, comme être tout seul\\pau=600\\ Entre en piste le chat"}, [('time', 1, 'choice')]),
+                    # feliciter et/ou encourager 
+                    # a remplir 
+                    
+                    # 2- travail manuel : patte a modeler
+                'manuel_regles':( {'e':'', 'g':'', 's': "Maintenant je vous montre des objets et nous allons essayer de les créer avec de la pâte à modeler ! "}, [('time', 1, 'choice')]),    
+                '_ciel':( {'e':'', 'g':'', 's': "Salut les artistes ! Aujourd'hui, on va créer un ciel en utilisant de la pâte à modeler."}, [('time', 1, 'choice')]), 
+                        # montrer soleil, lune etoile   
+                'table':( {'e':'', 'g':'', 's': "Salut les artistes ! Aujourd’hui on met la table:"}, [('time', 1, 'choice')]), 
+                        # montrer un plat une tasse,une fourchette,une cuillère,un couteau,un verre
+                'salon':( {'e':'', 'g':'', 's': "Salut les artistes ! Aujourd’hui nous allons embellir notre salon"}, [('time', 1, 'choice')]), 
+                        # montrer une fleur, vase ...
+                'les_animaux':( {'e':'', 'g':'', 's': "Salut les artistes !Aujourd’hui nous allons fabriquer nos amis à quatre pattes "}, [('time', 1, 'choice')]), 
+                        # montrer une chat, chien, lapin ...        
+                'la_mer':( {'e':'', 'g':'', 's': "Salut les artistes ! Aujourd'hui, nous partons à l'aventure vers la mer"}, [('time', 1, 'choice')]), 
+                        # montrer bateau, poisson, parasol
+                    # 2- travail manuel : faire un puzzle
+                    # 2- travail manuel : construire une cabane
+                'cabane_regles':( {'e':'', 'g':'', 's': "Maintenant, nous allons essayer de construire une cabane. Tu peux utiliser des Lego ou bien des coussins, des draps, des matelas et des cartons !"}, [('time', 1, 'choice')]),     
+                        # expliiquer les etapes 
+
+                    # 2- travail manuel : 1,2,3 soleil
+                'soleil_regles':( {'e':'', 'g':'', 's': "Essaie de me rejoindre pendant que je ferme les yeux. Quand j'ouvrirai les yeux et dirai:\\pau=300\\  soleil,\\pau=300\\ tu devras t'arrêter. Il faut être concentré et rapide ! Si tu réussis à avancer pendant que je garde les yeux fermés, tu auras gagné. Prêt à me rejoindre ?"}, [('time', 1, 'choice')]),
+                'lancer_soleil':( {'e':'', 'g':'', 's': "Un, deux , trois "}, [('time', 1, 'montrer_soleil')]),
+                'montrer_soleil':( {'e':'Qt/soleil', 'g':'', 's': "Soleil "}, [('time', 1, 'choice')]),         
+
+                 # Activités sociales
+                    #S ous-catégorie : Raconter la journée/semaine aux parents ==> à remplir
+
+                # Activités émotionnelles
+                    #  Sous-catégorie : jeu symbolique/jeu avec médiateur
+                    #  Psychodrame        
 
                 'end': ((), [('time', 0.1, 'end')]) }
-    # def choisir(self,l):
-    #     if isinstance(l, list) and len(l) > 1:
-    #         random.shuffle(l)
-    #         choix = random.choice(l)
-    #         # print("choix  = ",choix)
-    #         return str(choix)
-    #     return ""
-#     def execute(self):
-#          while child_name == "":
-#             pass
-#             # print("! EN ATTENTE DES NOMS DE L'ENFANT ET DE L'ADULTE !")
-#             # time.sleep(2)  # Attente d'une seconde entre chaque itération
-# class QtStatesThread(threading.Thread):
-#     def run(self):
-#         qt_states = Qt_States()
-#         qt_states.execute()
-        
 
-# thread = QtStatesThread()
-# thread.start()
+# while not rospy.is_shutdown():
+#     # global child_name
+#     # global adult_name
+#     child_name = n.child_name
+#     adult_name = n.adult_name
+#     if child_name != "": 
+#         break
+#     time.sleep(1)
+#     # if child_name != "": break
 
-# 's':self.choisir(["%s, qu'en penses-tu ?" % adult_name, "Qu'est-ce que tu en penses %s ?" % adult_name])
+# if __name__ == '__main__':
+#     rospy.init_node("qt_states", anonymous=True)    

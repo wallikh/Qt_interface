@@ -18,11 +18,16 @@ from synchroniser import TaskSynchronizer
 from checking import check, my_callback
 import qt_states as s 
 
+import names as n
+child_name = n.child_name
+adult_name = n.adult_name
+print(n.table)
+
 
 mon_objet = check()
 mon_objet.register_callback(my_callback)
-child_name = ""
-adult_name = ""
+# child_name = ""
+# adult_name = ""
 last_button = ""
 is_clicked = False
 
@@ -45,15 +50,15 @@ class Qt_Behavior:
             is_clicked =  True
     rospy.Subscriber('woz/button', String, button_callback)
   
-    def name_callback(msg):
-        global child_name
-        global adult_name
-        child_name =  msg.first_name
-        last_name = msg.last_name
-        adult_name = msg.teacher_name
-        print("==============================================",adult_name)
+    # def name_callback(msg):
+    #     global child_name
+    #     global adult_name
+    #     child_name =  msg.first_name
+    #     last_name = msg.last_name
+    #     adult_name = msg.teacher_name
+    #     print("==============================================",adult_name)
         
-    rospy.Subscriber('woz/nameinfo', NameInfo, name_callback) 
+    # rospy.Subscriber('woz/nameinfo', NameInfo, name_callback) 
 
     def __init__(self):     
         # while s.child_name == "" or s.adult_name == "":
@@ -87,11 +92,16 @@ class Qt_Behavior:
 
     def entry_callback(self, last_button):
         print("button module qt_states **********:", last_button)
-        print("s.child_name  +-------------- :",adult_name )
+        # print("s.child_name  +-------------- :",adult_name )
+       
+        print(n.table)
+        print("adult_name à l'ancienne",n.adult_name)
+        # a , c = n.table
+        # print("split : ",n.a, "split2 " )
 
         triggers = s.states[self.state][1]
         for trigger in triggers:
-            if trigger[0] == 'entry':
+            if trigger[0] == 'woz':
                 if trigger[2] == last_button:
                     self.state = trigger[2]
                     print('next_state2: ' + self.state)
@@ -123,9 +133,14 @@ class Qt_Behavior:
                     self.home_pose = rospy.ServiceProxy('/qt_robot/motors/home',home)
                     self.gesturePlay = rospy.ServiceProxy('/qt_robot/gesture/play', gesture_play)
                     print('calling speechSay and gesturePlay and EmotionShow')
+                    txt = ""
+                    if "adult_name" in behavior['s'] :
+                        txt = behavior['s'].replace("adult_name",n.adult_name)
+                    if "child_name" in behavior['s'] :
+                        txt = behavior['s'].replace("child_name",n.child_name)    
                     start_time = time.time()
                     task1 = ts.sync([
-                        (0, lambda:self.talker_pub.publish(behavior['s'][1:]) if behavior['s'].startswith('~') else self.speechSay_pub.publish(behavior['s'])),
+                        (0, lambda:self.talker_pub.publish(txt[1:]) if txt.startswith('~') else self.speechSay_pub.publish(txt)),
                         (0, lambda: self.emotionShow_pub.publish(behavior['e'])),
                         (0, lambda: self.gesturePlay(behavior['g'],0.8) if (('h' not in behavior) and ('la' not in behavior) and ('ra' not in behavior) ) else '')
                                     ])

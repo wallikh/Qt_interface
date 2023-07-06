@@ -398,36 +398,36 @@ class NaoPlay:
     def next_state(self):
         if(self.state != 'end'):
             self.state_pub.publish(self.state)
-            # send bhw
-            bhw = self.states[self.state][0]
-            if(len(bhw)):
+            # send behavior
+            behavior = self.states[self.state][0]
+            if(len(behavior)):
                 # AL machine => pass to smach
-                print(self.state + ' =bhw=> ' + str(bhw))
+                print(self.state + ' =behavior=> ' + str(behavior))
 
-                if 'h' in bhw:
-                    self.angles_pub.publish(JointAnglesWithSpeed(joint_names=['HeadYaw', 'HeadPitch'], joint_angles=bhw['h'], speed=0.25))
-                if 'la' in bhw:
-                    self.angles_pub.publish(JointAnglesWithSpeed(joint_names=['LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll', 'LWristYaw', 'LHand'], joint_angles=bhw['la'], speed=0.25))
-                if 'ra' in bhw:
-                    self.angles_pub.publish(JointAnglesWithSpeed(joint_names=['RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll', 'RWristYaw', 'RHand'], joint_angles=bhw['ra'], speed=0.25))
-                if ('g' in bhw) or ('s' in bhw):
+                if 'h' in behavior:
+                    self.angles_pub.publish(JointAnglesWithSpeed(joint_names=['HeadYaw', 'HeadPitch'], joint_angles=behavior['h'], speed=0.25))
+                if 'la' in behavior:
+                    self.angles_pub.publish(JointAnglesWithSpeed(joint_names=['LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll', 'LWristYaw', 'LHand'], joint_angles=behavior['la'], speed=0.25))
+                if 'ra' in behavior:
+                    self.angles_pub.publish(JointAnglesWithSpeed(joint_names=['RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll', 'RWristYaw', 'RHand'], joint_angles=behavior['ra'], speed=0.25))
+                if ('g' in behavior) or ('s' in behavior):
                     client = actionlib.SimpleActionClient('/nao_behave', NaoBehaviorAction)
                     client.wait_for_server()
 
-                    goal = NaoBehaviorGoal( gesture=bhw['g'] if 'g' in bhw else '',
-                                            speech=bhw['s'] if 's' in bhw else '')
+                    goal = NaoBehaviorGoal( gesture=behavior['g'] if 'g' in behavior else '',
+                                            speech=behavior['s'] if 's' in behavior else '')
                     client.send_goal(goal)
                     # ...
                     client.wait_for_result()
                     result = client.get_result()
-                if 'w' in bhw:
+                if 'w' in behavior:
                     cmd_vel = Twist()
-                    cmd_vel.linear.x=bhw['w'][0]
-                    cmd_vel.linear.y=bhw['w'][1]
-                    cmd_vel.linear.z=bhw['w'][2]
-                    cmd_vel.angular.x=bhw['w'][3]
-                    cmd_vel.angular.y=bhw['w'][4]
-                    cmd_vel.angular.z=bhw['w'][5]
+                    cmd_vel.linear.x=behavior['w'][0]
+                    cmd_vel.linear.y=behavior['w'][1]
+                    cmd_vel.linear.z=behavior['w'][2]
+                    cmd_vel.angular.x=behavior['w'][3]
+                    cmd_vel.angular.y=behavior['w'][4]
+                    cmd_vel.angular.z=behavior['w'][5]
                     self.walk_pub.publish(cmd_vel) 
 
 
