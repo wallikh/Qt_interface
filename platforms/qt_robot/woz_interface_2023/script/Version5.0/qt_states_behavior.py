@@ -3,11 +3,11 @@
 
 import roslib
 import rospy
-roslib.load_manifest('woz_interface')
+roslib.load_manifest('woz_interface_2023')
 import actionlib
-from woz_interface.msg import NameInfo
-from woz_interface.msg import QT_BehaviorAction
-from woz_interface.msg import QT_BehaviorGoal
+from woz_interface_2023.msg import NameInfo
+from woz_interface_2023.msg import QT_BehaviorAction
+from woz_interface_2023.msg import QT_BehaviorGoal
 from std_msgs.msg import String
 from std_msgs.msg import Float64MultiArray
 from qt_gesture_controller.srv import *
@@ -18,16 +18,10 @@ from synchroniser import TaskSynchronizer
 from checking import check, my_callback
 import qt_states as s 
 
-import names as n
-child_name = n.child_name
-adult_name = n.adult_name
-print(n.table)
-
-
 mon_objet = check()
 mon_objet.register_callback(my_callback)
-# child_name = ""
-# adult_name = ""
+child_name = ""
+adult_name = ""
 last_button = ""
 is_clicked = False
 
@@ -50,20 +44,17 @@ class Qt_Behavior:
             is_clicked =  True
     rospy.Subscriber('woz/button', String, button_callback)
   
-    # def name_callback(msg):
-    #     global child_name
-    #     global adult_name
-    #     child_name =  msg.first_name
-    #     last_name = msg.last_name
-    #     adult_name = msg.teacher_name
-    #     print("==============================================",adult_name)
-        
-    # rospy.Subscriber('woz/nameinfo', NameInfo, name_callback) 
+    def name_callback(msg):
+        global child_name
+        global adult_name
+        child_name =  msg.first_name
+        last_name = msg.last_name
+        adult_name = msg.teacher_name
+        print("=======================**************=======================",adult_name)   
+    rospy.Subscriber('woz/nameinfo', NameInfo, name_callback) 
 
     def __init__(self):     
-        # while s.child_name == "" or s.adult_name == "":
-        #     time.sleep(0.2)
-        #     pass       
+      
         self.rate = rospy.Rate(10) # 10hz
         self.state_pub = rospy.Publisher('/robot_state', String, queue_size=10)
         self.speechSay_pub = rospy.Publisher("qt_robot/speech/say", String,queue_size=1)
@@ -92,13 +83,7 @@ class Qt_Behavior:
 
     def entry_callback(self, last_button):
         print("button module qt_states **********:", last_button)
-        # print("s.child_name  +-------------- :",adult_name )
-       
-        print(n.table)
-        print("adult_name à l'ancienne",n.adult_name)
-        # a , c = n.table
-        # print("split : ",n.a, "split2 " )
-
+ 
         triggers = s.states[self.state][1]
         for trigger in triggers:
             if trigger[0] == 'woz':
@@ -135,9 +120,11 @@ class Qt_Behavior:
                     print('calling speechSay and gesturePlay and EmotionShow')
                     txt = ""
                     if "adult_name" in behavior['s'] :
-                        txt = behavior['s'].replace("adult_name",n.adult_name)
-                    if "child_name" in behavior['s'] :
-                        txt = behavior['s'].replace("child_name",n.child_name)    
+                        txt = behavior['s'].replace("adult_name",adult_name)
+                    elif "child_name" in behavior['s'] :
+                        txt = behavior['s'].replace("child_name",child_name) 
+                    else:
+                        txt = behavior['s']      
                     start_time = time.time()
                     task1 = ts.sync([
                         (0, lambda:self.talker_pub.publish(txt[1:]) if txt.startswith('~') else self.speechSay_pub.publish(txt)),

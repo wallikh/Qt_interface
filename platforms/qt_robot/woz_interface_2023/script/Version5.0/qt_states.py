@@ -1,49 +1,8 @@
 #! /usr/bin/env python
 # coding: utf-8
-from woz_interface.msg import NameInfo
 import random
-import names as n
-import rospy
-import time
-from checking import check, my_callback
-child_name = ""
-adult_name = ""
-child_name1 = ""
-adult_name1 = ""
-is_clicked =  False
-table = []
-mon_objet = check()
-mon_objet.register_callback(my_callback)
 
-def name_callback(msg):
-        global child_name1
-        global adult_name1
-        global table
-        child_name1 =  msg.first_name
-        last_name = msg.last_name
-        adult_name1 = msg.teacher_name
-        table = [child_name,adult_name]
-        print("===========================================++++",adult_name1)
-        global is_clicked
-        variable_mise_a_jour = mon_objet.ma_variable = child_name1
-        if variable_mise_a_jour:
-            is_clicked =  True
-rospy.Subscriber('woz/nameinfo', NameInfo, name_callback)
 
-# child_name = n.child_name
-# adult_name = n.adult_name
-# print("typeooooooooooooooooooooo",type(child_name))
-# print("Table dans qt_states",n.table)
-# while child_name1 == "" :
-    
-#     time.sleep(1.5)
-#     if is_clicked == True:
-#         child_name = child_name1
-#         adult_name = adult_name1
-
-child_name = child_name1
-adult_name = adult_name1
-          
                  
 # state: ( {g: gesture, s: say, h: [head], la: [left_arm], ra: [right_arm], w: [x, y, z, ex, ey, ez]}, [(trigger, param, next_state)])
 states = { 'begin': ( {}, [('time', 1, 'choice')]),
@@ -102,60 +61,34 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                                     
                                     ('woz', None, 'replique_1_1'),('woz', None, 'replique_2_1'),
                                     ('woz', None, 'replique_2_2'),('woz', None, 'replique_2_3'),('woz', None, 'replique_3_1'),('woz', None, 'replique_3_2'),('woz', None, 'replique_4_1'),
-                                    ('woz',None,'replique_5_1'), ('woz',None,'replique_5_2'), ('woz',None,'replique_6_1'), ('woz',None,'reset_posture'), 
+                                    ('woz', None,'replique_5_1'), ('woz', None,'replique_5_2'), ('woz', None,'replique_6_1'), ('woz',None,'reset_posture'), 
                                     # semi autonome
-                                    ('woz',None,'human_0_center_1m'), ('woz',None,'human_0_left_1m'), ('woz',None,'human_0_left_2m'), ('woz',None,'human_0_right_2m'), 
-                                    ('woz',None,'human_0_center_2m'),
-                                    ('woz',None,'human_0_right_1m'),
+                                    ('woz', None,'human_0_center_1m'), ('woz', None,'human_0_left_1m'), ('woz',None,'human_0_left_2m'), ('woz',None,'human_0_right_2m'), 
+                                    ('woz', None,'human_0_center_2m'),
+                                    ('woz', None,'human_0_right_1m'),
                                     # maison
-                                    ('woz', None, '_salut'),('woz', None, '_comment_t_appeler'),('woz', None, '_aujourdhui'),('woz', None, 'journee'),('woz', None, 'on_commence'),('woz', None, 'choix_activite'),('woz',None, 'c_est_parti'),
-                                    ('woz', None, 'terminee'),('woz', None, 'regles_mime'),('woz', None, 'cirque'),('woz', None, 'lion'),('woz', None, 'girafe'),
+                                    ('woz', None, '_salut'),('woz', None, '_comment_t_appeler'),('woz',None,"nom_parents"),('woz', None, '_aujourdhui'),('woz', None, 'journee'),('woz',None, 'on_est_prets'),
+                                    ('woz', None, 'tu_es_pret'),('woz',None, 'pourquoi_non'),('woz',None, 'rassure_toi'),('woz',None, 'previens_moi'),('woz', None, 'on_commence'),('woz', None, 'choix_activite'),('woz',None, 'c_est_parti'),
+                                    ('woz', None, 'terminee'), ('woz', None, 'qt_fatigue'),('woz', None, 'regles_mime'),('woz', None, 'lion'),('woz', None, 'girafe'),
                                     ('woz', None, 'gazelle'),('woz', None, 'zebre'),('woz', None, 'singe'),('woz', None, 'elephon'),('woz', None, 'guepard'),
-                                    ('woz',None, 'tigre'),('woz', None, 'tortue'),('woz', None, 'panthere'), ('woz', None, 'serpent'),('woz', None, 'chat'),                                     
-                                    ('woz', None, 'manuel_regles'),('woz', None, '_ciel'),('woz', None, 'table'),('woz', None, 'salon'),('woz', None, 'les_animaux'),('woz', None, 'la_mer'), 
-                                    ('woz', None, 'cabane_regles'),('woz', None, 'soleil_regles'),('woz', None, 'lancer_soleil'),
-
+                                    ('woz', None, 'tigre'),('woz', None, 'tortue'),('woz', None, 'panthere'), ('woz', None, 'serpent'),('woz', None, 'chat'), ('woz', None,'chien' ),('woz', None, 'papillon'),
+                                    ('woz', None, 'chameau'),('woz', None, 'grenouille'), 
+                                    ('woz', None, 'quelle_peur'),('woz', None, 'feroce'),('woz', None, 'drole'),('woz', None, 'mignon'),('woz', None, '_bravo'),('woz', None, 'tres_fort'),
+                                    ('woz', None, 'imites_bien'),('woz', None, 'reflechis'),('woz', None, 'tes_parents'),('woz', None, 'essaye_encore'),('woz', None, 'un_autre'),('woz', None, 'on_reprend'),                                   
+                                    ('woz', None, 'manuel_regles'),('woz', None, '_ciel'),('woz', None, 'table'),('woz', None, 'salon'),('woz', None, 'les_animaux'),('woz', None, 'la_mer'), ('woz', None, 'puzzle'),
+                                    ('woz', None, 'cabane_regles'),('woz', None, 'le_sol'),('woz', None, 'les_murs'),('woz', None, 'le_toit'),('woz', None, 'la_porte'),('woz', None, 'genial'),('woz', None, 'c_joli'),
+                                    ('woz', None, 'reussi'),('woz', None, 'sors_bien'),('woz', None, 'rapide'),('woz', None, 'fais_mieux'),('woz', None, 'recommencer'),('woz', None, 'essaye_un_autre'),('woz', None, 'patience'),
+                                    ('woz', None, 'puzzle_debut'),('woz', None, 'bon_debut'),('woz', None, 'observe_bien'),
+                                    ('woz', None, 'soleil_regles'),('woz', None, 'lancer_soleil'),('woz', None, 'j_ai_gagne'),
+                                    ('woz', None, 'comment_ca_va'),('woz', None, 'et_ta_journee'),('woz', None, 'raconter'),('woz', None, 'de_belles_choses'),('woz', None, 'inquietude'),
+                                    ('woz', None, 'tes_amis'),('woz', None, 'ecole_ennuie'),('woz', None, '_pourquoi'),('woz', None, 'et_apres'),('woz', None, 'ah_bon'),
+                                    ('woz', None, 'envie_de_jouer'),('woz', None, 'c_dur'),('woz', None, 'je_comprend'),('woz', None, 'c_drole'),
+                                    ('woz', None, 'pourquoi_faire'),('woz', None, 'se_sentir'),('woz', None, 'm_expliquer'),('woz', None, 'comment_passe'),
+                                    ('woz', None, 'surprise'),('woz', None, 'peur'),('woz', None, 'degout'),('woz', None, 'en_colere'),
+                                    ('woz', None, 'bon_heur'),('woz', None, '_tristesse'),('woz', None, '_fatigue'),('woz', None, 'confusion'),     
                                     ('woz', None, 'end')]),
 
-            #                         #semi autonome: etats
-            #                          # 1MF =  à 1 mètre, face à QT
-            #     # “etat1” : {{‘s’ : “Salut comment tu vas ?? ”}, [(‘time’, 1, “etat2”)]}
-            #     # “etat2” : {{‘s’ : " T'es pas mal aujourd'hui ! [(‘time’, 1, “choice”)}]
-            #     # {‘s’ :"Tu sais quoi je te propose un jeu, juste place-toi quelque part au hasard !”
-            #     # "e" : “Afraid” Arrête, je suis un peu timide !}
-            #     'human_0_center_1m' : ({'e' : '','g' : '','s' : 'Salut comment tu vas ??'},[('time', 5, 'human_0_center_1m_2')]),
-            #     'human_0_center_1m_2' : ({'e' : '','g' : '','s' : 'T\'es pas mal aujourd\'hui !'},[('time', 5, 'human_0_center_1m_3')]),
-            #     'human_0_center_1m_3' : ({'e' : '','g' : '','s' : 'Tu sais quoi je te propose un jeu, juste place-toi quelque part au hasard !'},[('time', 8, 'human_0_center_1m_4')]),
-            #     'human_0_center_1m_4' : ({'g' : '','e' : 'QT/afraid','s' : ''},[('time', 5, 'choice')]),
-
-
-            # # pour le semi-automatique
-            #     # 1MG = à 1 mètre, à la gauche de QT 
-            #     # {‘s’ : “\pau=300\ J'ai envie de te contempler. D'ailleurs tu me fais rougir !”, “e” : kiss, “g” : kiss, “s” : Dis-moi, est-ce que je te plais ?}  (expression de séduction, cligner des yeux)
-            #     # {‘s’ : “Va gauchement à droite ou (pause 1 seconde) adroitement à gauche, (pause 1 sec) fin (pause 1 seconde) comme tu veux !”}
-            #     'human_0_left_1m' : ({'e' : 'QT/kiss','g' : 'QT/kiss','s' : '\\pau=300\\ J\'ai envie de te contempler. D\'ailleurs tu me fais rougir !'},[('time', 1, 'human_0_left_1m_2')]),
-            #     'human_0_left_1m_2' : ({'e' : 'QT/one_eye_wink','g' : 'QT/shy', 's' : 'Dis-moi, est-ce que je te plais ?'},[('time', 5, 'human_0_left_1m_3')]),
-            #     'human_0_left_1m_3' : ({'e' : '','g' : '','s' : 'Va gauchement à droite ou \\pau=1000\\ adroitement à gauche, \\pau=1000\\ fin \\pau=1000\\ comme tu veux !'},[('time', 8, 'choice')]),
-
-            #     # 2MG = à 2 mètres gauche 
-            #     # {‘s’ :Waouuuuh!  vraiment faut que je te le dise tu es vraiment (pause 2 sec) incroyable !!!!! 
-            #     # \rmw=0\ qu'est ce qu'on fait ensemble maintenant ? 
-            #     # "e" : happy: "g" : happy :  Mais que fais-tu aussi loin ?\pau=300\ approche que je te vois plus !  
-            #     # \vce=speaker=Will\  tu me plais.}
-            #     # {'s' :"g" : sad : Tu crois qu'on pourrait rester ensemble pour l'éternité ? Mais nous sommes tellement différents. Tu es un humain et moi je suis...moi !}
-            #     'human_0_left_2m' : ( {'e' : '','g' : '',
-            #     's' : 'Waouuuuh! Vraiment faut que je te le dise tu es vraiment \\pau=2000\\ incroyable ! \\rmw=0\\ qu\'est ce qu\'on fait ensemble maintenant ?' # TODO : volume up
-            #         },[('time', 6, 'human_0_left_2m_2') ]),
-            #     'human_0_left_2m_2' : ({'e' : 'QT/happy','g' : 'QT/happy','s' : 'Mais que fais-tu aussi loin ?\\pau=300\\ Approche que je te vois plus ! \\vce=speaker=Will\\  tu me plais.' # TODO tester si vce fonctionne correctement
-            #         },[ ('time', 3, 'human_0_left_2m_3')] ),
-            #     'human_0_left_2m_3' : ({'e' : 'QT/sad','g' : 'QT/sad','s' : 'Tu crois qu\'on pourrait rester ensemble pour l\'éternité ? Mais nous sommes tellement différents. Tu es un humain et moi je suis...moi !'},[('time', 8, 'choice')]),
-
-            #     # 2MD = à 2 mètres droite
-            #     # {‘s’ : “\pau=300\ "e" : cry: "g" : sad : je t’aime mais je dois te quitter, adieu !}
-            #     'human_0_right_2m' : ({'e' : 'QT/cry','g' : 'QT/sad', 's' : "\\pau=300\\Je t’aime mais je dois te quitter, adieu !" }, [ ('time', 10, 'end')]),
-                                                        
-                # 'test1':({},[('woz',None,'human_0_1meter'),('woz',None,'human_0_2meter'),('time', 0.5, 'test1')]),
-                
+           
 
                 # à implementer le joystique plutard debut
                 'up': ( {'h': [0.0,-20.0]}, [('time', 0.1, 'choice')]),
@@ -183,7 +116,7 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 # J’aime beaucoup regarder les insectes, ils sont tellement poétiques…
                 'replique_2_1' : ({'e':'','h' : [0.0, -20.0],'s' : '\\pau=2000\\,\\rspd=80\\,\\vct=70\\!Regaaaaarde !'},[('time', 2, 'replique_2_2')]),
                 'replique_2_2' : ({'e':'','ra' : [80, 0, 0], 's' : '\\vct=70\\,\\rspd=80\\,\\vct=70\\Il y a une araignée au plafond.'},[('time', 5, 'replique_2_3')]),
-                'replique_2_3' : ({'e':'','g':'' ,'s' : '\\vct=70\\, \\rspd=80\\C’est passionnant ces bêtes-là !\\pau=200\\,\\vct=70\\J’aime beaucoup regarder les insectes'},[('time', 2, 'replique2_4')]),
+                'replique_2_3' : ({'e':'','g':'' ,'s' : ' \\rspd=80\\C’est passionnant ces bêtes-là !\\pau=200\\,\\vct=70\\J’aime beaucoup regarder les insectes'},[('time', 2, 'replique2_4')]),
                 'replique2_4'  : ({'e':'','ra' : [-80, 0, 0],'h': [0.0,0.0] ,'s' : ' \\rspd=80\\,\\pau=200\\,\\vct=70\\ ils sont tèèèllement poétiiiques'},[('time', 2, 'choice')]),
                 # AVEUGLE: N’importe quoi, tu fais ton rebel maintenant ! Tu sais que je ne vois plus...
 
@@ -212,86 +145,25 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 # Etat de reinitialisation de la posture
                 'reset_posture' : ( {'e':'', 'g':'QT/neutral','s':'' }, [ ('time', 1, 'choice')]),
 
-                # pour julien #############################################################
-                # 1MF =  à 1 mètre, face à QT
-                # “etat1” : {{‘s’ : “Pas si près, je ne peux pas respirer.”}, [(‘time’, 1, “etat2”)]}
-                # {‘s’ : “On dirait que vous les humains n'avez jamais entendu parler d'intimité !”}
-                # {‘g’ : ”angry”, ‘e’ : “angry”, ‘s’ : “Recule, tu pues !”}
-                # “afraid” Arrête, je suis un peu timide ! 
+               
                 'human_0_center_1m' : ({'e' : 'QT/breathing_exercise','g' : 'QT/disgusted','s' : 'Pas si près, je ne peux pas respirer.'},[('time', 6, 'choice')]),
 
-                # 1MG = à 1 mètre, à la gauche de QT 
-                # {‘s’ : “\pau=300\ J'ai envie de te contempler. D'ailleurs tu me fais rougir !”, “e” : kiss, “g” : kiss, “s” : Dis-moi, est-ce que je te plais ?} 
-                # {‘s’ : “Vas gauchement à droite ou droit à gauche!”}
-                # {‘s’ : “\vct=50\ T'as jamais entendu parler de l'espace personnel ?”}
-                # “breathing_exercise” \rms=1\U-la la ! 
+               
                 'human_0_left_1m' : ({'e' : 'QT/kiss','g' : 'QT/kiss','s' : '\\pau=300\\ J\'ai envie de te contempler. D\'ailleurs tu me fais rougir ! \\pau=1000\\ Dis-moi, est-ce que je te plais ?'},[('time', 6, 'choice')]),
 
-                # 1MD = à 1 mètre, à la gaucΑ1MF de QT
-                # Je n’ai pas d’ami….Dis-moi, est-ce que je te plais ?} 
-                # {‘s’: ‘g’: “angry”,  ‘e’: “angry”, ‘s’:“\vct=60\ Ouste!\sel=alt\” }
-                # {‘s’: ‘g’: “angry”,  ‘e’: “angry”, ‘s’:“\vct=120\ Tu es super \sel=alt\ collant!”} 
-                # {‘s’: ‘g’: “afraid”,  ‘e’: “afraid”, ‘s’: “\vct=90\ Pas si près, je suis claustrophobe!”} 
-                # Encore dix centimètres, halte, pas douze!
-                # “angry” \pau=300\C’est beaucoup, hum ?
+                
                 'human_0_right_1m' : ({'e' : 'QT/shy','g' : 'QT/shy','s' : 'Je n’ai pas d’ami\\pau=300\\Je n’ai pas d’ami\\pau=300\\ Je n’ai pas d’ami. Dis-moi, est-ce que je te plais ?'},[ ('time', 12, 'choice')]),
 
-                # 02MF = à 2 mètres, face à QT
-                # Avance un peu, je ne te vois pas.
-                # \rspd=80\ Je ne t'entends pas très bien. avance
-                # Avance que je te vois.
-                # { 's' : "\vce=speaker=Lily\ Un peu plus !" }
-                # #SNEEZE01#Viens ! Tu me manques ! 
                 'human_0_center_2m' : ({'e' : 'QT/talking','g' : 'QT/surprised','s' : '\\rspd=80\\ Je ne t\'entends pas très bien. Avance que je te vois.'},[('time', 6, 'choice')]),
 
-                # 2MG = à 2 mètres gauche. 
-                # Là tu es hors du champ ma belle!
-                # C’est drole !!  tu me fais rire
-                # \rmw=0\ Qui es tu ?
-                # Mais que fais-tu aussi loin ?\pau=300\ Tu sais que je te vois!
-                # “happy_blinking” \vce=speaker=Will\Coucou ! 
+               
                 'human_0_left_2m' : ({'e' : 'QT/happy','g' : 'QT/happy','s' : 'C’est drole ! Tu me fais rire'},[('time', 6, 'choice')]),
 
-                # 2MD = à 2 mètres droite.
-                # Je t’aime mais je dois te quitter, adieu !
-                # Tu  \pau=300\ me \pau=300\ manques. 
-                #  \rspd=50\ Tu as un truc sur la figure, \rspd=80\viens que je l'enlève 
-                # Tu as un bouton, viens-là !
-                # { 's' : "#SNEEZE01# ai ai ai je suis malade! \rspd=40\ ai ai ai
-                # “calming_down” \prn= n E1 s l EI \La bise ! 
+                
                 'human_0_right_2m' : ({'e' : 'QT/with_a_cold_sneezing','g' : 'QT/sad','s' : '#SNEEZE01# Pardon, je suis malade !'},[('time', 6, 'choice')]),
 
 
-                # 2MF = à 2 mètres face.
-                # n’importe quoi! \pau=300\
-                # La vie est belle ! \aud=“pathway+filename”\
-                # Sans toi ça sera mieux! 
-                # #LAUGH01# J'ai faim \aud=“pathway+filename”\ .
-                # {‘g’ : « joie », ‘e’ : « joie », ‘s’ : « Youuuhouuu ! Enfin tranquille !! »}
-                # Va-t’en! Lache, je n’ai pas besoin de toi!
-                # { 's' : "#SNEEZE01# Pardon, je suis malade !" }
-                # “kiss”  #SNEEZE01#Quels beaux tous les gens! Je suis enchanté !
-
-
-
-
-                #nuitrack trigger
-                # 'human_0_appeared':( {'e': 'QT/happy', 'g': '', 's': 'hello'}, [('time', 5, 'choice')]),
-                # 'human_0_disappeared':( {'e': 'QT/happy', 'g': '', 's': 'au revoir'}, [('time', 5, 'choice')]),
-                # 'human_0_center':( {'e': 'QT/happy', 'g': '', 's': 'tu es au centre'}, [('time', 3, 'choice')]),
-                # 'human_0_left':( {'e': 'QT/happy', 'g': '', 's': 'tu es a gauche'}, [('time', 3, 'choice')]),
-                # 'human_0_right':( {'e': 'QT/happy', 'g': '', 's': 'tu es a droite'}, [('time', 3, 'choice')]),
-
-
-                # 'human_0_center_1meter':( {'e': 'QT/angry', 'g': 'QT/angry', 's': random.choice(['recule, je ne peux pas respirer','pas si prés, je ne peux pas respirer', "Recule, tu pues! Ouf", "On dirait que vous les humains n'avez jamais entendu parler d'intimité !"])}, [('time', 5, 'choice')]),
-                # 'human_0_left_1meter':( {'e': 'QT/kiss', 'g': 'QT/kiss', 's': random.choice(["\\pau=300\\ J'ai envie de te contempler. D'ailleurs tu me fais rougir !","Vas gauchement à droite ou droit à gauche!","\\vct=50\\ T'as jamais entendu parler de l'espace personnel ?"])}, [('time', 5, 'choice')]),
-                # 'human_0_right_1meter':( {'e': 'QT/angry', 'g': 'QT/angry', 's': random.choice(["\\vct=60\\ Ouste!\\sel=alt\\","\\vct=120\\ Tu es super \\sel=alt\\ collant!","\\vct=90\\ Pas si près, je suis claustrophobe!"])}, [('time', 5, 'choice')]),
-                
-                # 'human_0_center_2meters':( {'e': '', 'g': '', 's': random.choice(["Avance un peu, je ne te vois pas.","\\rspd=80\\ Je ne t'entends pas très bien.","Avance que je te vois.","\\vce=speaker=Lily\\ Un peu plus !","#SNEEZE01#Viens ! Tu me manques ! "])}, [('time', 5, 'choice')]),
-                # 'human_0_left_2meters':( {'e': '', 'g': '', 's': random.choice(["Là tu es hors du champ ma belle!","Comment tu t’appelles ? ","\\rmw=0\\ Qui es tu ?","Mais que fais-tu aussi loin ?\\pau=300\\ Tu sais que je te vois!","\\vce=speaker=Will\\Coucou ! "])}, [('time', 5, 'choice')]),
-                # 'human_0_right_2meters':( {'e': 'QT/happy', 'g': 'QT/happy', 's': random.choice(["Je t’aime mais je dois te quitter, adieu !","Tu  \\pau=300\\ me \\pau=300\\ manques. ","Sans toi ça sera mieux! "," Youuuhouuu ! Enfin tranquille !!"])}, [('time', 5, 'choice')]),
-
-                # 'human_0_2meters':( {'e': 'QT/happy', 'g': '', 's': random.choice(['avance un peu , je ne te voix pas',"je ne t'entend pas trés bien"])}, [('time', 5, 'choice')]),
+            
                 
                 #  Theatre
                 'hello': ( {'e': 'QT/happy', 'g': 'QT/hi', 's': '\\pau=2000\\Salut!', 'h': [0,0]}, [('time', 1, 'choice')]),
@@ -314,12 +186,12 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 'kisses1': ( {'e':'QT/one_eye_wink','g': 'QT/neutral', 's' : ""}, [('time', 3, 'kisses2')]),
                 'kisses2': ( {'e':'QT/shy','h': [-10.0,+10.0], 's' : ""}, [('time', 3, 'choice')]),
 
-                'excited': ( {'e':'QT/surpise','g': 'QT/neutral', 's' : ""}, [('time', 3, 'excited1')]),
+                'excited': ( {'e':'QT/surprise','g': 'QT/neutral', 's' : ""}, [('time', 3, 'excited1')]),
                 'excited1': ( {'e':'QT/happy','g': 'QT/neutral', 's' : ""}, [('time', 3, 'choice')]),
 
-                'thinking': ( {'e':'QT/surpise','g': 'QT/bored', 's' : ""}, [('time', 3, 'choice')]),
+                'thinking': ( {'e':'QT/surprise','g': 'QT/bored', 's' : ""}, [('time', 3, 'choice')]),
 
-                'curious': ( {'e':'QT/suprise','g': 'QT/neutral', 's' : ""}, [('time', 3, 'curious1')]),
+                'curious': ( {'e':'QT/surprise','g': 'QT/neutral', 's' : ""}, [('time', 3, 'curious1')]),
                 'curious1': ( {'e':'QT/showing_smile','g': 'QT/neutral', 's' : ""}, [('time', 3, 'choice')]),
 
                 'fear': ( {'e':'QT/cry','g': 'QT/face', 's' : ""}, [('time', 3, 'choice')]),
@@ -330,16 +202,16 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 #comportement reactions
                 'la_joie': ( {'e':'QT/happy', 'g':'QT/so', 's': random.choice(['Quelle mine joyeuse', 'Quel booo  sourire', 'Quel enthousiassme']) }, [('time', 1, 'choice')]),
                 'amusement': ( {'e':'QT/happy', 'g':'QT/happy', 's': random.choice(["Ça a l'air de t'amuser!", "Tu as l'air de trouver que c'est drôle"]) }, [('time', 1, 'choice')]),
-                'la_colere': ( {'e':'QT/confused', 'g':'QT/head_scratch', 's': random.choice(['{}, Est-ce que tu es fâché?'.format( child_name), "Tu es en colère?", "Tu as l'air en colère"]) }, [('time', 1, 'choice')]),
-                'la_motivation': ( {'e':'QT/showing_smile', 'g':'QT/handclap', 's': random.choice(["Tu as l'air motivé", "{} , tu es très motivé aujourd'hui".format( child_name)]) }, [('time', 1, 'choice')]),
+                'la_colere': ( {'e':'QT/confused', 'g':'QT/head_scratch', 's': random.choice(['child_name, Est-ce que tu es fâché?', "Tu es en colère?", "Tu as l'air en colère"]) }, [('time', 1, 'choice')]),
+                'la_motivation': ( {'e':'QT/showing_smile', 'g':'QT/handclap', 's': random.choice(["Tu as l'air motivé", "child_name , tu es très motivé aujourd'hui"]) }, [('time', 1, 'choice')]),
                 'la_fatigue': ( {'e':'QT/yawn', 'g':'QT/yawn', 's': "Je suis désolé. #YAWN01# je suis fatigué." }, [('time', 1, 'choice')]),
-                'la_tristesse': ( {'e':'QT/sad', 'g':'QT/thanks', 's': random.choice(["{} ,Est-ce que tu es triste?".format( child_name) , "Tu as de la\sel=alt=p-20\  peine?", "Quelque chose te rend triste?"]) }, [('time', 1, 'choice')]),
+                'la_tristesse': ( {'e':'QT/sad', 'g':'QT/thanks', 's': random.choice(["child_name ,Est-ce que tu es triste?" , "Tu as de la\sel=alt=p-20\  peine?", "Quelque chose te rend triste?"]) }, [('time', 1, 'choice')]),
                 'la_fierte': ( {'e':'QT/showing_smile', 'g':'QT/yes', 's': random.choice(["Tu es fier de ton travail ?	", "Tu as l'air fier de ton travail"]) }, [('time', 1, 'choice')]),
                 'etonnement': ( {'e':'', 'g':'QT/curious', 's': random.choice(["Tu as l'air étonné", "Tu es étonné,"]) }, [('time', 1, 'choice')]),
                 
-                'adulte_accord': ( {'e':'QT/talking', 'g':'QT/show_tablet', 's': "adult_name ,tu es d'accord?" }, [('time', 1, 'choice')]),
-                'demande_adulte': ( {'e':'QT/talking', 'g':'QT/angry', 's':"Demandons à {}".format( adult_name) }, [('time', 1, 'choice')]),
-                'que_pense': ( {'e':'QT/talking', 'g':'QT/challenge', 's':" adult_name".format( adult_name) }, [('time', 1, 'choice')]),
+                'adulte_accord': ( {'e':'QT/talking', 'g':'QT/show_tablet', 's': " adult_name ,tu es d'accord?" }, [('time', 1, 'choice')]),
+                'demande_adulte': ( {'e':'QT/talking', 'g':'QT/angry', 's':"Demandons à adult_name " }, [('time', 1, 'choice')]),
+                'que_pense': ( {'e':'QT/talking', 'g':'QT/challenge', 's':random.choice([" adult_name ,  qu'en penses-tu ?" , "Qu'est-ce que tu en pense adult_name ?"]) }, [('time', 1, 'choice')]),
                 'monsieur': ( {'e':'', 'g':'', 's': "Monsieur!" }, [('time', 1, 'choice')]),
                 'madame': ( {'e':'', 'g':'', 's': "Madame!" }, [('time', 1, 'choice')]),
 
@@ -364,7 +236,7 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
 
                 'triche': ( {'e':'QT/one_eye_wink', 'g':'QT/angry', 's': "Mais tu triche," }, [('time', 1, 'choice')]),
                 'facile': ( {'e':'QT/confused', 'g':'QT/challenge', 's':"Est-ce que c'est trop facile?" }, [('time', 1, 'choice')]),
-                'pas_trop_vite': ( {'e':'QT/talking', 'g':'',  's': random.choice([ "attention, ne va pas trop vite", "{} , ne va pas trop vite".format( child_name)]) }, [('time', 1, 'choice')]),
+                'pas_trop_vite': ( {'e':'QT/talking', 'g':'',  's': random.choice([ "attention, ne va pas trop vite", "child_name , ne va pas trop vite"]) }, [('time', 1, 'choice')]),
                 'boum': ( {'e':'', 'g':'QT/happy', 's':"Boum!"}, [('time', 1, 'choice')]),
 
                 'tu_relances': ( {'e':'', 'g':'QT/challenge', 's': random.choice([ "Tu peux relancer le jeu?", "Peux-tu relancer l'activité ?"])}, [('time', 1, 'choice')]),
@@ -385,20 +257,20 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 
                 'respire': ( {'e':'QT/calmig_down_exercise_nose', 'g':'', 's': random.choice(["Respire un peu, et réessaye", "ce n'est pas grave, reprends ton souffle, et on repart"]) }, [('time', 1, 'choice')]),
                 'ecris_mal': ( {'e':'QT/sad', 'g':'QT/thanks', 's': random.choice(["j'écris vraiment très mal", "Olala, mon écriture n'est pas terrible", "J'ai mal écrit"]) }, [('time', 1, 'choice')]),
-                'cest_pas_grave': ( {'e':'', 'g':'QT/so_what', 's': random.choice(["C'est pas grave, ça arrive", "{} , Ce n'est pas grave".format( child_name)]) }, [('time', 1, 'choice')]),
+                'cest_pas_grave': ( {'e':'', 'g':'QT/so_what', 's': random.choice(["~C'est pas grave, ça arrive", "~child_name , Ce n'est pas grave"]) }, [('time', 1, 'choice')]),
                 'reessayons': ( {'e':'QT/showing_smile', 'g':'QT/show_tablet', 's': random.choice(["encore une fois?", "On essaye encore?"]) }, [('time', 1, 'choice')]),
                 'fera_mieux': ( {'e':'QT/showing_smile', 'g':'QT/fera_mieux', 's': random.choice(["Nous n'avons pas réussi, mais nous ferons mieux la prochaine fois!", "On va faire mieux quand on reéessayera!"]) }, [('time', 1, 'choice')]),
-                'courage': ( {'e':'QT/showing_smile', 'g':'QT/strong', 's': random.choice(["Courage, {} , nous allons y arriver".format( child_name), "Allez, nous allons faire mieux", "Ne nous décourageons pas"]) }, [('time', 1, 'choice')]),
+                'courage': ( {'e':'QT/showing_smile', 'g':'QT/strong', 's': random.choice(["Courage, child_name , nous allons y arriver", "Allez, nous allons faire mieux", "Ne nous décourageons pas"]) }, [('time', 1, 'choice')]),
                 'rate': ( {'e':'QT/confused', 'g':'QT/sad', 's': random.choice(["Mince, nous avons raté", "Oh non, nous n'avons pas été très fort", "Nous n'avons pas très bien réussi"]) }, [('time', 1, 'choice')]),
                 'difficile': ( {'e':'QT/confused', 'g':'QT/challenge', 's': "Est-ce que c'est trop difficile?" }, [('time', 1, 'choice')]),
                 'pas_content_moi': ( {'e':'QT/sad', 'g':'', 's':  random.choice(["Je ne suis pas content de moi", "Ce n'est pas beau ce que j'ai fait", "ça ne me plait pas ce que j'ai fait"])}, [('time', 1, 'choice')]),
-                'tu_mecoute': ( {'e':'', 'g':'', 's': random.choice(["Tu ne m'écoutes \\sel=alt=p+100\\ \\Rspd=130\\ plus \\pau=120\\ \\sel=alt=p-50\\  \\Rspd=70\\ {} ?".format( child_name), "Hey! {} ?".format( child_name), "{} ?".format( child_name), "{}, tu m'écoutes?".format( child_name)]) }, [('time', 1, 'choice')]),
+                'tu_mecoute': ( {'e':'', 'g':'', 's': random.choice(["Tu ne m'écoutes \\sel=alt=p+100\\ \\Rspd=130\\ plus \\pau=120\\ \\sel=alt=p-50\\  \\Rspd=70\\ child_name ?", "Hey! child_name ?", "child_name ?", "child_name, tu m'écoutes?"]) }, [('time', 1, 'choice')]),
                 'on_essaye': ( {'e':'', 'g':'QT/yes', 's': "Ok, alors on essaye plus tard" }, [('time', 1, 'choice')]),
                 
-                'bravo': ( {'e':'QT/happy', 'g':'QT/happy', 's': random.choice(["Felicitations !", "Bravo!", "Bien joué  {}".format( child_name), "Félicitations {}".format( child_name)]) }, [('time', 0.1, 'choice')]),
+                'bravo': ( {'e':'QT/happy', 'g':'QT/happy', 's': random.choice(["Felicitations !", "Bravo! ", "Bien joué  child_name", "Félicitations child_name"]) }, [('time', 0.1, 'choice')]),
                 'je_suis_fort': ( {'e':'QT/one_eye_wink', 'g':'QT/hips', 's': random.choice(["je suis trop fort", "je suis très fier de moi!", "J'ai trop bien réussi!"]) }, [('time', 1, 'choice')]),
                 'cest_bien': ( {'e':'QT/showing_smile', 'g':'QT/happy', 's': random.choice(["Super!", "C'est bien !", "C'est chouette!"]) }, [('time', 1, 'choice')]),
-                'tu_es_fort': ( {'e':'QT/happy', 'g':'T/handclap', 's': random.choice(["trop fort?", "Tu as trop bien réussi {} ".format( child_name), "Tu as trop bien fait!!"]) }, [('time', 1, 'choice')]),
+                'tu_es_fort': ( {'e':'QT/happy', 'g':'T/handclap', 's': random.choice(["trop fort?", "Tu as trop bien réussi child_name ", "Tu as trop bien fait!"]) }, [('time', 1, 'choice')]),
                 'nous_sommes_fort': ( {'e':'QT/happy', 'g':'QT/happy', 's': random.choice(["On est trop forts", "On est super forts!", "On a trop bien réussi!"]) }, [('time', 1, 'choice')]),
                 'fier_de_toi': ( {'e':'QT/happy', 'g':'', 's':"Je suis fier de toi!"}, [('time', 1, 'choice')]),
                 'applique': ( {'e':'QT/one_eye_wink', 'g':'QT/thanks', 's': random.choice(["tu travaille très bien","tu t'applique très bien!", "tu est bien appliqué"]) }, [('time', 1, 'choice')]),
@@ -408,8 +280,8 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 'ahahah': ( {'e':'QT/happy', 'g':'QT/laugh', 's':random.choice(["#LAUGH02# C'est rigolo","Ça me fais rire!", "C'est drôle!"])}, [('time', 1, 'choice')]),
                 'muscle': ( {'e':'QT/one_eye_wink', 'g':'QT/strong', 's':"Oui mais moi, tu sais, j'ai des muscles en plastique"}, [('time', 1, 'choice')]),
 
-                'merci': ( {'e':'QT/showing_smile', 'g':'QT/thanks', 's':  random.choice(["merci","Merci beaucoup", "Je te remercie", "merci, {}".format( child_name)])}, [('time', 1, 'choice')]),
-                'repete': ( {'e':'QT/talking', 'g':'', 's': random.choice([ "{} , est-ce que tu peux répèter?".format( child_name),"Peux-tu répéter?","Comment?", "Je n'ai pas entendu?"]) }, [('time', 1, 'choice')]),
+                'merci': ( {'e':'QT/showing_smile', 'g':'QT/thanks', 's':  random.choice(["merci","Merci beaucoup", "Je te remercie", "merci, child_name"])}, [('time', 1, 'choice')]),
+                'repete': ( {'e':'QT/talking', 'g':'', 's': random.choice([ "child_name , est-ce que tu peux répèter?","Peux-tu répéter?","Comment?", "Je n'ai pas entendu?"]) }, [('time', 1, 'choice')]),
                 'oui': ( {'e':'', 'g':'QT/thanks', 's':"Oui"}, [('time', 6, 'choice')]),
                 'non': ( {'e':'', 'g':'QT/no', 's': "Non" }, [('time', 7, 'choice')]),
                 'sais_pas_toi': ( {'e':'', 'g':'QT/so_what', 's':random.choice(["Aucune idee ! ,Et toi?","Je ne sais pas. et toi?","Je sais pas trop. et toi?"])}, [('time', 1, 'choice')]),
@@ -453,103 +325,201 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 'poursuite_expli': ( {'e':'QT/talkinglong', 'g':'QT/bored', 's':"J'ai faim. Suis le chemin avec ton stylo et ramasse tous les fruits pour moi."}, [('time', 1, 'choice')]),
                 'poursuite_complet': ( {'e':'QT/talkinglong', 'g':'QT/bored_long',  's': "\sel=alt=p-50\Rappelle-toi \pau=100\ il faut bien rester sur le chemin bleu pour ne pas perdre des ballons. Tu peux prendre ton temps." }, [('time', 1, 'choice')]),
                 
-                'tu_viens': ( {'e':'QT/one_eye_wink', 'g':'QT/come', 's':random.choice([ "{} c'est l'heure de mon cours, non?".format( child_name), "{} tu viens m'aider à améliorer mon écriture?".format( child_name), "{} je suis impatient d'écrire, tu viens?".format( child_name),"{} tu peux venir pour qu'on fasse mon cours?".format( child_name)])}, [('time', 1, 'choice')]),
+                'tu_viens': ( {'e':'QT/one_eye_wink', 'g':'QT/come', 's':random.choice([ "child_name c'est l'heure de mon cours, non?", "child_name tu viens m'aider à améliorer mon écriture?", "child_name je suis impatient d'écrire, tu viens?","child_name tu peux venir pour qu'on fasse mon cours?"])}, [('time', 1, 'choice')]),
                 'ton_nom': ( {'e':'QT/talking', 'g':'QT/show_tablet', 's': random.choice([ "Clique sur ton nom pour commencer", "Avant qu'on commence, tu dois cliquer sur ton nom"])}, [('time', 1, 'choice')]),
                 'ca_va': ( {'e':'QT/showing_smile', 'g':'', 's': random.choice(["Comment vas-tu?", "Ça va?", "Tu vas bien?" ]) }, [('time', 1, 'choice')]),
-                'bonjour': ( {'e':'QT/showing_smile', 'g':'QT/hi', 's': random.choice(["Bonjour, {}".format( child_name) , "Coucou? {}".format( child_name) ]) }, [('time', 1, 'choice')]),
+                'bonjour': ( {'e':'QT/showing_smile', 'g':'QT/hi', 's': random.choice(["Bonjour, child_name" , "Coucou? child_name" ]) }, [('time', 1, 'choice')]),
                 
                 'je_mappelle_qt': ( {'e':'QT/talkinglongadapted', 'g':'"QT/hi', 's':"Bonjour, je m'appelle kyuti. Et toi, comment tu t'appelles?" }, [('time', 1, 'choice')]),
                 'tu_veux_maider': ( {'e':'QT/talkinglongrepeat', 'g':'QT/begin',  's':"Je suis content de te rencontrer. J'ai besoin de ton aide pour mieux écrire, car je ne suis pas très fort. Est-ce que tu es d'accord pour m'aider? On s'améliorera ensemble!" }, [('time', 1, 'choice')]),
                 'tu_maides_encore': ( {'e':'QT/talkinglong', 'g':'QT/rappel', 's':"Comme je ne sais pas très bien écrire, tu avais décidé de m'aider pour qu'on devienne meilleurs ensemble. On continue?"}, [('time', 1, 'choice')]),
                 'adieu': ( {'e':'QT/dernieradieu', 'g':'QT/adieu', 's':"On a terminé notre dernière séance. Merci beaucoup. J'ai fais beaucoup de progrès, et je me suis bien amusé. J'espère que toi aussi. " }, [('time', 1, 'choice')]),
-                'adieu2': ( {'e':'QT/showing_smile', 'g':'QT/hi',  's': "Au revoir {} ! Bon courage pour la suite!".format( child_name) }, [('time', 1, 'choice')]),
+                'adieu2': ( {'e':'QT/showing_smile', 'g':'QT/hi',  's': "Au revoir child_name ! Bon courage pour la suite!" }, [('time', 1, 'choice')]),
                 
                 'pause': ( {'e':'QT/talking', 'g':'QT/bored', 's':random.choice(["Après un niveau, on s'arrête \pau=20\ et on \Rspd=70\ réfléchit \Rspd=80\ ensemble.", "On fait un niveau, et on s'arrête pour que tu m'expliques."])}, [('time', 1, 'choice')]),
                 'change_jeu': ( {'e':'QT/talking', 'g':'QT/show_tablet', 's': random.choice(["Tu veux qu'on fasse un autre \sel=alt=p-30\jeu?", "Tu as envie de changer de jeu?", "On passe à la prochaine activité?"])}, [('time', 1, 'choice')]),
                 'choisis_jeu': ( {'e':'QT/talking', 'g':'QT/show_tablet',  's': random.choice([ "Je te laisse choisir la prochaine activité sur la tablette.", "À toi de choisir dans les jeux sur la tablette.", "Parmi les jeux qu'on a sur notre \Rspd=100\ tablette,\Rspd=80\ lequel tu veux faire ensuite?"]) }, [('time', 1, 'choice')]),
                 
                 'dernier_jeu': ( {'e':'QT/showing_smile', 'g':'', 's':random.choice(["Ce sera notre dernière activité.", "Plus qu'une partie et on arrête.", "C'est le dernier jeu."])}, [('time', 1, 'choice')]),
-                'cetait_bien': ( {'e':'QT/happy', 'g':'QT/handclap', 's': random.choice(["C'était une super séance, {}".format( child_name), "nous avons bien travaillé aujourd'hui"])}, [('time', 1, 'choice')]),
-                'tu_maide': ( {'e':'QT/happy', 'g':'QT/thanks', 's':random.choice([ "{} , Merci pour ton aidé".format( child_name), "Merci {} tu m'aides beaucoup!".format( child_name), "tu m'as beaucoup aidé {}".format( child_name)]) }, [('time', 1, 'choice')]),
+                'cetait_bien': ( {'e':'QT/happy', 'g':'QT/handclap', 's': random.choice(["C'était une super séance, child_name", "nous avons bien travaillé aujourd'hui"])}, [('time', 1, 'choice')]),
+                'tu_maide': ( {'e':'QT/happy', 'g':'QT/thanks', 's':random.choice([ "child_name , Merci pour ton aidé", "Merci child_name tu m'aides beaucoup!", "tu m'as beaucoup aidé "]) }, [('time', 1, 'choice')]),
                 'mes_progres': ( {'e':'QT/happy', 'g':'QT/hips',  's': random.choice([ "Tu as vu comment j'écrivais et comment j'ai progressé?", "Tu as vu comme je me suis amélioré en écriture?", "Tu as vu mes progrès?"]) }, [('time', 1, 'choice')]),
                 'bisou': ( {'e':'QT/kiss2', 'g':'QT/kiss', 's':"Je peux t'envoyer un bisou?"}, [('time', 8, 'choice')]),
                 'bcp_travaille': ( {'e':'', 'g':'QT/strong', 's': random.choice(["Nous avons beaucoup travaillé aujourd'hui,", "Nous avons travaillé dur", "Nous avons beaucoup travaillé ensemble"])}, [('time', 1, 'choice')]),
                 'il_est_lheure': ( {'e':'', 'g':'QT/bored',  's': random.choice([ "Il est l'heure, on doit s'arrêter", "C'est l'heure à laquelle on doit finir"]) }, [('time', 1, 'choice')]),
-                'arrete': ( {'e':'', 'g':'QT/bored', 's':random.choice(["{} , On s'arrête pour aujourd'hui".format( child_name), "On arrête là cette séance"])}, [('time', 1, 'choice')]),
-                'au_revoir': ( {'e':'QT/showing_smile', 'g':'QT/hi', 's': random.choice(["À bientôt!", "À la prochaine!", "Au revoir,{} !".format( child_name)])}, [('time', 1, 'choice')]),  
+                'arrete': ( {'e':'', 'g':'QT/bored', 's':random.choice(["child_name , On s'arrête pour aujourd'hui", "On arrête là cette séance"])}, [('time', 1, 'choice')]),
+                'au_revoir': ( {'e':'QT/showing_smile', 'g':'QT/hi', 's': random.choice(["À bientôt!", "À la prochaine!", "Au revoir,child_name !"])}, [('time', 1, 'choice')]),  
+                
                 # maison 
                        # premiere utimisation 
-                '_salut': ( {'e':'QT/zebra', 'g':'QT/hi', 's': "Salut!"}, [('time', 1, 'choice')]),  
-                '_comment_t_appeler': ( {'e':'', 'g':'', 's': "~Comment vous vous appelez ?"}, [('time', 1, 'choice')]),  
-                '_aujourdhui': ( {'e':'QT/showing_smile', 'g':'QT/show_tablet', 's': "~ À partir d’aujourd'hui on va jouer ensemble régulièrement ! Quand on sera ensemble tu seras libre de dire tout ce que tu penses. Tu peux le dire aussi en dessinant ou en jouant, d’accord ? Ensemble, on va essayer de comprendre ce qui se passe en toi. C’est parti ! "}, [('time', 15, 'choice')]),  
+                '_salut': ( {'e':'QT/happy', 'g':'QT/hi', 's': random.choice(["Salut ! Je m’appelle kyouti, enchanté de te rencontrer","Salut ! Je m’appelle kyouti, ravi de faire ta connaissance."])}, [('time', 1, 'choice')]),  
+                '_comment_t_appeler': ( {'e':'', 'g':'QT/imitation/hands-on-hip', 's': random.choice(["~Comment tu t'appel ?","~Quel est ton prénom ? "])}, [('time', 1, 'choice')]),  
+                'nom_parents' : ( {'e':'', 'g':'', 's': "~Comment s’appellent tes parents ?"}, [('time', 1, 'choice')]),  
+                '_aujourdhui': ( {'e':'', 'g':'QT/show_tablet', 's': "~ On va commencer par faire connaissance et puis on jouera ensemble régulièrement ! Tu pourras me dire ce que tu penses et ce que tu ressens, avec des mots, des dessins ou par le jeu. D’accord ? \\pau=1000\\ C’est parti ! "}, [('time', 11, 'choice')]),  
                     # debut chaque utilisation 
-                'journee': ( {'e':'', 'g':'', 's': "Salut {}, je suis Cami ! \\pau=300\\Tu es prêt ?".format( child_name)}, [('time', 1, 'choice')]),
-                'on_commence': ( {'e':'', 'g':'', 's': " Très bien, on commence !"}, [('time', 1, 'choice')]),
-                'choix_activite': ( {'e':'', 'g':'', 's': random.choice([" À quoi tu as envie qu'on joue ensemble aujourd’hui? \\pau=500\\Tu peux choisir un jeux","À quoi on va jouer ?"])}, [('time', 1, 'choix_jeu')]),
+                'journee': ( {'e':'QT/happy_blinking', 'g':'', 's': "Salut?\\pau=200\\ comment allez-vous  \\pau=800\\ Comment s’est passée votre journée  "}, [('time', 1, 'choice')]),
+                'on_est_prets': ( {'e':'QT/showing_smile', 'g':'QT/challenge', 's': "Nous allons jouer ensemble. Vous êtes prêts ?"}, [('time', 1, 'choice')]),
+                'tu_es_pret': ( {'e':'QT/showing_smile', 'g':'QT/challenge', 's': "child_name, tu es prêt ?"}, [('time', 1, 'choice')]),
+                'pourquoi_non': ( {'e':'QT/talking', 'g':'QT/angry', 's': "Pourquoi ? Tu n’aimes pas jouer ? "}, [('time', 1, 'choice')]),
+                'rassure_toi': ( {'e':'QT/happy_blinking', 'g':'QT/come', 's': random.choice(["Rassure-toi, on va bien s’amuser ! ", "Tu vas voir, ça va être génial ! "])}, [('time', 1, 'choice')]),
+                'previens_moi': ( {'e':'', 'g':'QT/show_QT', 's': "~Tu me dis quand tu seras prêt, je t’attends ! "}, [('time', 1, 'choice')]),
+                'choix_activite': ( {'e':'QT/talking', 'g':'QT/swipe_right', 's': random.choice([" À quoi tu as envie qu'on joue ensemble aujourd’hui? Tu peux choisir un jeux","À quoi on va jouer ?"])}, [('time', 5, 'choix_jeu')]),
                 'choix_jeu': ( {'e':'QT/talking', 'g':'QT/strong', 's': "Jeu de mimes ?, construire une cabane ? ou fabriquer des choses avec nos mains "}, [('time', 1, 'choice')]),    
-                'c_est_parti': ( {'e':'QT/talking', 'g':'', 's': "OK, c'est parti "}, [('time', 1, 'choice')]),    
+                'on_commence': ( {'e':'QT/surprise', 'g':'QT/one-arm-up', 's': random.choice([" Très bien, on commence !", "Super, c’est parti ! "])}, [('time', 1, 'choice')]),
                     # fin des activités
-                'terminee': ( {'e':'', 'g':'', 's': "On a terminé aujourd’hui. J’espère que vous vous êtes bien amusez. Je vous attends pour d’autres jeux ! À la prochaine !  "}, [('time', 1, 'choice')]),    
+                'terminee': ( {'e':'', 'g':'QT/bye', 's': random.choice(["~On a terminé pour aujourd’hui. J’espère que tu t’es bien amusé. J’ai hâte de jouer à nouveau avec toi ! À bientôt ! ",
+                                                                   "~C’est fini pour aujourd’hui. Je suis très content d’avoir joué avec toi. J’espère te revoir très vite ! ",
+                                                                   "~On a bien joué aujourd’hui ! A une prochaine ! "])}, [('time', 1, 'choice')]),    
+                'qt_fatigue':( {'e':'QT/yawn', 'g':'QT/yawn', 's': "\\pau=1000\\  #YAWN01#"}, [('time', 1, 'choice')]),
                 # Activités cognitives 
                     # 1-Jeu des mimes ==>> à completer 
-                'regles_mime': ( {'e':'', 'g':'', 's': "Amusons-nous avec le jeu de mime! Je vais te montrer un animal et je voudrais que tu le mimes, tu peux nous montrer comment il se comporte, comment il bouge, nous faire sentir ses cris. Nous serons tes spectateurs ! "}, [('time', 1, 'choice')]),    
-                'cirque': ( {'e':'', 'g':'', 's': "  Mesdames et messieurs, bienvenue au cirque ! Vous êtes prêt à deviner les animaux du cirque ? "}, [('time', 1, 'choice')]),    
+                'regles_mime': ( {'e':'', 'g':'QT/bored', 's': "~Amusons-nous avec le jeu de mime ! Je vais te décrire un animal et je voudrais que tu le mimes, tu peux nous montrer comment il se comporte, comment il bouge, nous faire entendre ses cris. Nous serons tes spectateurs ! "}, [('time', 8, 'choice')]),    
                     # liste des animaux à mimer ==> à completer et à revoir  
-                'lion': ( {'e':'', 'g':'', 's': "il a quatre pattes,\\pau=300\\  il a une crinière,\\pau=300\\il est féroce, il est fort\\pau=300\\   il est le roi de la savane,\\pau=600\\Entre en piste le Lion !   "}, [('time', 1, 'choice')]),   
-                'girafe': ( {'e':'', 'g':'', 's': "elle a quatre pattes,\\pau=300\\ elle vit dans la savane\\pau=300\\, elle a un cou trés long\\pau=300\\   elle peut atteindre les feuilles les plus lointaines et délicieuses\\pau=600\\et voicii, mes dames et messieurs, la girafe  !   "}, [('time', 1, 'choice')]), 
-                'gazelle': ( {'e':'', 'g':'', 's': "elle a quatre pattes,\\pau=300\\ elle cours tres vite\\pau=300\\, personne ne peut la ratrapper\\pau=300\\  \\pau=600\\et voicii en piste , la gazelle  !   "}, [('time', 1, 'choice')]),   
-                'zebre': ( {'e':'', 'g':'', 's': " Il vit dans la savane \\pau=300\\ Il a quatre pattes \\pau=300\\ Il a des rayures noires et blanches \\pau=300\\ Quelle robe élégante !\\pau=600\\ Entre en piste le zèbre !"}, [('time', 1, 'choice')]),  
-                'singe': ( {'e':'', 'g':'', 's': "Il peut grimper dans les plus hauts arbres \\pau=300\\ Il peut aussi sauter d’une branche à l’autre \\pau=300\\il est drôle, mais il peut être espiègle, attention !\\pau=300\\ Parmi les animaux, c'est lui qui nous ressemble le plus \\pau=600\\ Entre en piste le singe !"}, [('time', 1, 'choice')]),  
-                'elephon': ( {'e':'', 'g':'', 's': " Il a quatre pattes,\\pau=300\\ il est grand et puissant!\\pau=300\\Il a une trompe,\\pau=300\\ il est le plus sage de tous!\\pau=600\\ Entre en piste l’éléphant!"}, [('time', 1, 'choice')]),
-                'guepard': ( {'e':'', 'g':'', 's': "Il vit dans la savane,\\pau=300\\Il a quatre pattes,\\pau=300\\ il a une cape tachetée\\pau=300\\ Il court si vite que personne ne peut le battre!\\pau=600\\Entre en piste le guépard!"}, [('time', 1, 'choice')]),
-                'tigre': ( {'e':'', 'g':'', 's': "Il vit dans la savane,\\pau=300\\ il a quatre pattes\\pau=300\\, il est féroce!\\pau=300\\il a une cape rayée,\\pau=600\\ Entre en piste la tigre! "}, [('time', 1, 'choice')]),
-                'tortue': ( {'e':'', 'g':'', 's': "Elle aime se baigner dans l’eau\\pau=300\\ Elle prend toujours son temps, elle est très lente!\\pau=300\\ Elle porte sa maison sur son dos \\pau=600\\Entre en piste la tortue ! "}, [('time', 1, 'choice')]),
-                'panthere': ( {'e':'', 'g':'', 's': "Elle ressemble à un gros chat\\pau=300\\Quel beau manteau noir \\pau=600\\ Entre en piste la panthère !"}, [('time', 1, 'choice')]),
-                'serpent': ( {'e':'', 'g':'', 's': " Il se deplace en rampant,\\pau=300\\ Il ne se fait pas sentir,\\pau=300\\ attention! il peut se tordre\\pau=600\\ Entre en piste le serpent ! "}, [('time', 1, 'choice')]),
-                'chat': ( {'e':'', 'g':'', 's': " Il aime rester à la maison mais aussi sortir et explorer,\\pau=300\\Il a des moustache\\pau=300\\ Il n’aime pas se mouiller avec de l’eau,\\pau=300\\ Il aime la compagnie, comme être tout seul\\pau=600\\ Entre en piste le chat"}, [('time', 1, 'choice')]),
-                    # feliciter et/ou encourager 
-                    # a remplir 
+                'lion': ( {'e':'QT/talkinglongadapted', 'g':'QT/strong', 's': "il a quatre pattes,\\pau=300\\  il a une crinière,\\pau=300\\il est féroce, il est fort\\pau=300\\   il est le roi de la savane,\\pau=600\\  "}, [('time', 2, 'lion1')]),   
+                'lion1': ( {'e':'QT/talkinglongadapted', 'g':'QT/stretch', 's': "\\pau=900\\Entre en piste le Lion !  À toi de jouer !  "}, [('time', 1, 'choice')]),   
+                
+                'girafe': ( {'e':'', 'g':'QT/bored', 's': "~elle a quatre pattes,\\pau=300\\ elle vit dans la savane\\pau=300\\, elle a un cou trés long\\pau=300\\   elle peut atteindre les feuilles les plus lointaines et délicieuses "}, [('time', 2, 'girafe1')]), 
+                'girafe1': ( {'e':'', 'g':'QT/stretch', 's': "~et voicii, la girafe  ! À toi de jouer !  "}, [('time', 1, 'choice')]), 
+
+                'gazelle': ( {'e':'', 'g':'QT/bored', 's': "~elle a quatre pattes,\\pau=300\\ elle cours tres vite\\pau=300\\, personne ne peut la ratrapper\\pau=300\\  \\pau=600\\  "}, [('time', 2, 'gazelle1')]),   
+                'gazelle1': ( {'e':'', 'g':'QT/stretch', 's': "~et voicii en piste , la gazelle  !   À toi de jouer ! "}, [('time', 1, 'choice')]),   
+
+                'zebre': ( {'e':'', 'g':'QT/bored', 's': "~Il vit dans la savane \\pau=300\\ Il a quatre pattes \\pau=300\\ Il a des rayures noires et blanches \\pau=300\\ Quelle robe élégante !"}, [('time', 2, 'zebre1')]),  
+                'zebre1': ( {'e':'', 'g':'QT/stretch', 's': "~Entre en piste le zèbre ! à toi de jouer !"}, [('time', 1, 'choice')]),  
+
+                'singe': ( {'e':'', 'g':'QT/monkey', 's': "~Il peut grimper dans les plus hauts arbres \\pau=300\\ Il peut aussi sauter d’une branche à l’autre \\pau=300\\il est drôle, mais il peut être espiègle, attention !\\pau=300\\ Parmi les animaux, c'est lui qui nous ressemble le plus !"}, [('time', 2, 'singe1')]),  
+                'singe1': ( {'e':'', 'g':'QT/stretch', 's': "~Entre en piste le singe ! à toi de jouer !"}, [('time', 1, 'choice')]),  
+
+                'elephon': ( {'e':'', 'g':'QT/bored', 's': "~Il a quatre pattes,\\pau=300\\ il est grand et puissant!\\pau=300\\Il a une trompe,\\pau=300\\ il est le plus sage de tous!"}, [('time', 2, 'elephon1')]),
+                'elephon1': ( {'e':'', 'g':'QT/stretch', 's': "~\\pau=600\\ Entre en piste l’éléphant! à toi de jouer !"}, [('time', 1, 'choice')]),
+
+                'guepard': ( {'e':'', 'g':'QT/bored', 's': "~Il vit dans la savane,\\pau=300\\Il a quatre pattes,\\pau=300\\ il a une cape tachetée\\pau=300\\ Il court si vite que personne ne peut le battre!"}, [('time', 2, 'guepard1')]),
+                'guepard1': ( {'e':'', 'g':'QT/stretch', 's': "~\\pau=600\\Entre en piste le guépard! à toi de jouer !"}, [('time', 1, 'choice')]),
+
+                'tigre': ( {'e':'', 'g':'QT/strong', 's': "~Il vit dans la savane,\\pau=300\\ il a quatre pattes\\pau=300\\, il est féroce!\\pau=300\\il a une cape rayée !"}, [('time', 2, 'tigre1')]),
+                'tigre1': ( {'e':'', 'g':'QT/stretch', 's': "~\\pau=600\\ Entre en piste la tigre! à toi de jouer ! "}, [('time', 1, 'choice')]),
+
+                'tortue': ( {'e':'', 'g':'QT/bored', 's': "~Elle aime se baigner dans l’eau\\pau=300\\ Elle prend toujours son temps, elle est très lente!\\pau=300\\ Elle porte sa maison sur son dos  ! "}, [('time', 2, 'tortue1')]),
+                'tortue1': ( {'e':'', 'g':'QT/stretch', 's': "~\\pau=600\\Entre en piste la tortue ! à toi de jouer ! "}, [('time', 1, 'choice')]),
+
+                'panthere': ( {'e':'', 'g':'QT/bored', 's': "~Elle ressemble à un gros chat, et miaule plus fort que lui ! \\pau=300\\Quel beau manteau noir "}, [('time', 2, 'panthere1')]),
+                'panthere1': ( {'e':'', 'g':'QT/stretch', 's': "~\\pau=600\\ Entre en piste la panthère ! à toi de jouer !"}, [('time', 1, 'choice')]),
+
+                'serpent': ( {'e':'', 'g':'QT/bored', 's': "~Il se deplace en rampant,\\pau=300\\ Il ne se fait pas sentir,\\pau=300\\ attention! il peut se tordre! Il fait peur quand il siffle ! "}, [('time', 2, 'serpent1')]),
+                'serpent1': ( {'e':'QT/talking', 'g':'QT/stretch', 's': "\\pau=600\\ Entre en piste le serpent ! à toi de jouer !"}, [('time', 1, 'choice')]),
+
+                'chat': ( {'e':'', 'g':'QT/bored', 's': "~Il aime rester à la maison mais aussi sortir et explorer,\\pau=300\\Il a des moustache\\pau=300\\ Il aime les câlins et ronronne ,\\pau=300\\ Il miaule pour demander de l’attention "}, [('time', 2, 'chat1')]),
+                'chat1': ( {'e':'', 'g':'QT/stretch', 's': "~\\pau=600\\ Entre en piste le chat . à toi de jouer !"}, [('time', 1, 'choice')]),
+
+                'chien': ( {'e':'', 'g':'QT/bored', 's': "~C’est le meilleur ami de l’homme ! ,\\pau=300\\Il aboie pour garder la maison \\pau=300\\  Il aime jouer et se balader ! "}, [('time', 1, 'chien1')]),
+                'chien1': ( {'e':'', 'g':'QT/stretch', 's': "~\\pau=600\\ Entre en piste le chien ! à toi de jouer ! "}, [('time', 1, 'choice')]),
+
+                'papillon': ( {'e':'', 'g':'QT/bored', 's': "~Avant il n’était pas comme maintenant, c’était une chenille ,\\pau=300\\ regardez combien il a de couleurs sur ses ailes !\\pau=300\\ « Il aime les fleurs et le printemps "}, [('time', 2, 'papillon1')]),
+                'papillon1': ( {'e':'', 'g':'QT/stretch', 's': "~\\pau=600\\ Entre en piste le papillon ! à toi de jouer !"}, [('time', 1, 'choice')]),
+
+                'chameau': ( {'e':'', 'g':'QT/bored', 's': "~Il vit dans le désert  ,\\pau=300\\ Il a deux bosses pour garder l’eau "}, [('time', 2, 'chameau1')]),
+                'chameau1': ( {'e':'', 'g':'QT/stretch', 's': "~\\pau=600\\ Entre en piste le chameau ! à toi de jouer !"}, [('time', 1, 'choice')]),
+
+                'grenouille': ( {'e':'', 'g':'QT/bored', 's': "~Va-t-elle se transformer en prince? \\pau=300\\ Elle se protège de la pluie en sautant dans l’eau .\\pau=300\\ Entre en piste le chameau Elle se protège de la pluie en sautant dans l’eau "}, [('time', 2, 'grenouille1')]),
+                'grenouille1': ( {'e':'', 'g':'QT/stretch', 's': "~\\pau=600\\Entre en piste la grenouille ! à toi de jouer !"}, [('time', 1, 'choice')]),
+
+                    # feliciter et/ou encourager , commenter ...
+                'quelle_peur': ( {'e':'QT/afraidshort', 'g':'QT/fera_mieux', 's': " Oh! quelle peur!  "}, [('time', 1, 'choice')]),
+                'feroce': ( {'e':'QT/afraid', 'g':'QT/yes', 's': " Il a l’air féroce!  "}, [('time', 1, 'choice')]),
+                'drole': ( {'e':'QT/one_eye_wink', 'g':'QT/laugh', 's': "  Que c’est drôle !   "}, [('time', 1, 'choice')]),
+                'mignon': ( {'e':'QT/shy', 'g':'QT/kiss', 's': " Qu’il est mignon !"}, [('time', 1, 'choice')]),
+
+                '_bravo': ( {'e':'QT/happy', 'g':'QT/happy', 's':random.choice([ " Bravo !  ", "Très bien !", "Génial !"])}, [('time', 1, 'choice')]),
+                'tres_fort': ( {'e':'QT/happy', 'g':'QT/handclap', 's': " « Tu es très fort ! child_name "}, [('time', 1, 'choice')]),
+                'imites_bien': ( {'e':'QT/surprise', 'g':'QT/handclap', 's': random.choice(["Tu l’imites trés bien !", "Quelle bonne imitation !", "On devine tout de suite !"])}, [('time', 1, 'choice')]),
+                
+                'reflechis': ( {'e':'', 'g':'QT/neutral', 's': "~Prends ton temps, réfléchis  "}, [('time', 1, 'choice')]),
+                'tes_parents': ( {'e':'', 'g':'QT/neutral', 's': "~Demande un conseil à tes parents ! "}, [('time', 1, 'choice')]),
+                'essaye_encore': ( {'e':'', 'g':'QT/challenge', 's': "~Essaye encore une fois, tu peux réussir  "}, [('time', 1, 'choice')]),
+                'un_autre': ( {'e':'QT/confused', 'g':'QT/confused', 's': "  Celui là est difficile c’est vrai, essaye un autre  "}, [('time', 1, 'choice')]),
+                'on_reprend': ( {'e':'', 'g':'QT/challenge', 's': random.choice(["~On reprend ?", "~On peut reprendre ?"])}, [('time', 1, 'choice')]),
+     
                     
                     # 2- travail manuel : patte a modeler
-                'manuel_regles':( {'e':'', 'g':'', 's': "Maintenant je vous montre des objets et nous allons essayer de les créer avec de la pâte à modeler ! "}, [('time', 1, 'choice')]),    
-                '_ciel':( {'e':'', 'g':'', 's': "Salut les artistes ! Aujourd'hui, on va créer un ciel en utilisant de la pâte à modeler."}, [('time', 1, 'choice')]), 
+                'manuel_regles':( {'e':'', 'g':'QT/bored', 's': "~Maintenant je vous montre des objets \\pau=300\\et avec l’aide de tes parents, tu vas essayer de les créer en pâte à modeler !"}, [('time', 1, 'choice')]),    
+                '_ciel':( {'e':'QT/happy', 'g':'QT/so', 's': "Aujourd’hui nous réalisons un ciel. "}, [('time', 1, '_ciel1')]), 
+                '_ciel1':( {'e':'', 'g':'QT/show_tablet', 's': "~On va créer un soleil, une lune, et une étoile. allez , A toi l’artiste ! "}, [('time', 1, 'choice')]), 
                         # montrer soleil, lune etoile   
-                'table':( {'e':'', 'g':'', 's': "Salut les artistes ! Aujourd’hui on met la table:"}, [('time', 1, 'choice')]), 
+                'table':( {'e':'QT/happy', 'g':'QT/so', 's': "Aujourd’hui on met la table. "}, [('time', 1, 'table1')]), 
+                'table1':( {'e':'', 'g':'QT/show_tablet', 's': "~On va créer un plat,\\pau=300\\  une tasse,\\pau=300\\  une cuillere \\pau=300\\ et un verre. A toi l’artiste ! "}, [('time', 1, 'choice')]), 
                         # montrer un plat une tasse,une fourchette,une cuillère,un couteau,un verre
-                'salon':( {'e':'', 'g':'', 's': "Salut les artistes ! Aujourd’hui nous allons embellir notre salon"}, [('time', 1, 'choice')]), 
+                'salon':( {'e':'QT/happy', 'g':'QT/challenge', 's': "Aujourd’hui nous embellissons notre salon."}, [('time', 1, 'salon1')]), 
+                'salon1':( {'e':'', 'g':'QT/show_tablet', 's': "~on va créer un vase, une fleur, un fauteuil. A toi l’artiste !"}, [('time', 1, 'choice')]), 
                         # montrer une fleur, vase ...
-                'les_animaux':( {'e':'', 'g':'', 's': "Salut les artistes !Aujourd’hui nous allons fabriquer nos amis à quatre pattes "}, [('time', 1, 'choice')]), 
+                'les_animaux':( {'e':'', 'g':'QT/challenge', 's': "~Aujourd’hui nous créons nos amis à quatre pattes ."}, [('time', 1, 'les_animaux1')]), 
+                'les_animaux1':( {'e':'', 'g':'QT/show_tablet', 's': "~On va creer un chat, un chien et un lapin . A toi l’artiste !"}, [('time', 1, 'choice')]), 
                         # montrer une chat, chien, lapin ...        
-                'la_mer':( {'e':'', 'g':'', 's': "Salut les artistes ! Aujourd'hui, nous partons à l'aventure vers la mer"}, [('time', 1, 'choice')]), 
-                        # montrer bateau, poisson, parasol
-                    # 2- travail manuel : faire un puzzle
+                'la_mer':( {'e':'QT/happy', 'g':'QT/challenge', 's': "Aujourd’hui nous allons à la mer ."}, [('time', 1, 'la_mer1')]), 
+                'la_mer1':( {'e':'', 'g':'QT/show_tablet', 's': "~On va créer un petit bateau, un parassol et un poisson. A toi l’artiste ! "}, [('time', 1, 'choice')]), 
+                        # 2- travail manuel : faire un puzzle
+                'puzzle':( {'e':'QT/happy', 'g':'QT/show_tablet', 's': "~Maintenant on fait un puzzle ensemble !\\pau=300\\ Tu vas assembler les différentes pièces pour reconstituer le dessin "}, [('time', 1, 'choice')]),     
+
                     # 2- travail manuel : construire une cabane
-                'cabane_regles':( {'e':'', 'g':'', 's': "Maintenant, nous allons essayer de construire une cabane. Tu peux utiliser des Lego ou bien des coussins, des draps, des matelas et des cartons !"}, [('time', 1, 'choice')]),     
-                        # expliiquer les etapes 
+                'cabane_regles':( {'e':'', 'g':'QT/show_tablet', 's': "~Maintenant nous allons essayer de construire une cabane. Avec l’aide de tes parents, utilise ce que tu as autour de toi pour créer un petit espace. Par exemple des legos, des chaises, des coussins, des draps, des matelas, des cartons… "}, [('time', 14, 'choice')]),     
+                'le_sol':( {'e':'', 'g':'QT/so', 's': "~On commence par quoi ? On fait le sol! ?"}, [('time', 1, 'choice')]),     
+                'les_murs':( {'e':'', 'g':'', 's': "~Maintenant nous pouvons construire les murs  "}, [('time', 1, 'choice')]),     
+                'le_toit':( {'e':'', 'g':'', 's': "~Il est temps de construire le toit "}, [('time', 1, 'choice')]),     
+                'la_porte':( {'e':'', 'g':'', 's': "~Et maintenant nous fermons la cabane avec une porte "}, [('time', 1, 'choice')]),     
+                    # feliciter et/ou encourager , commenter ...
+                'genial':( {'e':'QT/happy', 'g':'QT/happy', 's': random.choice(["Bravo !", "Très bien !", "Génial !"])}, [('time', 1, 'choice')]),     
+                'c_joli':( {'e':'QT/happy', 'g':'QT/kiss', 's': "C’est joli ! "}, [('time', 1, 'choice')]),     
+                'reussi':( {'e':'QT/happy', 'g':'QT/handclap', 's': "C’est vraiment réussi ! "}, [('time', 1, 'choice')]),
+                'sors_bien':( {'e':'', 'g':'QT/yes', 's': random.choice(["~Tu t’en sors bien ! ", "~C’est ingénieux ! "])}, [('time', 1, 'choice')]),     
+                'rapide':( {'e':'QT/surprise', 'g':'', 's': "Tu es rapide !"}, [('time', 1, 'choice')]),     
+                     
+                'fais_mieux':( {'e':'', 'g':'', 's': "~Fais de ton mieux  "}, [('time', 1, 'choice')]),     
+                'recommencer':( {'e':'', 'g':'QT/challenge', 's': random.choice(["~Essayes encore une fois, tu peux réussir ", "~Recommence, prends ton temps "])}, [('time', 1, 'choice')]),     
+                'essaye_un_autre':( {'e':'', 'g':'QT/confused', 's': "~Celui là est difficile, c’est vrai, essaye un autre !"}, [('time', 6, 'choice')]),     
+                'patience':( {'e':'', 'g':'', 's': "~Sois patient, tu vas y arriver "}, [('time', 1, 'choice')]),     
+                'puzzle_debut':( {'e':'', 'g':'QT/so', 's': "~Tu peux commencer par trier les morceaux par couleur, ou, selon les motifs par exemple "}, [('time', 1, 'choice')]),     
+                'bon_debut':( {'e':'QT/happy', 'g':'', 's': "C’est un bon début, continue !"}, [('time', 1, 'choice')]),     
+                'observe_bien':( {'e':'', 'g':'', 's': "~Observe bien l’image et les morceaux"}, [('time', 1, 'choice')]),     
 
                     # 2- travail manuel : 1,2,3 soleil
-                'soleil_regles':( {'e':'', 'g':'', 's': "Essaie de me rejoindre pendant que je ferme les yeux. Quand j'ouvrirai les yeux et dirai:\\pau=300\\  soleil,\\pau=300\\ tu devras t'arrêter. Il faut être concentré et rapide ! Si tu réussis à avancer pendant que je garde les yeux fermés, tu auras gagné. Prêt à me rejoindre ?"}, [('time', 1, 'choice')]),
-                'lancer_soleil':( {'e':'', 'g':'', 's': "Un, deux , trois "}, [('time', 1, 'montrer_soleil')]),
-                'montrer_soleil':( {'e':'Qt/soleil', 'g':'', 's': "Soleil "}, [('time', 1, 'choice')]),         
+                'soleil_regles':( {'e':'', 'g':'QT/show_tablet', 's': "~Essaie de t’approcher de moi lorsque je ferme les yeux. Quand j’ouvrirai les yeux et que je dirai 'soleil', tu devras t’arrêter. Il faut être concentré et rapide ! Si tu réussis à avancer pendant que j’ai les yeux fermés, tu auras gagné.  Prêt à me rejoindre ?"}, [('time', 20, 'choice')]),
+                'lancer_soleil':( {'e':'QT/calming_down', 'g':'QT/peekaboo', 's': "Un\\pau=800\\, deux \\pau=800\\, trois \\pau=2000\\ Soleil!"}, [('time', 1, 'choice')]),
+                'j_ai_gagne':( {'e':'QT/happy', 'g':'QT/happy', 's': "\\pau=300\\J'ai gagné !"}, [('time', 1, 'choice')]),         
 
                  # Activités sociales
-                    #S ous-catégorie : Raconter la journée/semaine aux parents ==> à remplir
+                    #S ous-catégorie : Raconter la journée/semaine aux parents 
+                'comment_ca_va':( {'e':'', 'g':'', 's': "~Comment ça va? "}, [('time', 1, 'choice')]),
+                'et_ta_journee':( {'e':'', 'g':'', 's': "~Comment s’est passée ta journée ? "}, [('time', 1, 'choice')]),
+                'raconter':( {'e':'', 'g':'QT/show_left', 's': "~As-tu envie de nous raconter ce que tu as fait ? Je suis curieux ! "}, [('time', 1, 'choice')]),
+                'de_belles_choses':( {'e':'QT/showing_smile', 'g':'QT/show_right', 's': random.choice(["As-tu vécu de belles choses que tu voudrais nous raconter ? ","Quels bons moments voudrais-tu partager ?"])}, [('time', 1, 'choice')]),
+                'inquietude':( {'e':'QT/with_a_cold', 'g':'', 's': "Il s’est passé quelque chose qui t’a inquiété ? "}, [('time', 1, 'choice')]),
+                'tes_amis':( {'e':'', 'g':'', 's': random.choice(["~Tu as joué avec tes amis ? ", "~Tu t’es amusé avec tes amis ? "])}, [('time', 1, 'choice')]),
+                
+                'ecole_ennuie':( {'e':'', 'g':'QT/sad', 's': "~Tu ne t’es \\pau=50\\pas \\pau=50\\ ennuyé à l’école ?"}, [('time', 1, 'choice')]),
+                '_pourquoi':( {'e':'', 'g':'', 's': "~Pourquoi ? "}, [('time', 1, 'choice')]),
+                'et_apres':( {'e':'', 'g':'', 's': "~Et après ? "}, [('time', 1, 'choice')]),
+                'ah_bon':( {'e':'', 'g':'', 's': "~Ah bon !"}, [('time', 1, 'choice')]),
+
 
                 # Activités émotionnelles
                     #  Sous-catégorie : jeu symbolique/jeu avec médiateur
-                    #  Psychodrame        
+                'envie_de_jouer':( {'e':'', 'g':'QT/show_tablet', 's': "~As-tu envie de t’amuser avec ces jeux ? Tu peux dessiner, jouer avec des poupées, nous raconter des histoires… Tu peux choisir ce que tu veux! "}, [('time', 12, 'choice')]),
+                'c_dur':( {'e':'', 'g':'', 's': "~Ça doit être dur pour lui"}, [('time', 1, 'choice')]),
+                'je_comprend':( {'e':'', 'g':'QT/yes', 's': "~Je comprends !"}, [('time', 1, 'choice')]),
+                'c_drole':( {'e':'QT/puffing_the_chredo_eeks', 'g':'QT/laugh', 's': "C’est drôle!"}, [('time', 1, 'choice')]),
+                'pourquoi_faire':( {'e':'', 'g':'', 's': "~Pourquoi il fait ça?"}, [('time', 1, 'choice')]),
+                'se_sentir':( {'e':'', 'g':'', 's': "~Comment il se sent ?"}, [('time', 1, 'choice')]),
+                'm_expliquer':( {'e':'', 'g':'', 's': "~Tu peux m’expliquer? Je t'écoute!"}, [('time', 1, 'choice')]),
+                'comment_passe':( {'e':'', 'g':'', 's': "~Comment ça s’est passé?"}, [('time', 1, 'choice')]),
+
+                    #  Psychodrame    
+                'surprise':( {'e':'QT/surprise', 'g':'QT/curious', 's': random.choice(["C’est incroyable!", "Incroyable!"])}, [('time', 1, 'choice')]),
+                'peur':( {'e':'QT/afraid', 'g':'fera_mieux', 's': random.choice(["Oh! Quelle peur!", "Oh! J'ai eu peur!"])}, [('time', 1, 'choice')]),
+                'degout':( {'e':'QT/disgusted', 'g':'QT/yawn', 's': "\\pau=500\\Ooh! non! "}, [('time', 1, 'choice')]),
+                'en_colere':( {'e':'QT/confused', 'g':'QT/head_scratch', 's': "Je suis en colère!"}, [('time', 1, 'choice')]),
+                'bon_heur':( {'e':'QT/happy_blinking', 'g':'QT/happy', 's': "\\pau=500\\ Youpi !"}, [('time', 1, 'choice')]),
+                '_tristesse':( {'e':'QT/sad', 'g':'QT/thanks', 's': "\\pau=500\\Oh, quelle tristesse!"}, [('time', 1, 'choice')]),
+                '_fatigue':( {'e':'QT/yawn', 'g':'QT/thanks', 's': "Je suis fatigué"}, [('time', 1, 'choice')]),
+                'confusion':( {'e':'QT/confused', 'g':'QT/touch-head-back', 's': random.choice(["Je ne comprends pas!", "J'ai du mal à comprendre!"])}, [('time', 1, 'choice')]),
+    
 
                 'end': ((), [('time', 0.1, 'end')]) }
-
-# while not rospy.is_shutdown():
-#     # global child_name
-#     # global adult_name
-#     child_name = n.child_name
-#     adult_name = n.adult_name
-#     if child_name != "": 
-#         break
-#     time.sleep(1)
-#     # if child_name != "": break
-
-# if __name__ == '__main__':
-#     rospy.init_node("qt_states", anonymous=True)    

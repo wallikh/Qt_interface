@@ -1,5 +1,5 @@
 #! /usr/bin/env python2.7
-# * Running on http://127.0.0.1:5000/
+# * Running on http://127.0.0.1:5555/
 
 
 from flask import Flask, jsonify, render_template, request, redirect, session, current_app
@@ -9,7 +9,7 @@ sys.setdefaultencoding('utf-8')
 import copy
 import rospy
 from std_msgs.msg import String
-from woz_interface.msg import NameInfo
+from woz_interface_2023.msg import NameInfo
 from threading import Thread
 
 
@@ -23,22 +23,10 @@ previous_button2 = ""
 
 @app.route('/')
 def index(name=None):
-    child_name = str(session.get('user_name'))
-    last_name = str(session.get('user_surname'))
-    adult_name = str(session.get('teacher_name'))
-    print("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",child_name)
-    name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=10)
-    name_info.publish(child_name, last_name, adult_name)
     return redirect('/login')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login(name=None):
-    child_name = str(session.get('user_name'))
-    last_name = str(session.get('user_surname'))
-    adult_name = str(session.get('teacher_name'))
-    print("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",child_name)
-    name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=10)
-    name_info.publish(child_name, last_name, adult_name)
     if request.method=='POST':
         #state.publish("true")
         print(request.form)
@@ -51,12 +39,6 @@ def login(name=None):
 	
 @app.route('/reactions')
 def reactions(name=None):
-    child_name = str(session.get('user_name'))
-    last_name = str(session.get('user_surname'))
-    adult_name = str(session.get('teacher_name'))
-    print("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",child_name)
-    name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=10)
-    name_info.publish(child_name, last_name, adult_name)
     if not session.get('user_name') or not len(session.get('user_name')) or not len( session.get('user_surname') ) :
         return redirect('/')
 
@@ -64,36 +46,18 @@ def reactions(name=None):
 
 @app.route('/scenarios')
 def scenarios(name=None):
-    child_name = str(session.get('user_name'))
-    last_name = str(session.get('user_surname'))
-    adult_name = str(session.get('teacher_name'))
-    print("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",child_name)
-    name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=10)
-    name_info.publish(child_name, last_name, adult_name)
     if not session.get('user_name') or not len(session.get('user_name')) or not len( session.get('user_surname') ) :
         return redirect('/')
     return render_template('scenarios.html', name=name)
 
 @app.route('/theatre')
 def theatre(name=None):
-    child_name = str(session.get('user_name'))
-    last_name = str(session.get('user_surname'))
-    adult_name = str(session.get('teacher_name'))
-    print("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",child_name)
-    name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=10)
-    name_info.publish(child_name, last_name, adult_name)
     if not session.get('user_name') or not len(session.get('user_name')) or not len( session.get('user_surname') ) :
         return redirect('/')
     return render_template('theatre.html', name=name)
 
 @app.route('/maison')
 def maison(name=None):
-    child_name = str(session.get('user_name'))
-    last_name = str(session.get('user_surname'))
-    adult_name = str(session.get('teacher_name'))
-    print("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",child_name)
-    name_info = rospy.Publisher('/woz/nameinfo',NameInfo,queue_size=10)
-    name_info.publish(child_name, last_name, adult_name)
     if not session.get('user_name') or not len(session.get('user_name')) or not len( session.get('user_surname') ) :
         return redirect('/')
     return render_template('maison.html', name=name)

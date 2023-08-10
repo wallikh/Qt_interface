@@ -2,7 +2,7 @@
 
 source /home/qtrobot/robot/autostart/qt_robot.inc
 
-SCRIPT_NAME="start_woz_interface"
+SCRIPT_NAME="start_woz_interface_2023"
 LOG_FILE=$(prepare_logfile "$SCRIPT_NAME")
 
 {
@@ -13,6 +13,6 @@ wait_for_ros_topic "/qt_robot/gesture/play" 60
 wait_for_ros_topic "/qt_robot/speech/say" 60
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-roslaunch woz_interface woz_interface.launch
+roslaunch woz_interface_2023 woz_interface_2023.launch
 } &>> ${LOG_FILE}
 
