@@ -18,11 +18,11 @@ var JoyStick = (function(container, parameters, callback)
     var title = (typeof parameters.title === "undefined" ? "joystick" : parameters.title),
         width = (typeof parameters.width === "undefined" ? 0 : parameters.width),
         height = (typeof parameters.height === "undefined" ? 0 : parameters.height),
-        internalFillColor = (typeof parameters.internalFillColor === "undefined" ? "#204A87" : parameters.internalFillColor),
+        internalFillColor = (typeof parameters.internalFillColor === "undefined" ? "#0000ff" : parameters.internalFillColor),
         internalLineWidth = (typeof parameters.internalLineWidth === "undefined" ? 2 : parameters.internalLineWidth),
-        internalStrokeColor = (typeof parameters.internalStrokeColor === "undefined" ? "#555753" : parameters.internalStrokeColor),
+        internalStrokeColor = (typeof parameters.internalStrokeColor === "undefined" ? "#0000ff" : parameters.internalStrokeColor),
         externalLineWidth = (typeof parameters.externalLineWidth === "undefined" ? 2 : parameters.externalLineWidth),
-        externalStrokeColor = (typeof parameters.externalStrokeColor ===  "undefined" ? "#555753" : parameters.externalStrokeColor),
+        externalStrokeColor = (typeof parameters.externalStrokeColor ===  "undefined" ? "#0000ff" : parameters.externalStrokeColor),
         autoReturnToCenter = (typeof parameters.autoReturnToCenter === "undefined" ? true : parameters.autoReturnToCenter);
 
     callback = callback || function(StickStatus) {};
@@ -401,11 +401,11 @@ var JoyStick2 = (function(container, parameters, callback)
     var title = (typeof parameters.title === "undefined" ? "joystick2" : parameters.title),
         width = (typeof parameters.width === "undefined" ? 0 : parameters.width),
         height = (typeof parameters.height === "undefined" ? 0 : parameters.height),
-        internalFillColor = (typeof parameters.internalFillColor === "undefined" ? "#204A87" : parameters.internalFillColor),
+        internalFillColor = (typeof parameters.internalFillColor === "undefined" ? "#0000ff" : parameters.internalFillColor),
         internalLineWidth = (typeof parameters.internalLineWidth === "undefined" ? 2 : parameters.internalLineWidth),
-        internalStrokeColor = (typeof parameters.internalStrokeColor === "undefined" ? "#555753" : parameters.internalStrokeColor),
+        internalStrokeColor = (typeof parameters.internalStrokeColor === "undefined" ? "#0000ff" : parameters.internalStrokeColor),
         externalLineWidth = (typeof parameters.externalLineWidth === "undefined" ? 2 : parameters.externalLineWidth),
-        externalStrokeColor = (typeof parameters.externalStrokeColor ===  "undefined" ? "#555753" : parameters.externalStrokeColor),
+        externalStrokeColor = (typeof parameters.externalStrokeColor ===  "undefined" ? "#0000ff" : parameters.externalStrokeColor),
         autoReturnToCenter = (typeof parameters.autoReturnToCenter === "undefined" ? true : parameters.autoReturnToCenter);
 
     callback = callback || function(StickStatusWalk) {};
