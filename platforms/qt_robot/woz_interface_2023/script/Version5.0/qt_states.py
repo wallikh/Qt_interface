@@ -273,7 +273,7 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 'tu_es_fort': ( {'e':'QT/happy', 'g':'T/handclap', 's': random.choice(["trop fort?", "Tu as trop bien réussi child_name ", "Tu as trop bien fait!"]) }, [('time', 1, 'choice')]),
                 'nous_sommes_fort': ( {'e':'QT/happy', 'g':'QT/happy', 's': random.choice(["On est trop forts", "On est super forts!", "On a trop bien réussi!"]) }, [('time', 1, 'choice')]),
                 'fier_de_toi': ( {'e':'QT/happy', 'g':'', 's':"Je suis fier de toi!"}, [('time', 1, 'choice')]),
-                'applique': ( {'e':'QT/one_eye_wink', 'g':'QT/thanks', 's': random.choice(["tu travaille très bien","tu t'applique très bien!", "tu est bien appliqué"]) }, [('time', 1, 'choice')]),
+                'applique': ( {'e':'QT/one_eye_wink', 'g':'QT/thanks', 's': random.choice(["tu travaille très bien","tu t'appliques très bien!", "tu est bien appliqué"]) }, [('time', 1, 'choice')]),
                 'tu_perseveres': ( {'e':'QT/happy', 'g':'', 's':random.choice(["Tu n'as pas \pau=5\ \sel=alt=p+50\ abandonné! Bravo!", "Tu as tenu bon, C'est bien !","Tu \sel=alt=p+50\ persévères, Super!"])}, [('time', 1, 'choice')]),
 
                 'aie': ( {'e':'QT/afraidshort', 'g':'QT/protect', 's': random.choice(["Aie!","Ouilleu", "aoutch, ça fait mal!"]) }, [('time', 1, 'choice')]),
@@ -518,7 +518,7 @@ states = { 'begin': ( {}, [('time', 1, 'choice')]),
                 'en_colere':( {'e':'QT/confused', 'g':'QT/head_scratch', 's': "Je suis en colère!"}, [('time', 1, 'choice')]),
                 'bon_heur':( {'e':'QT/happy_blinking', 'g':'QT/happy', 's': "\\pau=500\\ Youpi !"}, [('time', 1, 'choice')]),
                 '_tristesse':( {'e':'QT/sad', 'g':'QT/thanks', 's': "\\pau=500\\Oh, quelle tristesse!"}, [('time', 1, 'choice')]),
-                '_fatigue':( {'e':'QT/yawn', 'g':'QT/thanks', 's': "Je suis fatigué"}, [('time', 1, 'choice')]),
+                '_fatigue':( {'e':'QT/yawn', 'g':'QT/thanks', 's': "#YAWN01# Je suis fatigué"}, [('time', 1, 'choice')]),
                 'confusion':( {'e':'QT/confused', 'g':'QT/touch-head-back', 's': random.choice(["Je ne comprends pas!", "J'ai du mal à comprendre!"])}, [('time', 1, 'choice')]),
     
 
